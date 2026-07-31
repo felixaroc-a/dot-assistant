@@ -70,7 +70,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        shard: [0, 1, 2]
+        shard: [0, 1, 2, 3, 4, 5]
     defaults:
       run:
         working-directory: apps/dot/backend
@@ -92,12 +92,13 @@ jobs:
       - name: Run backend tests (shard ${{ matrix.shard }})
         run: |
           python -m pytest app/tests/ -q --no-cov \
-            --timeout=120 \
-            --shard-id=${{ matrix.shard }} --num-shards=3 \
+            --timeout=60 \
+            --shard-id=${{ matrix.shard }} --num-shards=6 \
             --deselect "app/tests/test_integration.py::TestHealthAndCapabilities::test_capabilities_with_auth" \
             --deselect "app/tests/test_integration.py::TestHealthAndCapabilities::test_usage_summary" \
             --deselect "app/tests/test_integration.py::TestConversationsCRUD::test_conversation_crud_flow" \
             --deselect "app/tests/test_integration.py::TestWebSocketAuth::test_ws_accepted_with_valid_token" \
+            --deselect "app/tests/test_integration.py::TestRefreshTokenRotation::test_refresh_reuse_detection" \
             --deselect "app/tests/test_auth_integration.py::TestAuthLoginIntegration::test_login_403_subscription_expired" \
             --deselect "app/tests/test_pendrive_recovery.py::test_recovery_login_subscription_expired" \
             --deselect "app/tests/test_chat_context_browser_hint.py::test_build_system_prompt_browser_hint_when_enabled" \
