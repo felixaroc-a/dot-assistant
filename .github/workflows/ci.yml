@@ -163,7 +163,7 @@ jobs:
           pip install -e ../../../packages/dot-billing[full]
           grep -v '^-e ' requirements.txt > /tmp/req-audit.txt && pip install -r /tmp/req-audit.txt
           pip install pip-audit
-          pip-audit --local --no-deps
+          pip-audit --local
 
   security-audit-npm:
     runs-on: ubuntu-latest
