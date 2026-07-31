@@ -12,6 +12,7 @@ import { FileAttachment } from './FileAttachment'
 import { GeneratedImagesGrid } from './GeneratedImagesGrid'
 import { StructuredMessageCard } from './StructuredMessageCard'
 import { MessageBubbleActions } from './MessageBubbleActions'
+import { ReasoningThinkingPanel } from './ReasoningThinkingPanel'
 import { extractMessageActionText } from './messageActionText'
 
 type ChatMessageBubbleProps = {

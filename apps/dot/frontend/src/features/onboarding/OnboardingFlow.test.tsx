@@ -147,9 +147,7 @@ describe('OnboardingFlow', () => {
     await userEvent.setup().click(screen.getByText('Comenzar'))
 
     await waitFor(() => {
-      expect(
-        screen.getByText('¿A través de cuál le gustaría comunicarse con la IA?'),
-      ).toBeInTheDocument()
+      expect(screen.getByText('Vincular WhatsApp')).toBeInTheDocument()
     })
   })
 

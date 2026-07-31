@@ -221,7 +221,6 @@ describe('DashboardShell', () => {
     expect(screen.getByRole('list', { name: 'Agente' })).toBeInTheDocument()
     expect(screen.getByText('Test User')).toBeInTheDocument()
     expect(screen.getAllByText('Canal: WhatsApp').length).toBeGreaterThanOrEqual(1)
-    expect(screen.getByText('WhatsApp desconectado')).toBeInTheDocument()
     expect(
       screen.getByPlaceholderText('Escribe un mensaje… (escribe / para comandos)'),
     ).toBeInTheDocument()

@@ -1,6 +1,5 @@
 import { motion, useReducedMotion } from 'framer-motion'
 import { useState } from 'react'
-import { useTranslation } from 'react-i18next'
 
 import './personalize-step.css'
 

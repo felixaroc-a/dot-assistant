@@ -10,7 +10,7 @@ import {
   hasImageGenerationIntent,
   IMAGE_GEN_DRAFT_PREFIX,
 } from './imageGenerationIntent'
-import { ModelSelector } from './ModelSelector'
+import { ModelSelector, type AvailableModel } from './ModelSelector'
 
 import './chat-attachments.css'
 
@@ -119,7 +119,7 @@ export type DotChatPanelProps = {
   /** Modelo IA preferido (id del modelo) */
   preferredModel?: string
   /** Modelos disponibles cargados desde GET /v1/models */
-  availableModels?: Array<{ id: string; provider: string; display_name: string; context_window: number; capabilities: string[]; tier: string; is_default: boolean; cost: { input_1m: number; output_1m: number } }>
+  availableModels?: AvailableModel[]
   /** Callback al cambiar de modelo */
   onPreferredModelChange?: (modelId: string) => void
   /** Inicia un chat nuevo (multi-chat) */

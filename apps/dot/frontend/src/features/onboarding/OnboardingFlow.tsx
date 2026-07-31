@@ -39,17 +39,16 @@ export function OnboardingFlow({ onLostPendrive }: OnboardingFlowProps) {
       integrations: IntegrationId[]
       step: OnboardingFlowStep
     }) => {
+      flow.setDisplayName(profile.displayName)
       if (profile.step === 'dashboard') {
         flow.setFlowStep('dashboard')
         return
       }
-      flow.setDisplayName(profile.displayName)
       flow.setSelectedChannel(profile.channel)
       flow.setSelectedIntegrations(profile.integrations)
-      // Only set step to welcome if not already past it
-      if (flow.flowStep === 'welcome' || flow.flowStep === 'dashboard') {
-        flow.setFlowStep('welcome')
-      }
+      // Si el perfil del servidor dice que el onboarding NO está completo,
+      // siempre empezar desde welcome (ignora sessionStorage obsoleto).
+      flow.setFlowStep('welcome')
     },
     // eslint-disable-next-line react-hooks/exhaustive-deps
     [flow.setDisplayName, flow.setSelectedChannel, flow.setSelectedIntegrations, flow.setFlowStep],

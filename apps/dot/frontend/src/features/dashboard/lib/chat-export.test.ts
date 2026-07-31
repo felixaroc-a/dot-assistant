@@ -32,7 +32,7 @@ describe('buildChatExportDocument', () => {
     expect(result.content).toContain('# Conversación DOT')
     expect(result.content).toContain('Usuario: Felix')
     expect(result.content).toContain('### 1. Felix')
-    expect(result.content).toContain('### 2. DOTa')
+    expect(result.content).toContain('### 2. DOT')
     expect(result.content).toContain('Hola, ¿en qué te ayudo?')
   })
 

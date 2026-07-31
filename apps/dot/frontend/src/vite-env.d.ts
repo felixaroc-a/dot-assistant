@@ -159,9 +159,12 @@ declare global {
           onChunk?: (chunk: { stream: 'stdout' | 'stderr'; text: string }) => void
           onLinked?: (data: { linked: boolean; phone_number?: string }) => void
           onExit?: (info: { code: number | null; signal: string | null }) => void
+          clearSession?: boolean
         }) => Promise<{ ok: boolean; error?: string; needs_qr?: boolean }>
         /** Detiene el proceso de vinculación en curso. */
         stop: () => Promise<{ ok: boolean }>
+        /** Alias: limpia sesión WA (mismo IPC que .logout). */
+        logoutWhatsApp: () => Promise<{ ok: boolean; needs_qr?: boolean; error?: string }>
         /** Stream de logs del transporte WhatsApp durante el login QR. */
         onData: (
           listener: (payload: { stream: string; text: string }) => void,

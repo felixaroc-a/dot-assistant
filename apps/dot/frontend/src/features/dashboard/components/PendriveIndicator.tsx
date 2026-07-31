@@ -8,7 +8,6 @@ const POLL_INTERVAL_MS = 30_000
 
 export function PendriveIndicator() {
   const [connected, setConnected] = useState(true)
-  const [checking, setChecking] = useState(false)
   const reduceMotion = useReducedMotion()
 
   const checkPendrive = useCallback(async () => {
@@ -17,18 +16,15 @@ export function PendriveIndicator() {
       return
     }
 
-    setChecking(true)
     try {
       const result = await readReadyDotUsbSerial()
-      if (result.__tag === 'ok') {
+      if (result.serial) {
         setConnected(true)
       } else {
         setConnected(false)
       }
     } catch {
       setConnected(false)
-    } finally {
-      setChecking(false)
     }
   }, [])
 

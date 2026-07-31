@@ -132,7 +132,8 @@ export async function buildUserDataExport(
   ]
   for (const result of allResults) {
     if (!result.ok) {
-      fetchErrors.push({ section: result.section, message: result.message })
+      const failed = result as unknown as { section: string; message: string }
+      fetchErrors.push({ section: failed.section, message: failed.message })
     }
   }
 

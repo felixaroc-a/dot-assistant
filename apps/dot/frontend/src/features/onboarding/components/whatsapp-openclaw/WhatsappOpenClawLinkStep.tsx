@@ -368,7 +368,7 @@ export function WhatsappLinkStep({ onBack, onSkip, onContinue }: WhatsappLinkSte
     return () => window.clearTimeout(timer)
   }, [linkedOk, onContinue])
 
-  const append = useCallback((_stream: 'stdout' | 'stderr', text: string) => {
+  const append = useCallback((_stream: string, text: string) => {
     setLog((prev) => {
       const next = prev + text
       return next.length > 120_000 ? next.slice(-120_000) : next
