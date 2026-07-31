@@ -75,7 +75,7 @@ def test_chain_web_search_then_writefile(monkeypatch):
 
 
 def test_agentic_hint_in_system_prompt():
-    from app.services.chat_context import AGENTIC_RESULTS_HINT, build_system_prompt
+    from app.services.chat_context import AGENTIC_RESULTS_HINT
 
     assert "RESULTADOS" in AGENTIC_RESULTS_HINT
     # build_system_prompt puede fallar sin DB; el hint está en el módulo

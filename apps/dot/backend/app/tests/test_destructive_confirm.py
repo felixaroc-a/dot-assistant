@@ -2,7 +2,7 @@
 
 from __future__ import annotations
 
-from unittest.mock import MagicMock, patch
+from unittest.mock import patch
 
 from app.application.agent.ports import ToolResult
 from app.application.agent.registry import ToolRegistry

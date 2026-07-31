@@ -1197,7 +1197,7 @@ def _run_agent_loop(
     if settings.planner_enabled and prebuilt_plan is not None:
         steps = getattr(prebuilt_plan, "steps", None)
         if steps and isinstance(steps, list) and len(steps) >= 2:
-            from app.application.agent.planner import Plan, PlanStep, run_planner
+            from app.application.agent.planner import Plan, run_planner
             from app.application.agent.reasoning import convert_plan_artifact_to_planner_plan
 
             goal, plan_steps = convert_plan_artifact_to_planner_plan(prebuilt_plan)
@@ -1403,7 +1403,7 @@ def _run_agent_loop(
             )
 
         calls = parse_tool_calls(content)
-        
+
         # ─── Anti-alucinación ───
         if not calls and _detect_fabricated_data(content, tool_trace):
             nudge = (
@@ -1419,7 +1419,7 @@ def _run_agent_loop(
             working_text = f"{working_text}\n\n{nudge}"
             incomplete_nudges += 1
             continue
-        
+
         if not calls:
             spoken = strip_tool_calls_json(content) or content
             if tool_trace and any(

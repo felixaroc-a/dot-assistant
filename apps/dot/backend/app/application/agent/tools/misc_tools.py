@@ -1,7 +1,6 @@
 """Tools de eventos, facturacion profunda, migracion, logistica — P1-P2."""
 from __future__ import annotations
 import logging
-from datetime import datetime, timezone
 from typing import Any
 from app.application.agent.ports import ToolResult
 

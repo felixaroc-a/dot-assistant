@@ -3,7 +3,7 @@
 from __future__ import annotations
 
 import time
-from unittest.mock import MagicMock, patch
+from unittest.mock import patch
 
 import httpx
 import pytest
@@ -11,8 +11,6 @@ import pytest
 from app.application.agent.tools.browser_tools import (
     BrowserErrorCode,
     _BrowserErrorInfo,
-    _BRIDGE_RETRY_BACKOFF_BASE,
-    _BRIDGE_RETRY_MAX,
     _bridge_browser_with_retry,
     _browser_sessions,
     _classify_browser_error,

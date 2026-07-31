@@ -128,7 +128,6 @@ def _graph_headers(token: str) -> dict[str, str]:
 
 async def _graph_post(endpoint: str, payload: dict, timeout: int = 20) -> dict:
     """POST genérico a MS Graph API."""
-    import asyncio
 
     try:
         token = await _get_graph_token()

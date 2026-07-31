@@ -22,12 +22,9 @@ from app.services.llm_providers import (
 )
 from app.services.model_registry import (
     ModelInfo,
-    get_available_models,
-    get_default_model,
     get_fallback_chain,
     get_model_by_id,
 )
-from app.settings import settings
 
 log = logging.getLogger("dot.model_router")
 
@@ -163,7 +160,7 @@ async def route_chat_stream(
     """
     chain = get_fallback_chain(preferred_model)
     if not chain:
-        yield f"Error: No hay proveedores IA disponibles.", "error"
+        yield "Error: No hay proveedores IA disponibles.", "error"
         return
 
     last_error: Exception | None = None

@@ -7,7 +7,6 @@ Usa PyMuPDF (fitz) para PDF, python-docx para DOCX.
 """
 from __future__ import annotations
 
-import asyncio
 import logging
 from dataclasses import dataclass, field
 from pathlib import Path

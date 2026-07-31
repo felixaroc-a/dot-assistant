@@ -22,7 +22,6 @@ from sqlalchemy.orm import Session
 os.environ["CODE_EXECUTION_ENABLED"] = "true"
 
 from app.tests.conftest import seed_cliente
-from app.main import app
 from app.settings import settings
 
 settings.code_execution_enabled = True
@@ -226,7 +225,6 @@ class TestMockedExecution:
         import subprocess as sp
 
         from app.services.code_execution_service import (
-            ExecutionResult,
             get_code_execution_service,
         )
 

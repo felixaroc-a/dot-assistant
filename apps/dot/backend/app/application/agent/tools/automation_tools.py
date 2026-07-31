@@ -14,7 +14,6 @@ from typing import Any
 from app.application.agent.ports import ToolResult
 from app.services.time_parser import (
     extract_structured_schedule,
-    format_recurring_confirmation,
     format_spanish_datetime,
     format_structured_schedule_human,
     parse_recurring_schedule,

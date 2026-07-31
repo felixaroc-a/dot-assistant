@@ -13,10 +13,9 @@ import logging
 from dataclasses import dataclass, field
 from decimal import Decimal, ROUND_HALF_UP
 from typing import TYPE_CHECKING
-from uuid import UUID
 
 if TYPE_CHECKING:
-    from sqlalchemy.orm import Session
+    pass
 
 log = logging.getLogger("dot.cost_calculator")
 

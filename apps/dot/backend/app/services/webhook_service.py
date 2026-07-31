@@ -14,15 +14,13 @@ from __future__ import annotations
 import asyncio
 import json
 import logging
-import time
 from dataclasses import dataclass, field
 from datetime import datetime, timezone
 from enum import Enum
-from typing import Any, Callable
+from typing import Any
 
 import httpx
 
-from app.settings import settings
 
 log = logging.getLogger("dot.webhooks")
 

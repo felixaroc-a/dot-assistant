@@ -171,7 +171,6 @@ def _extract_request(args: tuple, kwargs: dict) -> Any | None:
 
 def _build_cache_key(request: Any, **kwargs: Any) -> str:
     """Genera clave de cache: path:usuario_id"""
-    from app.auth_deps import claims_uid
 
     claims = kwargs.get("claims", {})
     if isinstance(claims, dict):

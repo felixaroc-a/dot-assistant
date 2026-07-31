@@ -216,11 +216,11 @@ def drive_list_handler(uid: str, arguments: dict[str, Any]) -> ToolResult:
 
         files = data.get("files", [])
         if not files:
-            msg = f"📁 No se encontraron archivos en Google Drive" + (f" con nombre '{query_filter}'." if query_filter else ".")
+            msg = "📁 No se encontraron archivos en Google Drive" + (f" con nombre '{query_filter}'." if query_filter else ".")
             return ToolResult(ok=True, output=msg)
 
         lines = [
-            f"📁 Google Drive — "
+            "📁 Google Drive — "
             + (f"'{query_filter}' " if query_filter else "")
             + f"({len(files)} archivos):\n"
         ]

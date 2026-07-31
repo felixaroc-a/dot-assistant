@@ -224,7 +224,7 @@ def ml_my_products_handler(uid: str, arguments: dict[str, Any]) -> ToolResult:
         limit = min(int(arguments.get("limit") or 10), 50)
 
         _rate_limit("ml_my_products")
-        url = f"https://api.mercadolibre.com/users/me/items/search"
+        url = "https://api.mercadolibre.com/users/me/items/search"
         params: dict[str, str | int] = {
             "access_token": token,
             "limit": limit,
@@ -355,25 +355,25 @@ def ml_price_comparison_handler(uid: str, arguments: dict[str, Any]) -> ToolResu
         # Armar salida
         lines = [
             f"📊 Comparacion de precios — '{query}' en {site}",
-            f"",
+            "",
             f"📈 Resumen ({count} productos):",
             f"  Precio minimo:    {_fmt_price(price_min, currency)}",
             f"  Precio maximo:    {_fmt_price(price_max, currency)}",
             f"  Precio promedio:  {_fmt_price(price_avg, currency)}",
             f"  Precio mediana:   {_fmt_price(price_median, currency)}",
-            f"",
-            f"📋 Muestras:",
+            "",
+            "📋 Muestras:",
         ]
 
         # Mostrar 3 mas baratos, 3 mas caros
         sorted_samples = sorted(samples, key=lambda x: x["price"])
-        lines.append(f"  -- Mas baratos --")
+        lines.append("  -- Mas baratos --")
         for s in sorted_samples[:3]:
             lines.append(f"  • {s['title'][:60]}")
             lines.append(f"    {_fmt_price(s['price'], currency)} | {s['condition']} | {s['permalink']}")
 
         if len(sorted_samples) > 3:
-            lines.append(f"  -- Mas caros --")
+            lines.append("  -- Mas caros --")
             for s in sorted_samples[-3:]:
                 lines.append(f"  • {s['title'][:60]}")
                 lines.append(f"    {_fmt_price(s['price'], currency)} | {s['condition']} | {s['permalink']}")

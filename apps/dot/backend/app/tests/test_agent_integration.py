@@ -235,7 +235,6 @@ def test_document_image_service_creates_docx() -> None:
     """Verifica que create_docx_with_images no lance excepciones con mocks."""
     import tempfile
     from pathlib import Path
-    from unittest.mock import MagicMock, patch
 
     mock_doc_instance = MagicMock()
 
@@ -283,7 +282,6 @@ def test_excel_chart_service_creates_xlsx() -> None:
 
     import tempfile
     from pathlib import Path
-    from unittest.mock import MagicMock, patch
 
     mock_wb_instance = MagicMock()
 
@@ -450,7 +448,6 @@ def test_documents_generate_with_images_endpoint(
 
     import tempfile
     from pathlib import Path
-    from unittest.mock import MagicMock, patch
 
     mock_doc_instance = MagicMock()
 

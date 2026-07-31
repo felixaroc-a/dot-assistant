@@ -22,7 +22,6 @@ from pydantic import BaseModel, Field
 from app.auth_deps import claims_uid, require_product_jwt
 from app.services.cron_service import (
     CRON_TEMPLATES,
-    CronJobStatus,
     CronScheduleType,
 )
 

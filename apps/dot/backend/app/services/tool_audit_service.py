@@ -18,7 +18,6 @@ from __future__ import annotations
 import json
 import logging
 import socket
-import time
 from datetime import datetime, timezone
 from typing import Any, Literal
 
@@ -548,7 +547,6 @@ def get_siem_stats(hours: int = 24) -> dict[str, Any]:
     if db is None:
         return {"error": "Firestore no disponible"}
 
-    from firebase_admin import firestore
 
     try:
         cutoff = datetime.now(timezone.utc).timestamp() - (hours * 3600)

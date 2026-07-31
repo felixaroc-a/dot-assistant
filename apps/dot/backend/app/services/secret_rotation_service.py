@@ -11,7 +11,6 @@ Cada rotación genera entrada inmutable en audit log de Firestore.
 
 from __future__ import annotations
 
-import json
 import logging
 import os
 import secrets
@@ -19,7 +18,7 @@ import threading
 from dataclasses import dataclass, field
 from datetime import datetime, timezone
 from pathlib import Path
-from typing import Any, Callable
+from typing import Any
 
 from cryptography.fernet import Fernet
 from cryptography.hazmat.primitives import serialization
@@ -191,7 +190,7 @@ class SecretRotationService:
             os.environ["JWT_PUBLIC_KEY_PEM"] = public_pem
 
             # Invalidar caché de JwtSigningConfig
-            from app.jwt_keys import JwtSigningConfig, get_jwt_signing_config
+            from app.jwt_keys import get_jwt_signing_config
 
             # Forzar recarga invocando get_jwt_signing_config nuevamente
             new_cfg = get_jwt_signing_config()

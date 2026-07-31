@@ -16,7 +16,7 @@ from __future__ import annotations
 
 import logging
 import uuid
-from datetime import datetime, time, timezone
+from datetime import datetime, timezone
 from enum import Enum
 from typing import Any
 
@@ -624,7 +624,6 @@ class CronService:
                 return
 
         try:
-            from firebase_admin import firestore
 
             db = get_firestore_client()
             if db is None:

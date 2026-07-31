@@ -13,8 +13,6 @@ Cada plugin en el marketplace tiene:
 from __future__ import annotations
 
 import asyncio
-import hashlib
-import json
 import logging
 import shutil
 import tempfile

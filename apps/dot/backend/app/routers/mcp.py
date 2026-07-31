@@ -12,7 +12,6 @@ todos los endpoints retornan 503.
 from __future__ import annotations
 
 import asyncio
-import json
 import logging
 
 from fastapi import APIRouter, HTTPException, Request

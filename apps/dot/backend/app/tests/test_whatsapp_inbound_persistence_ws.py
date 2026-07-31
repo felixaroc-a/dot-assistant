@@ -10,8 +10,6 @@ from unittest.mock import MagicMock, patch
 from app.application.whatsapp.inbound_service import (
     _persist_to_chat_history,
 )
-from app.domain.whatsapp.message import InboundWhatsAppMessage
-from app.services.whatsapp_link import clear_channel_state, update_channel_state
 
 
 def test_append_whatsapp_chat_message_uses_whatsapp_channel():

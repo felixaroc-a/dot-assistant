@@ -7,7 +7,7 @@ reescribir runtime + cancel cooperativo. No convertir a ThreadPoolExecutor ad-ho
 from __future__ import annotations
 
 import threading
-from typing import Any, Callable, Literal, TypeVar
+from typing import Callable, Literal, TypeVar
 
 T = TypeVar("T")
 

@@ -9,13 +9,11 @@ En desarrollo, se usa signal-cli directamente via subprocess (JSON-RPC o modo te
 """
 from __future__ import annotations
 
-import hashlib
 import logging
 import os
 import subprocess
 import uuid
-from dataclasses import dataclass, field
-from datetime import datetime, timezone
+from dataclasses import dataclass
 
 from app.settings import settings
 

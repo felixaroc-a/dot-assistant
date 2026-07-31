@@ -139,7 +139,6 @@ async def broadcast_message(
     Returns:
         {"ok": bool, "results": {channel: {ok, message_id, error}}}
     """
-    import asyncio
 
     tasks = {
         ch: send_message(ch, to, text, attachments=attachments, uid=uid)

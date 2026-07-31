@@ -54,7 +54,6 @@ def home_bill_tracker_handler(uid: str, arguments: dict[str, Any]) -> ToolResult
         due_date = str(arguments.get("due_date") or "").strip()
         if not service or amount <= 0:
             return ToolResult(ok=False, output="", error="Falta servicio y monto.")
-        from datetime import datetime
         msg = f"Servicio: {service} | Monto: {amount:.2f} | Vence: {due_date or 'no especificado'}"
         return ToolResult(ok=True, output=f"Gasto registrado: {msg}. Usa schedule_reminder para alerta de vencimiento.")
     except Exception as e:
@@ -69,7 +68,6 @@ def home_chore_scheduler_handler(uid: str, arguments: dict[str, Any]) -> ToolRes
         chores = arguments.get("chores") or ["cocina", "limpieza", "basura", "lavanderia", "compra"]
         if isinstance(chores, str):
             chores = [c.strip() for c in chores.split(",")]
-        import random
         schedule = {}
         for i, chore in enumerate(chores):
             schedule[chore] = members[i % len(members)]

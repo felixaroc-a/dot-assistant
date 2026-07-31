@@ -7,7 +7,6 @@ from app.services.agent_heartbeat import run_agent_heartbeat
 from app.services.proactive_triggers_service import (
     ProactiveTriggersSettings,
     ensure_default_onboarding,
-    load_settings,
     save_settings,
     user_calendar_triggers_enabled,
     user_composite_enabled,

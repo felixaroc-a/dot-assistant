@@ -9,13 +9,11 @@ from __future__ import annotations
 import logging
 from datetime import datetime, timezone
 from enum import Enum
-from typing import Optional
 from uuid import uuid4
 
 from fastapi import HTTPException
 
 from app.firebase_db import get_db
-from app.schemas.auth import MeResponse
 
 log = logging.getLogger("dot.support_service")
 

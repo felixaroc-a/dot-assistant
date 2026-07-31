@@ -64,7 +64,6 @@ from app.routers import (
     usb_provisioning,
     profile,
     store,
-    templates,
     telemetry,
     tools,
     updates,
@@ -492,7 +491,7 @@ async def lifespan(app: FastAPI):
     from app.services.plugin_system import create_plugin_manager
     from app.services.plugin_marketplace import PluginMarketplace
 
-    _plugins_dir = _BACKEND_ROOT / "plugin-examples"
+    _plugins_dir = Path(__file__).resolve().parent.parent / "plugin-examples"
     app.state.plugin_manager = create_plugin_manager(
         plugins_dir=_plugins_dir,
         registry=_mcp_registry,

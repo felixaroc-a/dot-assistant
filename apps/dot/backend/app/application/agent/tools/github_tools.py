@@ -243,7 +243,7 @@ def github_get_user_handler(uid: str, arguments: dict[str, Any]) -> ToolResult:
                     f"   Cuenta creada: {created}\n"
                     f"\nPerfil: https://github.com/{login}"
                     + f"\n\nLímites API: {remaining}/{limit} requests restantes."
-                    + f"\nFuente: GitHub API v3"
+                    + "\nFuente: GitHub API v3"
                 )
                 return ToolResult(ok=True, output=output)
 

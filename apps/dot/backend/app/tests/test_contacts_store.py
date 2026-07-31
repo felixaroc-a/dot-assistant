@@ -1,4 +1,3 @@
-import pytest
 
 from app.application.agent.tools.crm_tools import contact_find_handler
 from app.services import contacts_store as store

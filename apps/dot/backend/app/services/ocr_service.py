@@ -117,7 +117,6 @@ def ocr_from_file(
         OCRResult con el texto extraído.
     """
     _ensure_tesseract()
-    import pytesseract
 
     path = Path(file_path)
     if not path.exists():

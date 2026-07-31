@@ -29,7 +29,6 @@ from pydantic import BaseModel, Field
 
 from app.auth_deps import claims_uid, require_product_jwt
 from app.services.goal_tree_service import (
-    GoalStatus,
     get_goal_tree_service,
 )
 from app.services.workboard_service import (

@@ -4,7 +4,6 @@ from __future__ import annotations
 import pytest
 
 from app.services.model_registry import (
-    ModelInfo,
     get_all_models,
     get_available_models,
     get_default_model,

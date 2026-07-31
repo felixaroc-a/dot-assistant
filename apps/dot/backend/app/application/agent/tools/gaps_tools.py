@@ -1,8 +1,7 @@
 """Tools de cierre de gaps — todo lo que faltaba de ambos canvas."""
 from __future__ import annotations
-import logging, json, random
+import logging
 from datetime import datetime, timezone
-from pathlib import Path
 from typing import Any
 from app.application.agent.ports import ToolResult
 
@@ -71,7 +70,6 @@ def gmail_cleanup_old_handler(uid: str, arguments: dict[str, Any]) -> ToolResult
 
 
 def gmail_track_opened_handler(uid: str, arguments: dict[str, Any]) -> ToolResult:
-    from app.services import gmail_service
     return ToolResult(ok=True, output="El tracking de apertura requiere servicios externos (Mailtrack, Mixmax) o pixel de seguimiento. Gmail no ofrece esta funcionalidad nativamente. Usa una extension del navegador.")
 
 
@@ -140,7 +138,9 @@ def data_detect_anomalies_handler(uid: str, arguments: dict[str, Any]) -> ToolRe
         raw = execute_local_tool_via_bridge("readFile", path=path)
         if not raw.get("ok"):
             return ToolResult(ok=False, output="", error="Error leyendo.")
-        import csv, io, statistics
+        import csv
+        import io
+        import statistics
         rows = list(csv.DictReader(io.StringIO(str(raw.get("content", "")))))
         if not rows: return ToolResult(ok=True, output="Sin datos.")
         anomalies = []
@@ -169,7 +169,8 @@ def data_export_matrix_handler(uid: str, arguments: dict[str, Any]) -> ToolResul
             return ToolResult(ok=False, output="", error="Falta path.")
         raw = execute_local_tool_via_bridge("readFile", path=path)
         if not raw.get("ok"): return ToolResult(ok=False, output="", error="Error.")
-        import csv, io
+        import csv
+        import io
         rows = list(csv.DictReader(io.StringIO(str(raw.get("content", "")))))
         nums = {}
         for r in rows:

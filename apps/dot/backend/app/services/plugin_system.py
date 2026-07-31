@@ -19,13 +19,12 @@ import threading
 import traceback
 from dataclasses import dataclass, field
 from pathlib import Path
-from typing import Any
 
 import yaml
 
 from app.application.agent.ports import ToolSpec
 from app.application.agent.registry import ToolRegistry
-from app.plugin_sdk import PluginToolMeta, discover_plugin_tools
+from app.plugin_sdk import discover_plugin_tools
 
 log = logging.getLogger("dot.plugins")
 

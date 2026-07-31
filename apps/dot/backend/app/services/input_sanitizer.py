@@ -18,7 +18,6 @@ import logging
 import re
 import time
 from collections import defaultdict
-from typing import Any
 from urllib.parse import unquote
 
 from starlette.types import ASGIApp, Message, Receive, Scope, Send

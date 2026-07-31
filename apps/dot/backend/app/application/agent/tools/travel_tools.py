@@ -61,7 +61,6 @@ def travel_local_guide_handler(uid: str, arguments: dict[str, Any]) -> ToolResul
 
 def travel_budget_tracker_handler(uid: str, arguments: dict[str, Any]) -> ToolResult:
     try:
-        from app.application.agent.tools.local_files import execute_local_tool_via_bridge
         budget = float(arguments.get("budget") or 1000)
         spent = float(arguments.get("spent") or 0)
         category = str(arguments.get("category") or "").strip()

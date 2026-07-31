@@ -13,7 +13,6 @@ Funciones clave:
 from __future__ import annotations
 
 import logging
-import math
 import re
 from concurrent.futures import ThreadPoolExecutor
 from datetime import datetime, timezone
@@ -22,20 +21,14 @@ from typing import Any
 
 import httpx
 
-from app.firebase_db import get_db as get_firestore_client, get_user_profile, list_active_memory_facts
+from app.firebase_db import get_db as get_firestore_client, get_user_profile
 from app.services.memory_embeddings import (
-    embed_fact_text,
     fact_to_embed_text,
-    rank_facts_by_similarity,
-    truncate_embedding,
 )
 from app.services.memory_service import (
     MAX_ACTIVE_MEMORY_FACTS,
-    _memory_embeddings_enabled,
-    format_memory_facts_for_prompt,
     get_memory,
     get_memory_facts,
-    rank_memory_facts_for_prompt,
 )
 from app.settings import settings
 

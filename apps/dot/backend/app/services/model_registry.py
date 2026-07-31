@@ -10,7 +10,6 @@ from __future__ import annotations
 import logging
 from dataclasses import dataclass, field
 
-from app.services.llm_providers import create_provider
 from app.settings import settings
 
 log = logging.getLogger("dot.model_registry")

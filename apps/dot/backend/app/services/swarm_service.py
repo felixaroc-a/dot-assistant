@@ -19,8 +19,6 @@ from typing import Any
 
 from app.services.sub_agent_service import (
     SubAgentManager,
-    SubAgentStatus,
-    SubAgentTask,
     get_sub_agent_manager,
 )
 

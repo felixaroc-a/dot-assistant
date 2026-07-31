@@ -11,16 +11,13 @@ Proporciona metricas agregadas desde la BD billing (Postgres):
 from __future__ import annotations
 
 import logging
-from datetime import date, datetime, timedelta
+from datetime import date, timedelta
 from decimal import Decimal
-from typing import Optional
-from uuid import UUID
 
 from sqlalchemy import func, select, text
 from sqlalchemy.orm import Session
 
 from app.billing_models import ClienteORM, UsageTokenORM
-from app.settings import settings
 
 log = logging.getLogger("dot.admin_analytics")
 

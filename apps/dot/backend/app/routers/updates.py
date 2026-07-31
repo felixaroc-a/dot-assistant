@@ -8,7 +8,6 @@ from typing import Optional
 from fastapi import APIRouter
 from pydantic import BaseModel
 
-from app.settings import settings
 
 router = APIRouter(tags=["updates"])
 log = logging.getLogger("dot.updates")

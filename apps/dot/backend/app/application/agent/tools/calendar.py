@@ -125,7 +125,7 @@ def calendar_create_event_handler(uid: str, arguments: dict[str, Any]) -> ToolRe
         body_parts = []
         if description:
             body_parts.append(description)
-        body_parts.append(f"\n\n---\nCreado por DOT (automatización).")
+        body_parts.append("\n\n---\nCreado por DOT (automatización).")
         full_desc = "\n".join(body_parts)
 
         kwargs: dict = {

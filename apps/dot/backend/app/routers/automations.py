@@ -636,7 +636,6 @@ class TemplateSaveRequest(BaseModel):
 
 
 def _require_template_service(request: Request):
-    from app.services.automation_template_service import AutomationTemplateService
     service = getattr(request.app.state, "auto_template_service", None)
     if service is None:
         raise HTTPException(status_code=503, detail="Servicio de plantillas no disponible.")

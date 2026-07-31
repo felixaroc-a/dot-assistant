@@ -41,7 +41,6 @@ from app.services.chat_context import (
 from app.services.chat_persistence import save_exchange as persist_chat_exchange
 from app.services.usage_service import (
     OPERATION_CHAT,
-    BillingPeriod,
     cost_from_deepseek_usage,
     estimate_chat_tokens_from_text,
     calc_deepseek_cost_usd,
@@ -54,10 +53,6 @@ from app.routers.chat_utils import (
 )
 from app.application.agent.run_queue import AgentRunSuperseded, enqueue_agent_run
 from app.application.agent.session_key import build_session_key
-from app.application.agent.runtime import run_agent
-from app.application.agent.tools import build_default_registry
-from app.application.agent.reasoning import apply_reasoning
-from app.services.provider_router import route_chat_detailed
 from app.services.usage_service import build_usage_summary
 
 log = logging.getLogger("dot.chat")

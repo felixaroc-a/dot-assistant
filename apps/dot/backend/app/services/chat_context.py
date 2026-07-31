@@ -16,7 +16,6 @@ from sqlalchemy.orm import Session
 
 from app.chat_models import MessageORM
 from app.services.chat_crypto import decrypt_message
-from app.settings import settings
 
 log = logging.getLogger("dot.chat_context")
 

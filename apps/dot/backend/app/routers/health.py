@@ -104,7 +104,7 @@ async def health_full(request: Request):
     metrics_summary: dict = {}
     if settings.metrics_enabled:
         try:
-            from prometheus_client import REGISTRY, CollectorRegistry
+            from prometheus_client import REGISTRY
 
             def _get_metric_value(metric_name: str, labels: dict | None = None) -> float | None:
                 """Extrae el valor actual de una métrica Prometheus."""

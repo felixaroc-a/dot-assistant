@@ -13,7 +13,6 @@ from cryptography.fernet import Fernet
 
 from app.services.chat_crypto import (
     CHAT_ENC_PREFIX,
-    _get_chat_fernet,
     decrypt_message,
     encrypt_message,
 )

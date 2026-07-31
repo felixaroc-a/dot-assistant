@@ -7,7 +7,6 @@ Cada handler usa ToolResult y routea via route_chat o bridge local segun corresp
 from __future__ import annotations
 
 import csv
-import io
 import json
 import logging
 from datetime import datetime
@@ -248,13 +247,13 @@ def finance_monthly_report(uid: str, arguments: dict[str, Any]) -> ToolResult:
         )
 
         lines = [
-            f"REPORTE MENSUAL DE GASTOS",
+            "REPORTE MENSUAL DE GASTOS",
             f"{'=' * 40}",
             f"Periodo: {month_filter or 'Todos los datos'}",
             f"Transacciones: {row_count}",
             f"Total: ${total_general:,.2f}",
-            f"",
-            f"DISTRIBUCION POR CATEGORIA:",
+            "",
+            "DISTRIBUCION POR CATEGORIA:",
         ]
         for cat, monto in sorted(totals.items(), key=lambda x: x[1], reverse=True):
             pct = (monto / total_general * 100) if total_general > 0 else 0
@@ -442,12 +441,12 @@ def finance_generate_invoice(uid: str, arguments: dict[str, Any]) -> ToolResult:
 
             # Construir contenido markdown para el DOCX
             lines_md = [
-                f"# FACTURA",
-                f"",
+                "# FACTURA",
+                "",
                 f"**N°:** {numero or 'S/N'}",
                 f"**Fecha:** {fecha_str}",
-                f"",
-                f"## Datos del Cliente",
+                "",
+                "## Datos del Cliente",
                 f"- **Nombre:** {nombre_cliente}",
             ]
             if rif:
@@ -735,16 +734,16 @@ def research_competitor(uid: str, arguments: dict[str, Any]) -> ToolResult:
             f"Genera un perfil competitivo detallado de la empresa '{name}'"
             + (f" en la industria {industry}" if industry else "")
             + ".\n\n"
-            f"Estructura requerida:\n"
-            f"1. DESCRIPCION GENERAL — que hace, tamano, presencia geografica\n"
-            f"2. PRODUCTOS Y SERVICIOS — oferta principal\n"
-            f"3. FORTALEZAS — ventajas competitivas\n"
-            f"4. DEBILIDADES — puntos debiles conocidos\n"
-            f"5. ESTRATEGIA — modelo de negocio, diferenciacion\n"
-            f"6. CLIENTES OBJETIVO — a quien venden\n"
-            f"7. PRECIOS APROXIMADOS — rango si se conoce\n"
-            f"8. PRESENCIA DIGITAL — web, redes sociales, reputacion online\n\n"
-            f"Responde en espanol, maximo 800 palabras. Se objetivo y factual."
+            "Estructura requerida:\n"
+            "1. DESCRIPCION GENERAL — que hace, tamano, presencia geografica\n"
+            "2. PRODUCTOS Y SERVICIOS — oferta principal\n"
+            "3. FORTALEZAS — ventajas competitivas\n"
+            "4. DEBILIDADES — puntos debiles conocidos\n"
+            "5. ESTRATEGIA — modelo de negocio, diferenciacion\n"
+            "6. CLIENTES OBJETIVO — a quien venden\n"
+            "7. PRECIOS APROXIMADOS — rango si se conoce\n"
+            "8. PRESENCIA DIGITAL — web, redes sociales, reputacion online\n\n"
+            "Responde en espanol, maximo 800 palabras. Se objetivo y factual."
         )
 
         result = route_chat(
@@ -786,16 +785,16 @@ def research_company_profile(uid: str, arguments: dict[str, Any]) -> ToolResult:
             f"Genera un perfil corporativo completo de '{name}'"
             + (f" (pais: {country})" if country else "")
             + ".\n\n"
-            f"Estructura requerida:\n"
-            f"1. DATOS BASICOS — nombre legal, fundacion, sede, CEO, empleados\n"
-            f"2. SECTOR E INDUSTRIA — clasificacion y posicion en el mercado\n"
-            f"3. PRODUCTOS Y SERVICIOS — catalogo principal\n"
-            f"4. INGRESOS Y TAMANO — facturacion aproximada, capitalizacion si aplica\n"
-            f"5. PRESENCIA GEOGRAFICA — paises donde opera\n"
-            f"6. COMPETIDORES PRINCIPALES — competencia directa\n"
-            f"7. HITOS RECIENTES — noticias, adquisiciones, lanzamientos recientes\n"
-            f"8. REPUTACION Y CONTROVERSIAS — si las hay\n\n"
-            f"Responde en espanol, maximo 600 palabras. Se factual y objetivo."
+            "Estructura requerida:\n"
+            "1. DATOS BASICOS — nombre legal, fundacion, sede, CEO, empleados\n"
+            "2. SECTOR E INDUSTRIA — clasificacion y posicion en el mercado\n"
+            "3. PRODUCTOS Y SERVICIOS — catalogo principal\n"
+            "4. INGRESOS Y TAMANO — facturacion aproximada, capitalizacion si aplica\n"
+            "5. PRESENCIA GEOGRAFICA — paises donde opera\n"
+            "6. COMPETIDORES PRINCIPALES — competencia directa\n"
+            "7. HITOS RECIENTES — noticias, adquisiciones, lanzamientos recientes\n"
+            "8. REPUTACION Y CONTROVERSIAS — si las hay\n\n"
+            "Responde en espanol, maximo 600 palabras. Se factual y objetivo."
         )
 
         result = route_chat(

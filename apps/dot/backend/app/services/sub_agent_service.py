@@ -18,14 +18,13 @@ from __future__ import annotations
 import asyncio
 import logging
 import threading
-import time
 import uuid
 from dataclasses import dataclass, field
 from datetime import datetime, timedelta, timezone
 from enum import Enum
 from typing import Any
 
-from app.application.agent.ports import ToolSpec, ToolResult
+from app.application.agent.ports import ToolResult
 
 log = logging.getLogger("dot.sub_agent")
 
@@ -374,7 +373,7 @@ class SubAgentManager:
         # Si hay registry y LLM disponible, usar planner
         if state._registry is not None and hasattr(state._registry, 'list_specs'):
             try:
-                from app.application.agent.planner import draft_plan, PlanStep, StepStatus
+                from app.application.agent.planner import draft_plan
 
                 plan = draft_plan(state.task.goal, state._registry)
 

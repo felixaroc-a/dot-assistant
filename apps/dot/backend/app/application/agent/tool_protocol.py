@@ -250,7 +250,7 @@ def tools_system_hint(registry) -> str:
     """
     if registry is None:
         return ""
-    
+
     # Aceptar tanto registry como lista de nombres (legacy)
     if isinstance(registry, list):
         names = registry
@@ -263,25 +263,25 @@ def tools_system_hint(registry) -> str:
             'Formato: {{"tool_calls":[{{"name":"<tool>","arguments":{{...}}}}]}}\n'
             "PROHIBIDO XML. Solo JSON o texto.\n"
         )
-    
+
     try:
         specs = registry.list_specs()
     except AttributeError:
         return ""
-    
+
     if not specs:
         return "\n\n[Agent Runtime] No hay herramientas disponibles. Responde solo con texto."
-    
+
     names = ", ".join(s.name for s in specs)
     details = []
-    
+
     for s in specs:
         params = {}
         required = []
         if s.parameters_schema and isinstance(s.parameters_schema, dict):
             params = s.parameters_schema.get("properties", {})
             required = s.parameters_schema.get("required", [])
-        
+
         if params:
             param_parts = []
             for k, v in params.items():
@@ -291,14 +291,14 @@ def tools_system_hint(registry) -> str:
             param_str = ", ".join(param_parts)
         else:
             param_str = "sin parámetros"
-        
+
         desc = (s.description or s.name.replace("_", " ").title())[:120]
         details.append(f"  • {s.name}({param_str}): {desc}")
-    
+
     return (
         f"\n\n[Agent Runtime] TIENES {len(specs)} HERRAMIENTAS REALES. DEBES usarlas para obtener datos.\n\n"
         + "\n".join(details)
-        + f"\n\nFormato JSON EXACTO para usar herramientas:\n"
+        + "\n\nFormato JSON EXACTO para usar herramientas:\n"
         + '{{"tool_calls":[{{"name":"<nombre_tool>","arguments":{{"param1":"valor1","param2":"valor2"}}}}]}}\n\n'
         + "PUEDES ejecutar VARIAS herramientas en una misma respuesta.\n"
         + "PROHIBIDO XML, <tags>, o cualquier formato que no sea JSON o texto.\n"

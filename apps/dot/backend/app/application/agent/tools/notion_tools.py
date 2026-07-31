@@ -107,7 +107,7 @@ def notion_search_handler(uid: str, arguments: dict[str, Any]) -> ToolResult:
                 if not results:
                     return ToolResult(
                         ok=True,
-                        output=f"🔍 Notion: sin resultados" + (f" para '{query}'." if query else "."),
+                        output="🔍 Notion: sin resultados" + (f" para '{query}'." if query else "."),
                     )
 
                 pages = [r for r in results if r.get("object") == "page"]
@@ -252,7 +252,7 @@ def notion_create_page_handler(uid: str, arguments: dict[str, Any]) -> ToolResul
                         + (f"URL: {url}\n" if url else "")
                         + (f"Bloques de contenido: {len(children)}\n" if children else "")
                         + f"Parent: {'DB ' + parent_db[:12] + '...' if parent_db else 'Página ' + (parent_page[:12] or '?') + '...'}\n"
-                        + f"Fuente: Notion API"
+                        + "Fuente: Notion API"
                     ),
                 )
             elif resp.status_code == 400:
@@ -430,7 +430,7 @@ def notion_get_page_handler(uid: str, arguments: dict[str, Any]) -> ToolResult:
             if url:
                 output += f"URL: {url}\n"
             if prop_lines:
-                output += f"\nPropiedades:\n" + "\n".join(prop_lines) + "\n"
+                output += "\nPropiedades:\n" + "\n".join(prop_lines) + "\n"
             if content_lines:
                 output += f"\nContenido ({len(content_lines)} bloques):\n" + "\n".join(content_lines) + "\n"
 

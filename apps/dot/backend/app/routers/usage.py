@@ -23,10 +23,7 @@ from app.services.usage_service import (
     billing_today,
     build_usage_summary,
     current_billing_period,
-    _monthly_limit_usd,
-    aggregate_monthly_usd,
 )
-from app.settings import settings
 
 log = logging.getLogger("dot.usage")
 

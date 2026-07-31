@@ -11,7 +11,6 @@ from app.application.agent.planner import (
     draft_plan,
     execute_plan_step,
     extract_planner_goal,
-    format_plan_summary,
     generate_final_feedback,
     get_active_plan,
     is_planner_message,

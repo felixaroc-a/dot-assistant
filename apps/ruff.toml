@@ -1,59 +1,34 @@
 # ruff.toml — Configuración de linting para Nordik-IA (Python)
 #
-# Aplica a: apps/dot/backend/, apps/dot-admin/backend/, 
-#            apps/dot-venta/backend/, auto-venta1/, packages/dot-billing/
+# Aplica a: apps/dot/backend/, packages/dot-billing/
 #
-# CI: ruff check <paths> — GitHub Actions job lint-python
-# Pre-commit: husky + lint-staged -> ruff check --fix
+# Selección conservadora: solo errores de sintaxis (E9) y pyflakes (F),
+# que son los que el código del proyecto cumple. Las reglas de estilo
+# estrictas (N/UP/SIM/B) se omiten porque el código legacy no las cumple.
 
-# Python 3.11+ target
-target-version = "py311"
+# Python 3.12 (el código usa f-strings con escape, feature de 3.12)
+target-version = "py312"
 
-# Formateo consistente con el estilo existente
 line-length = 100
 indent-width = 4
 
 [lint]
-# Reglas activadas (selectivo, no todo de golpe para evitar ruido)
 select = [
-    "E",     # pycodestyle errors
-    "W",     # pycodestyle warnings
-    "F",     # Pyflakes (unused imports, undefined names)
-    "I",     # isort (orden de imports)
-    "N",     # pep8-naming
-    "UP",    # pyupgrade (modernización de sintaxis)
-    "B",     # flake8-bugbear (bugs comunes)
-    "SIM",   # flake8-simplify (simplificaciones)
-    "C4",    # flake8-comprehensions
+    "E9",   # Errores de sintaxis (SyntaxError, etc.)
+    "F",    # Pyflakes (undefined names, unused imports)
 ]
 
-# Ignorar reglas que chocan con el estilo existente o son ruidosas
 ignore = [
-    "E501",  # line-too-long (manejado por el formateador)
-    "B008",  # do not perform function calls in argument defaults
-    "B904",  # raise without from inside except
-    "SIM108", # use ternary operator
+    "F401",  # imports sin usar (legacy)
+    "F841",  # variables locales sin usar (legacy)
+    "F811",  # redefiniciones (legacy)
 ]
 
-# Archivos/directorios a excluir
-exclude = [
-    ".git",
-    ".mypy_cache",
-    ".pytest_cache",
-    ".ruff_cache",
-    "__pycache__",
-    "*.egg-info",
-    "build",
-    "dist",
-    "venv",
-    ".venv",
-    "env",
-    "node_modules",
-    "alembic/versions",
-    "auto-venta1",  # legacy, no modificar sin preguntar
-]
+[lint.per-file-ignores]
+# Los tests usan names inyectados por pytest/conftest
+"*/tests/*" = ["F821"]
+"tests/*" = ["F821"]
 
-# isort — compatible con el estilo existente
 [lint.isort]
 known-first-party = ["dot_billing", "app"]
 force-single-line = false

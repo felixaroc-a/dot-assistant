@@ -859,14 +859,14 @@ def health_sleep_tracker(uid: str, arguments: dict[str, Any]) -> ToolResult:
 
         lines = [
             f"Registro de sueno guardado: {csv_path}",
-            f"",
+            "",
             f"Hoy: {hours} horas, calidad {quality}/5",
-            f"",
-            f"--- TENDENCIAS ---",
+            "",
+            "--- TENDENCIAS ---",
             f"Total de registros: {total_records}",
             f"Promedio historico: {avg_hours:.1f} horas, calidad {avg_quality:.1f}/5",
             f"Promedio ultimos 7 dias: {avg_last7_hours:.1f} horas, calidad {avg_last7_quality:.1f}/5",
-            f"",
+            "",
         ]
 
         # Recomendaciones basicas

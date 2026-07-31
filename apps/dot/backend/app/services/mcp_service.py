@@ -18,12 +18,10 @@ import logging
 import os
 import subprocess
 import sys
-import time
 from dataclasses import dataclass, field
-from typing import Any, Callable
+from typing import Any
 
 from app.application.agent.ports import ToolSpec, ToolResult
-from app.settings import settings
 
 log = logging.getLogger("dot.mcp")
 

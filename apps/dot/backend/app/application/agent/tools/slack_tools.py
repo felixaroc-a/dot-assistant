@@ -458,7 +458,7 @@ def slack_upload_file_handler(uid: str, arguments: dict[str, Any]) -> ToolResult
                             f"Tamaño: {size_str}\n"
                             + (f"Enlace: {permalink}\n" if permalink else "")
                             + (f"Canales: {channels}\n" if channels else "")
-                            + f"Fuente: Slack API"
+                            + "Fuente: Slack API"
                         ),
                     )
                 else:
@@ -506,7 +506,7 @@ def slack_upload_file_handler(uid: str, arguments: dict[str, Any]) -> ToolResult
                             + (f"Enlace: {permalink}\n" if permalink else "")
                             + (f"Canales: {channels}\n" if channels else "")
                             + f"Contenido: {content[:150]}{'...' if len(content) > 150 else ''}\n"
-                            + f"Fuente: Slack API"
+                            + "Fuente: Slack API"
                         ),
                     )
                 else:

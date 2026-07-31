@@ -311,7 +311,7 @@ def telegram_send_photo_handler(uid: str, arguments: dict[str, Any]) -> ToolResu
                         f"Message ID: {msg_id}\n"
                         + (f"Dimensiones: {dimensions}\n" if dimensions else "")
                         + (f"Caption: {caption[:100]}\n" if caption else "")
-                        + f"Fuente: Telegram Bot API"
+                        + "Fuente: Telegram Bot API"
                     ),
                 )
             else:
@@ -510,7 +510,7 @@ def telegram_send_document_handler(uid: str, arguments: dict[str, Any]) -> ToolR
                         f"Archivo: {doc_name}\n"
                         f"Tamaño: {size_str}\n"
                         + (f"Caption: {caption[:100]}\n" if caption else "")
-                        + f"Fuente: Telegram Bot API"
+                        + "Fuente: Telegram Bot API"
                     ),
                 )
             else:

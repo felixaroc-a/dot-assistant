@@ -17,9 +17,7 @@ from __future__ import annotations
 import logging
 from dataclasses import dataclass, field
 from enum import Enum
-from typing import Any, ClassVar
 
-from fastapi import HTTPException
 
 from app.services.stt_service import transcribe_audio
 from app.services.tts_service import synthesize_speech

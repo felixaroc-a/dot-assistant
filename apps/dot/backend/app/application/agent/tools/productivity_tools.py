@@ -1,9 +1,8 @@
 """Tools de productividad y oficina — F6."""
 from __future__ import annotations
 
-import json
 import logging
-from datetime import datetime, timezone
+from datetime import datetime
 from pathlib import Path
 from typing import Any
 
@@ -123,7 +122,7 @@ def productivity_prioritize_handler(uid: str, arguments: dict[str, Any]) -> Tool
             return ToolResult(ok=False, output="", error="Falta lista de tareas.")
         from app.services.provider_router import route_chat
         result = route_chat(
-            f"Prioriza estas tareas por urgencia e importancia (Eisenhower). Responde con 4 categorias:\n\n"
+            "Prioriza estas tareas por urgencia e importancia (Eisenhower). Responde con 4 categorias:\n\n"
             + "\n".join(f"- {t}" for t in tasks[:20]),
             provider_id="deepseek",
             system_prompt="Matriz Eisenhower en espanol. Categorias: urgente+importante, importante+no_urgente, urgente+no_importante, ni_urgente_ni_importante."

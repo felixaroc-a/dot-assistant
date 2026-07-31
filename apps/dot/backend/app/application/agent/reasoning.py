@@ -401,7 +401,7 @@ def convert_plan_artifact_to_planner_plan(artifact: PlanArtifact) -> Any:
         Una tupla (goal_str, list_of_PlanStep) para inyectar en planner.run_planner().
         Retorna (artifact.intent, steps_vacíos) si no hay steps.
     """
-    from app.application.agent.planner import PlanStep, StepStatus
+    from app.application.agent.planner import PlanStep
 
     steps: list[Any] = []
     for i, step_desc in enumerate(artifact.steps[:8], start=1):

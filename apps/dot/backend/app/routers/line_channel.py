@@ -25,7 +25,6 @@ from app.services.line_service import (
     record_line_channel_event,
     send_line_push_message,
     process_line_webhook,
-    LineChannelStatus,
 )
 from app.settings import settings
 

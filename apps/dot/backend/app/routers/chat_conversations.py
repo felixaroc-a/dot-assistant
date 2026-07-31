@@ -23,7 +23,6 @@ from app.services.chat_persistence import (
     create_conversation,
     rename_conversation,
     delete_conversation,
-    find_or_create_whatsapp_conversation,
     auto_title_conversation,
     list_archived_conversations,
     unarchive_conversation,
@@ -45,7 +44,6 @@ from app.routers.chat_utils import (
     RenameConversationRequest,
     CreateConversationRequest,
     ConversationResponse,
-    PaginatedMessagesResponse,
 )
 
 log = logging.getLogger("dot.chat")

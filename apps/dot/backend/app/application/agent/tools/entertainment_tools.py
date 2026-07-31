@@ -30,7 +30,7 @@ def entertainment_book_recommend_handler(uid: str, arguments: dict[str, Any]) ->
         from app.services.provider_router import route_chat
         genre = str(arguments.get("genre") or "").strip()
         author = str(arguments.get("author") or "").strip()
-        prompt = f"Recomienda 3 libros"
+        prompt = "Recomienda 3 libros"
         if genre: prompt += f" del genero {genre}"
         if author: prompt += f" similares a {author}"
         result = route_chat(prompt, provider_id="deepseek", system_prompt="Responde en espanol, titulo + autor + 1 frase de por que. Lista numerada.")

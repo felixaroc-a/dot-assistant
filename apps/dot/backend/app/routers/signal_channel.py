@@ -12,7 +12,6 @@ Endpoints:
 from __future__ import annotations
 
 import logging
-from datetime import datetime, timezone
 
 from fastapi import APIRouter, Depends, HTTPException, Request
 from pydantic import BaseModel, Field
@@ -26,7 +25,6 @@ from app.services.signal_service import (
     update_signal_channel_state,
     record_signal_channel_event,
     send_signal_message,
-    SignalChannelStatus,
 )
 from app.settings import settings
 

@@ -26,7 +26,6 @@ from app.services.teams_service import (
     record_teams_channel_event,
     send_teams_message,
     process_teams_webhook,
-    TeamsChannelStatus,
 )
 from app.settings import settings
 

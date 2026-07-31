@@ -83,6 +83,8 @@ def contact_add_note_handler(uid: str, arguments: dict[str, Any]) -> ToolResult:
 def contact_tag_handler(uid: str, arguments: dict[str, Any]) -> ToolResult:
     _ = uid
     try:
+        from datetime import datetime, timezone
+
         name = str(arguments.get("name") or "").strip()
         tag = str(arguments.get("tag") or arguments.get("label") or "").strip()
         if not name or not tag:

@@ -14,7 +14,6 @@ Uso:
 from __future__ import annotations
 
 import logging
-from typing import Optional
 
 from prometheus_client import Counter, Gauge, Info
 

@@ -129,7 +129,7 @@ def translate_handler(uid: str, arguments: dict[str, Any]) -> ToolResult:
         )
     except ValueError as exc:
         return ToolResult(ok=False, output="", error=str(exc))
-    except ProviderNotAvailableError as exc:
+    except ProviderNotAvailableError:
         return ToolResult(
             ok=False,
             output="",
@@ -208,7 +208,7 @@ def summarize_handler(uid: str, arguments: dict[str, Any]) -> ToolResult:
         )
     except ValueError as exc:
         return ToolResult(ok=False, output="", error=str(exc))
-    except ProviderNotAvailableError as exc:
+    except ProviderNotAvailableError:
         return ToolResult(
             ok=False,
             output="",

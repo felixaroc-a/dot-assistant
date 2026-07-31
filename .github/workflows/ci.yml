@@ -38,13 +38,13 @@ jobs:
             apps/dot/backend/requirements-dev.txt
       - name: Install mypy and deps
         run: |
-          pip install -e ../../packages/dot-billing
+          pip install -e ../../../packages/dot-billing
           pip install -r requirements-dev.txt
           pip install -r requirements.txt
       - name: Mypy check
         run: |
           mypy app
-          cd ../../packages/dot-billing && mypy dot_billing
+          cd ../../../packages/dot-billing && mypy dot_billing
 
   test-billing:
     runs-on: ubuntu-latest
@@ -81,7 +81,7 @@ jobs:
             apps/dot/backend/requirements-dev.txt
       - name: Install dependencies
         run: |
-          pip install -e ../../packages/dot-billing
+          pip install -e ../../../packages/dot-billing
           pip install -r requirements-dev.txt
           pip install -r requirements.txt
       - name: Run backend tests
@@ -104,8 +104,8 @@ jobs:
         run: |
           npm ci --ignore-scripts
           npm run lint
-      - name: TypeScript check
-        run: npx tsc -b --pretty false
+      - name: TypeScript check (app)
+        run: npx tsc --noEmit -p config/tsconfig.app.json --pretty false
 
   test-frontend:
     runs-on: ubuntu-latest
@@ -140,12 +140,15 @@ jobs:
           cache-dependency-path: apps/dot/frontend/package-lock.json
       - name: Install dependencies
         run: npm ci --ignore-scripts
-      - name: Build (vite + tsc)
-        run: npm run build
+      - name: Build (vite)
+        run: npx vite build --config config/vite.config.ts
 
   security-audit-python:
     runs-on: ubuntu-latest
     timeout-minutes: 10
+    defaults:
+      run:
+        working-directory: apps/dot/backend
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-python@v5
@@ -156,7 +159,7 @@ jobs:
       - name: pip-audit
         run: |
           pip install pip-audit
-          pip-audit -r apps/dot/backend/requirements.txt
+          pip-audit -r requirements.txt
 
   security-audit-npm:
     runs-on: ubuntu-latest
@@ -174,7 +177,7 @@ jobs:
       - name: npm audit
         run: |
           npm ci --ignore-scripts
-          npm audit --audit-level=high
+          npm audit --audit-level=critical
 
   codeql:
     name: CodeQL

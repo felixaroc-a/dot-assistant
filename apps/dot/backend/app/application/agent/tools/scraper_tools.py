@@ -24,7 +24,6 @@ Categoría: scraper | Capability: B (requiere permiso browser)
 
 from __future__ import annotations
 
-import json
 import logging
 from typing import Any
 
@@ -839,24 +838,24 @@ def scraper_parallel_usd_handler(uid: str, arguments: dict[str, Any]) -> ToolRes
             return ToolResult(
                 ok=True,
                 output=(
-                    f"💵 Dólar Venezuela — Tasas de cambio\n"
-                    f"---\n"
+                    "💵 Dólar Venezuela — Tasas de cambio\n"
+                    "---\n"
                     + "\n---\n".join(results)
                     + "\n---\n"
-                    f"Fuentes: Monitor Dólar Venezuela, BCV (scraping CDP)\n"
-                    f"Incluye: BCV oficial, paralelo, monitor, binance y otras tasas de referencia."
+                    "Fuentes: Monitor Dólar Venezuela, BCV (scraping CDP)\n"
+                    "Incluye: BCV oficial, paralelo, monitor, binance y otras tasas de referencia."
                 ),
             )
 
         return ToolResult(
             ok=True,
             output=(
-                f"💵 Dólar Venezuela\n"
-                f"No se pudieron extraer tasas automáticamente.\n"
-                f"Consulta manual:\n"
-                f"• Monitor Dólar: https://monitordolarvenezuela.com/\n"
-                f"• BCV Oficial: https://www.bcv.org.ve/\n"
-                f"• DolarToday: https://dolartoday.com/"
+                "💵 Dólar Venezuela\n"
+                "No se pudieron extraer tasas automáticamente.\n"
+                "Consulta manual:\n"
+                "• Monitor Dólar: https://monitordolarvenezuela.com/\n"
+                "• BCV Oficial: https://www.bcv.org.ve/\n"
+                "• DolarToday: https://dolartoday.com/"
             ),
         )
 

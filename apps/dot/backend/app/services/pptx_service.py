@@ -3,12 +3,10 @@
 from __future__ import annotations
 
 import logging
-from io import BytesIO
 from pathlib import Path
 from typing import Any
 
 from app.services.document_output_service import (
-    BRAND_BLUE,
     BRAND_DARK,
     resolve_output_path,
     sanitize_document_title,

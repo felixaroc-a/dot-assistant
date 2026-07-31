@@ -1,9 +1,8 @@
 ﻿"""Tools de monitoreo - scraper real + herramientas sin API."""
 from __future__ import annotations
-import json, logging
-from datetime import datetime, timezone
+import json
+import logging
 from pathlib import Path
-from typing import Any
 from app.application.agent.ports import ToolResult
 
 log = logging.getLogger("dot.agent.tools.monitor")
@@ -220,7 +219,8 @@ def data_pivot_table_handler(uid,args):
         if not path or not row: return ToolResult(ok=False,output="",error="Falta path y row")
         raw=execute_local_tool_via_bridge("readFile",path=path)
         if not raw.get("ok"): return ToolResult(ok=False,output="",error=raw.get("error"))
-        import csv,io
+        import csv
+        import io
         rows=list(csv.DictReader(io.StringIO(str(raw.get("content","")))))
         pivot={}
         for r in rows:
@@ -240,7 +240,8 @@ def data_merge_handler(uid,args):
         from app.application.agent.tools.local_files import execute_local_tool_via_bridge
         p1=str(args.get("path1")or"").strip(); p2=str(args.get("path2")or"").strip(); key=str(args.get("key")or"").strip()
         if not p1 or not p2 or not key: return ToolResult(ok=False,output="",error="Falta path1,path2,key")
-        import csv,io
+        import csv
+        import io
         r1=execute_local_tool_via_bridge("readFile",path=p1); r2=execute_local_tool_via_bridge("readFile",path=p2)
         if not r1.get("ok")or not r2.get("ok"): return ToolResult(ok=False,output="",error="Error lectura")
         rows1=list(csv.DictReader(io.StringIO(str(r1.get("content",""))))); rows2=list(csv.DictReader(io.StringIO(str(r2.get("content","")))))
@@ -263,7 +264,8 @@ def data_forecast_handler(uid,args):
         from app.application.agent.tools.local_files import execute_local_tool_via_bridge
         path=str(args.get("path")or"").strip(); periods=int(args.get("periods")or 3)
         if not path: return ToolResult(ok=False,output="",error="Falta path")
-        import csv,io
+        import csv
+        import io
         raw=execute_local_tool_via_bridge("readFile",path=path)
         if not raw.get("ok"): return ToolResult(ok=False,output="",error=raw.get("error"))
         rows=list(csv.DictReader(io.StringIO(str(raw.get("content","")))))
