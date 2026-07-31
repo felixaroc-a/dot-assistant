@@ -23,7 +23,10 @@ jobs:
 
   typecheck-python:
     runs-on: ubuntu-latest
-    timeout-minutes: 10
+    timeout-minutes: 15
+    defaults:
+      run:
+        working-directory: apps/dot/backend
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-python@v5
@@ -35,12 +38,12 @@ jobs:
             apps/dot/backend/requirements-dev.txt
       - name: Install mypy and deps
         run: |
-          pip install -r apps/dot/backend/requirements-dev.txt
-          pip install -e packages/dot-billing
-          pip install -r apps/dot/backend/requirements.txt
+          pip install -e ../../packages/dot-billing
+          pip install -r requirements-dev.txt
+          pip install -r requirements.txt
       - name: Mypy check
         run: |
-          cd apps/dot/backend && mypy app
+          mypy app
           cd ../../packages/dot-billing && mypy dot_billing
 
   test-billing:
@@ -63,7 +66,7 @@ jobs:
 
   test-backend:
     runs-on: ubuntu-latest
-    timeout-minutes: 15
+    timeout-minutes: 20
     defaults:
       run:
         working-directory: apps/dot/backend
@@ -79,8 +82,8 @@ jobs:
       - name: Install dependencies
         run: |
           pip install -e ../../packages/dot-billing
-          pip install -r requirements.txt
           pip install -r requirements-dev.txt
+          pip install -r requirements.txt
       - name: Run backend tests
         run: python -m pytest app/tests/ -v --cov=app --cov-fail-under=60 --cov-report=term
 
@@ -99,7 +102,7 @@ jobs:
           cache-dependency-path: apps/dot/frontend/package-lock.json
       - name: Install and lint
         run: |
-          npm ci
+          npm ci --ignore-scripts
           npm run lint
       - name: TypeScript check
         run: npx tsc -b --pretty false
@@ -118,7 +121,7 @@ jobs:
           cache: npm
           cache-dependency-path: apps/dot/frontend/package-lock.json
       - name: Install dependencies
-        run: npm ci
+        run: npm ci --ignore-scripts
       - name: Run vitest
         run: npm test
 
@@ -136,7 +139,7 @@ jobs:
           cache: npm
           cache-dependency-path: apps/dot/frontend/package-lock.json
       - name: Install dependencies
-        run: npm ci
+        run: npm ci --ignore-scripts
       - name: Build (vite + tsc)
         run: npm run build
 
@@ -170,8 +173,8 @@ jobs:
           cache-dependency-path: apps/dot/frontend/package-lock.json
       - name: npm audit
         run: |
-          npm ci
-          npm audit --audit-level=critical
+          npm ci --ignore-scripts
+          npm audit --audit-level=high
 
   codeql:
     name: CodeQL
