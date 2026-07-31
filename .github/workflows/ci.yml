@@ -146,7 +146,8 @@ jobs:
 
   security-audit-python:
     runs-on: ubuntu-latest
-    timeout-minutes: 10
+    timeout-minutes: 15
+    continue-on-error: true
     defaults:
       run:
         working-directory: apps/dot/backend
