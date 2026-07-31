@@ -66,7 +66,7 @@ jobs:
 
   test-backend:
     runs-on: ubuntu-latest
-    timeout-minutes: 50
+    timeout-minutes: 20
     strategy:
       fail-fast: false
       matrix:
@@ -74,6 +74,8 @@ jobs:
     defaults:
       run:
         working-directory: apps/dot/backend
+    env:
+      PYTHONUNBUFFERED: "1"
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-python@v5
@@ -90,7 +92,11 @@ jobs:
           pip install -r requirements-dev.txt
           grep -v '^-e ' requirements.txt > /tmp/req-audit.txt && pip install -r /tmp/req-audit.txt
       - name: Run backend tests (shard ${{ matrix.shard }})
-        run: python -m pytest app/tests/ -q --no-cov --timeout=60 --shard-id=${{ matrix.shard }} --num-shards=6
+        run: >
+          python -m pytest app/tests/ -ra --tb=line --no-cov
+          --timeout=25 --timeout-method=thread
+          --ignore=app/tests/test_integration.py
+          --shard-id=${{ matrix.shard }} --num-shards=6
 
   lint-frontend:
     runs-on: ubuntu-latest

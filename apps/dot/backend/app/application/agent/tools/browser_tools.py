@@ -310,14 +310,16 @@ def _bridge_browser(operation: str, **fields: Any) -> dict[str, Any]:
     if secret:
         headers["X-Bridge-Secret"] = secret
     payload: dict[str, Any] = {"operation": operation, **fields}
+    # En tests el bridge no corre: timeout corto evita colgar CI (120s × N tests).
+    bridge_timeout = 2.0 if settings.testing.strip() == "1" else 120.0
     try:
-        with httpx.Client(timeout=120.0) as client:
+        with httpx.Client(timeout=bridge_timeout) as client:
             resp = client.post(url_bridge, json=payload, headers=headers)
             if resp.status_code == 401:
                 return {"ok": False, "error": "bridge_unauthorized"}
             data = resp.json() if resp.content else {}
             return data if isinstance(data, dict) else {"ok": False, "error": "invalid_bridge_response"}
-    except httpx.ConnectError:
+    except (httpx.ConnectError, httpx.TimeoutException):
         return {"ok": False, "error": "bridge_unreachable"}
     except Exception as e:
         log.warning("browser bridge falló: %s", e)

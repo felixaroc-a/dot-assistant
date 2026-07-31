@@ -60,8 +60,10 @@ def execute_local_tool_via_bridge(
     elif op == "searchFiles" and settings.full_disk_access_enabled:
         payload["scope"] = "full"
 
+    # En tests el bridge no corre: timeout corto evita colgar CI (90s × N tests).
+    bridge_timeout = 2.0 if settings.testing.strip() == "1" else 90.0
     try:
-        with httpx.Client(timeout=90.0) as client:
+        with httpx.Client(timeout=bridge_timeout) as client:
             resp = client.post(url_bridge, json=payload, headers=headers)
             if resp.status_code == 401:
                 return {"ok": False, "error": "bridge_unauthorized"}
@@ -69,7 +71,7 @@ def execute_local_tool_via_bridge(
             if isinstance(data, dict):
                 return data
             return {"ok": False, "error": "invalid_bridge_response"}
-    except httpx.ConnectError:
+    except (httpx.ConnectError, httpx.TimeoutException):
         return {"ok": False, "error": "bridge_unreachable"}
     except Exception as e:
         log.warning("bridge local_tool falló: %s", e)
