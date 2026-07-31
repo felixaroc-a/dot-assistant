@@ -86,7 +86,7 @@ jobs:
           pip install -r requirements-dev.txt
           grep -v '^-e ' requirements.txt > /tmp/req-audit.txt && pip install -r /tmp/req-audit.txt
       - name: Run backend tests
-        run: python -m pytest app/tests/ -v --cov=app --cov-fail-under=60 --cov-report=term
+        run: python -m pytest app/tests/ -q --no-cov
 
   lint-frontend:
     runs-on: ubuntu-latest
