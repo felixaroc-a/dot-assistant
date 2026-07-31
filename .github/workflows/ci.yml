@@ -66,7 +66,11 @@ jobs:
 
   test-backend:
     runs-on: ubuntu-latest
-    timeout-minutes: 35
+    timeout-minutes: 30
+    strategy:
+      fail-fast: false
+      matrix:
+        shard: [1, 2, 3]
     defaults:
       run:
         working-directory: apps/dot/backend
@@ -85,8 +89,8 @@ jobs:
           pip install -e ../../../packages/dot-billing[full]
           pip install -r requirements-dev.txt
           grep -v '^-e ' requirements.txt > /tmp/req-audit.txt && pip install -r /tmp/req-audit.txt
-      - name: Run backend tests
-        run: python -m pytest app/tests/ -q --no-cov
+      - name: Run backend tests (shard ${{ matrix.shard }})
+        run: python -m pytest app/tests/ -q --no-cov --shard-id=${{ matrix.shard }} --num-shards=3
 
   lint-frontend:
     runs-on: ubuntu-latest
