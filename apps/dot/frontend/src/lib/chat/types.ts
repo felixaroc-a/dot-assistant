@@ -75,6 +75,7 @@ export type ChatError = {
     | 'subscription_expired'
     | 'rate_limited'
     | 'usage_limit_exceeded'
+    | 'image_generation_unavailable'
     | 'unknown'
   message: string
 }

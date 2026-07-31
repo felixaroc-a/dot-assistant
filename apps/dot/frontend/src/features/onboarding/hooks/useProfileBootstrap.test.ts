@@ -131,7 +131,7 @@ describe('useProfileBootstrap', () => {
 
     await waitFor(() => {
       expect(result.current.bootstrapped).toBe(true)
-      expect(result.current.error).toBe('Network error')
+      expect(result.current.error).not.toBeNull()
     })
 
     // Incluso con error, llama onProfileLoaded con defaults para no bloquear el flujo

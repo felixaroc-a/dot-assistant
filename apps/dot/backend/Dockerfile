@@ -9,7 +9,7 @@
 # Multi-stage: builder instala dependencias, runtime solo lo necesario.
 # Sin compilación de extensiones nativas pesadas — el stage único es suficiente.
 
-FROM python:3.11-slim-bookworm
+FROM python:3.12-slim-bookworm
 
 # Variables de build (sin valores por defecto — falla si no se definen)
 ARG DOT_ENV=production

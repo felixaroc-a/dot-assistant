@@ -45,3 +45,6 @@ export type { UseDashboardGoogleOptions, UseDashboardGoogleResult } from './useD
 
 export { useDashboardPipelines } from './useDashboardPipelines'
 export type { UseDashboardPipelinesOptions, UseDashboardPipelinesResult } from './useDashboardPipelines'
+
+export { useMorningBriefingBoot } from './useMorningBriefingBoot'
+export type { UseMorningBriefingBootOptions } from './useMorningBriefingBoot'

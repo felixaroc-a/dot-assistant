@@ -25,6 +25,7 @@ CREATE TABLE IF NOT EXISTS clientes_suscripcion (
     CHECK (ai_provider_id IN ('deepseek', 'gemini', 'chatgpt')),
   ai_billing_mode VARCHAR(20) NOT NULL DEFAULT 'mensual'
     CHECK (ai_billing_mode IN ('mensual', 'trimestral', 'anual')),
+  creado_por VARCHAR(64),
   pendrive_status VARCHAR(20) NOT NULL DEFAULT 'active'
     CHECK (pendrive_status IN ('active', 'revoked', 'blocked'))
 );

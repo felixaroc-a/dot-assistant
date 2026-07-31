@@ -27,7 +27,6 @@ export function PersonalizeStep({
 }: PersonalizeStepProps) {
   const reduceMotion = useReducedMotion()
   const easing = reduceMotion ? 'linear' : ([0.16, 1, 0.3, 1] as const)
-  const { t } = useTranslation()
 
   const [name, setName] = useState(initialName)
   const [language, setLanguage] = useState(initialLanguage)

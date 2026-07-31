@@ -123,13 +123,14 @@ export async function buildUserDataExport(
     ])
 
   const fetchErrors: UserDataExportSectionError[] = []
-  for (const result of [
+  const allResults: SectionResult<unknown>[] = [
     profileResult,
     memoryResult,
     briefingResult,
     proactiveResult,
     browserResult,
-  ]) {
+  ]
+  for (const result of allResults) {
     if (!result.ok) {
       fetchErrors.push({ section: result.section, message: result.message })
     }

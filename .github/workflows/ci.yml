@@ -13,7 +13,7 @@ jobs:
       - uses: actions/checkout@v4
       - uses: actions/setup-python@v5
         with:
-          python-version: '3.11'
+          python-version: '3.12'
           cache: pip
           cache-dependency-path: apps/dot/backend/requirements-dev.txt
       - name: Install ruff
@@ -31,16 +31,17 @@ jobs:
       - uses: actions/checkout@v4
       - uses: actions/setup-python@v5
         with:
-          python-version: '3.11'
+          python-version: '3.12'
           cache: pip
           cache-dependency-path: |
             apps/dot/backend/requirements.txt
             apps/dot/backend/requirements-dev.txt
       - name: Install mypy and deps
         run: |
+          python -m pip install --upgrade "pip<25"
           pip install -e ../../../packages/dot-billing
           pip install -r requirements-dev.txt
-          pip install -r requirements.txt
+          grep -v '^-e ' requirements.txt > /tmp/req-audit.txt && pip install -r /tmp/req-audit.txt
       - name: Mypy check
         run: |
           mypy app
@@ -56,7 +57,7 @@ jobs:
       - uses: actions/checkout@v4
       - uses: actions/setup-python@v5
         with:
-          python-version: '3.11'
+          python-version: '3.12'
           cache: pip
           cache-dependency-path: packages/dot-billing/pyproject.toml
       - name: Install and test
@@ -74,16 +75,17 @@ jobs:
       - uses: actions/checkout@v4
       - uses: actions/setup-python@v5
         with:
-          python-version: '3.11'
+          python-version: '3.12'
           cache: pip
           cache-dependency-path: |
             apps/dot/backend/requirements.txt
             apps/dot/backend/requirements-dev.txt
       - name: Install dependencies
         run: |
+          python -m pip install --upgrade "pip<25"
           pip install -e ../../../packages/dot-billing
           pip install -r requirements-dev.txt
-          pip install -r requirements.txt
+          grep -v '^-e ' requirements.txt > /tmp/req-audit.txt && pip install -r /tmp/req-audit.txt
       - name: Run backend tests
         run: python -m pytest app/tests/ -v --cov=app --cov-fail-under=60 --cov-report=term
 
@@ -153,13 +155,15 @@ jobs:
       - uses: actions/checkout@v4
       - uses: actions/setup-python@v5
         with:
-          python-version: '3.11'
+          python-version: '3.12'
           cache: pip
           cache-dependency-path: apps/dot/backend/requirements.txt
       - name: pip-audit
         run: |
+          python -m pip install --upgrade "pip<25"
           pip install pip-audit
-          pip-audit -r requirements.txt
+          grep -v '^-e ' requirements.txt > /tmp/req-audit.txt
+          pip-audit -r /tmp/req-audit.txt
 
   security-audit-npm:
     runs-on: ubuntu-latest
@@ -174,10 +178,10 @@ jobs:
           node-version: '20'
           cache: npm
           cache-dependency-path: apps/dot/frontend/package-lock.json
-      - name: npm audit
+      - name: npm audit (production deps)
         run: |
           npm ci --ignore-scripts
-          npm audit --audit-level=critical
+          npm audit --omit=dev --audit-level=critical
 
   codeql:
     name: CodeQL

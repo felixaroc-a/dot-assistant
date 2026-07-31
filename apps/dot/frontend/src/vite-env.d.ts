@@ -154,6 +154,26 @@ declare global {
             error?: string
           }) => void,
         ) => () => void
+        /** Inicia el flujo de login QR (Baileys). Devuelve el resultado del arranque. */
+        startWhatsAppLogin: (opts?: {
+          onChunk?: (chunk: { stream: 'stdout' | 'stderr'; text: string }) => void
+          onLinked?: (data: { linked: boolean; phone_number?: string }) => void
+          onExit?: (info: { code: number | null; signal: string | null }) => void
+        }) => Promise<{ ok: boolean; error?: string; needs_qr?: boolean }>
+        /** Detiene el proceso de vinculación en curso. */
+        stop: () => Promise<{ ok: boolean }>
+        /** Stream de logs del transporte WhatsApp durante el login QR. */
+        onData: (
+          listener: (payload: { stream: string; text: string }) => void,
+        ) => () => void
+        /** Evento de salida del proceso de vinculación. */
+        onExit: (
+          listener: (info: { code: number | null; signal: string | null }) => void,
+        ) => () => void
+        /** Evento cuando la sesión WhatsApp quedó vinculada. */
+        onLinked: (
+          listener: (data: { linked: boolean; phone_number?: string }) => void,
+        ) => () => void
       }
       // ========================================================
       // Pendrive setup (encriptación real del USB)

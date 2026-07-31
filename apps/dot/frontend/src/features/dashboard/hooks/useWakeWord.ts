@@ -152,7 +152,7 @@ export function useWakeWord(options: UseWakeWordOptions): UseWakeWordResult {
     activeRef.current = true
 
     const mic = await requestMicPermission()
-    if (!mic.ok) {
+    if (mic.ok === false) {
       activeRef.current = false
       setState(mic.reason === 'denied' || mic.reason === 'timeout' ? 'denied' : 'error')
       return

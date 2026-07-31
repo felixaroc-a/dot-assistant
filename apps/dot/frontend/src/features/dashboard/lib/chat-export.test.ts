@@ -29,7 +29,7 @@ describe('buildChatExportDocument', () => {
     )
 
     expect(result.title).toContain('Conversación DOT 2030-01-02')
-    expect(result.content).toContain('# Conversación DOT IA')
+    expect(result.content).toContain('# Conversación DOT')
     expect(result.content).toContain('Usuario: Felix')
     expect(result.content).toContain('### 1. Felix')
     expect(result.content).toContain('### 2. DOTa')

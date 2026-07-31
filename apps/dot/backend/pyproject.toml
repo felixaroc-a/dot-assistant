@@ -4,7 +4,7 @@
 # y resuelve el problema de que el CI y los devs usaban defaults.
 
 [tool.mypy]
-python_version = "3.11"
+python_version = "3.12"
 strict = false
 warn_return_any = true
 warn_unused_configs = true

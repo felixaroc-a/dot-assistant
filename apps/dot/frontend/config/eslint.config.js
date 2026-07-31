@@ -52,12 +52,19 @@ export default tseslint.config(
     files: ['src/vite-env.d.ts'],
     rules: {
       '@typescript-eslint/no-unused-vars': 'off',
+      // declare var es la forma correcta en .d.ts para globals del navegador
+      'no-var': 'off',
     },
   },
   {
     files: ['config/**/*.{ts,tsx}', 'scripts/**/*.{js,mjs,cjs}'],
     languageOptions: {
       globals: { ...globals.node },
+    },
+    rules: {
+      // Los scripts CommonJS usan require/var de forma legítima
+      '@typescript-eslint/no-require-imports': 'off',
+      'no-var': 'off',
     },
   },
 )

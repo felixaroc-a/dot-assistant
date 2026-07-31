@@ -166,6 +166,7 @@ vi.mock('@/lib/api/whatsapp', () => ({
 vi.mock('@/lib/websocket-client', () => ({
   wsClient: {
     onStatusChange: vi.fn(() => vi.fn()),
+    on: vi.fn(() => vi.fn()),
   },
 }))
 

@@ -1617,6 +1617,10 @@ export interface components {
             ai_credentials?: components["schemas"]["AiCredentialsPatch"] | null;
             /** Saved Automations */
             saved_automations?: components["schemas"]["SavedAutomationDto"][] | null;
+            /** Reasoning Enabled */
+            reasoning_enabled?: boolean | null;
+            /** Reasoning Level */
+            reasoning_level?: "low" | "medium" | "high" | "auto" | null;
         };
         /** UserProfileResponse */
         UserProfileResponse: {

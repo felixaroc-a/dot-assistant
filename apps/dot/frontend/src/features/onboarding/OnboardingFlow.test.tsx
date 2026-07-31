@@ -122,7 +122,7 @@ describe('OnboardingFlow', () => {
     // El welcome step debe mostrarse, ignorando sessionStorage obsoleto
     await waitFor(() => {
       expect(
-        screen.getByText('Tu asistente de IA en Windows'),
+        screen.getByText('¡Bienvenido a DOT! Tu asistente personal'),
       ).toBeInTheDocument()
     })
   })

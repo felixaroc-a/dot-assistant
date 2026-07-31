@@ -78,7 +78,7 @@ describe('DotChatPanel command suggestions', () => {
     fireEvent.keyDown(textarea, { key: 'ArrowDown' })
     fireEvent.keyDown(textarea, { key: 'Enter' })
 
-    expect(textarea.value).toBe('/agenda ')
+    expect(textarea.value).toBe('/imagen ')
     expect(screen.queryByText('Comandos disponibles')).not.toBeInTheDocument()
   })
 
