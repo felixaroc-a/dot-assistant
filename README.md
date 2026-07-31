@@ -1,6 +1,7 @@
 # Nordik-IA
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
+[![CI](https://github.com/felixaroc-a/dot-assistant/actions/workflows/ci.yml/badge.svg)](https://github.com/felixaroc-a/dot-assistant/actions/workflows/ci.yml)
 [![Python](https://img.shields.io/badge/Python-3.11+-blue.svg)](https://www.python.org/)
 [![React](https://img.shields.io/badge/React-19-61dafb.svg)](https://react.dev/)
 [![FastAPI](https://img.shields.io/badge/FastAPI-Latest-009688.svg)](https://fastapi.tiangolo.com/)
@@ -67,7 +68,7 @@ flowchart LR
 
 ```bash
 # 1. Clonar
-git clone https://github.com/felixaroc-a/Nordik-IA.git
+git clone https://github.com/felixaroc-a/dot-assistant.git
 cd Nordik-IA
 
 # 2. Configurar Postgres
