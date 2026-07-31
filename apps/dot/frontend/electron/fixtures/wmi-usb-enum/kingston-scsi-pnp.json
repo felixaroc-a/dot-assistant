@@ -1,0 +1,11 @@
+[
+  {
+    "Serial": "0000000005",
+    "Drive": "E:",
+    "Model": "Kingston DataTraveler 3.0",
+    "InterfaceType": "SCSI",
+    "PNPDeviceID": "USBSTOR\\DISK&VEN_KINGSTON&PROD_DATATRAVELER_3.0&REV_0000\\2CFDA1BBB4CF1931090703CE&0",
+    "Source": "usb",
+    "DiskIndex": 2
+  }
+]

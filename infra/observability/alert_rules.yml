@@ -1,0 +1,53 @@
+# Alerting rules — Nordik-IA
+#
+# C19: Alertas críticas para producción.
+# Disparadores:
+#   - API caída (> 1 minuto sin scrapes exitosos)
+#   - Error rate alto (> 5% de requests HTTP 5xx en 5 minutos)
+#   - Latencia alta (p95 > 5 segundos en 5 minutos)
+#
+# Notificaciones: configurar Alertmanager para enviar a Slack/email/SMS.
+
+groups:
+  - name: nordik-critical
+    interval: 30s
+    rules:
+      - alert: NordikApiDown
+        expr: up{job="nordik-api"} == 0
+        for: 1m
+        labels:
+          severity: critical
+        annotations:
+          summary: "DOT API caída"
+          description: "nordik-api no responde a /health desde hace >1 minuto."
+
+      - alert: NordikApiHighErrorRate
+        expr: |
+          rate(http_requests_total{job="nordik-api", status=~"5.."}[5m])
+          /
+          rate(http_requests_total{job="nordik-api"}[5m])
+          > 0.05
+        for: 5m
+        labels:
+          severity: critical
+        annotations:
+          summary: "DOT API — tasa de errores > 5%"
+          description: "Tasa de errores 5xx: {{ $value | humanizePercentage }} en los últimos 5 minutos."
+
+      - alert: NordikApiHighLatency
+        expr: histogram_quantile(0.95, rate(http_request_duration_seconds_bucket{job="nordik-api"}[5m])) > 5
+        for: 5m
+        labels:
+          severity: warning
+        annotations:
+          summary: "DOT API — latencia alta (p95 > 5s)"
+          description: "p95 de latencia: {{ $value }}s en los últimos 5 minutos."
+
+      - alert: NordikApiHighAICost
+        expr: rate(ai_usage_cost_usd_total{job="nordik-api"}[1h]) * 30 * 24 > 150
+        for: 1h
+        labels:
+          severity: warning
+        annotations:
+          summary: "DOT API — consumo IA proyectado > $150/mes"
+          description: "Consumo IA en la última hora proyecta {{ $value | humanize }} USD/mes."

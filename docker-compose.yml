@@ -1,0 +1,61 @@
+# Nordik-IA — entorno de desarrollo con Docker
+#
+# Levanta: PostgreSQL 16 + Nordik API (FastAPI) en http://localhost:8000
+#
+# Uso:
+#   Copy-Item infra/billing/.env.example infra/billing/.env   (PowerShell)
+#   cp infra/billing/.env.example infra/billing/.env          (bash)
+#   docker compose up -d
+#
+# El frontend (Electron + React) corre fuera de Docker. Ver README.md.
+
+services:
+  postgres:
+    image: postgres:16-alpine
+    container_name: nordik-postgres
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: ${NORDIK_PG_USER:-nordik}
+      POSTGRES_PASSWORD: ${NORDIK_PG_PASSWORD:?Definí NORDIK_PG_PASSWORD en infra/billing/.env}
+      POSTGRES_DB: ${NORDIK_PG_DATABASE:-nordik_billing}
+    ports:
+      - "${NORDIK_PG_PORT:-5432}:5432"
+    volumes:
+      - nordik_pgdata:/var/lib/postgresql/data
+      - ./infra/billing/schema.sql:/docker-entrypoint-initdb.d/010-nordik-billing-schema.sql:ro
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${NORDIK_PG_USER:-nordik} -d ${NORDIK_PG_DATABASE:-nordik_billing}"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 10s
+
+  api:
+    build:
+      context: .
+      dockerfile: apps/dot/backend/Dockerfile
+    container_name: nordik-api
+    restart: unless-stopped
+    environment:
+      DOT_ENV: development
+      DATABASE_URL: postgresql+psycopg://${NORDIK_PG_USER:-nordik}:${NORDIK_PG_PASSWORD:?}@postgres:5432/${NORDIK_PG_DATABASE:-nordik_billing}
+      JWT_SECRET: ${JWT_SECRET:-dev-only-secret-change-me}
+      TOKEN_ENCRYPTION_KEY: ${TOKEN_ENCRYPTION_KEY:-}
+      CHAT_ENCRYPTION_KEY: ${CHAT_ENCRYPTION_KEY:-}
+      ADMIN_API_KEY: ${ADMIN_API_KEY:-dev-admin-key}
+      HARDWARE_TOKEN_PEPPER: ${HARDWARE_TOKEN_PEPPER:-}
+      DEEPSEEK_API_KEY: ${DEEPSEEK_API_KEY:-}
+      GEMINI_API_KEY: ${GEMINI_API_KEY:-}
+      ENABLE_CHAT: "true"
+      ENABLE_WEB_SEARCH: "true"
+      AI_USAGE_LIMIT_ENABLED: "false"
+      CORS_ALLOW_ORIGINS: http://localhost:5173,http://127.0.0.1:5173
+      TRUSTED_HOSTS: "*"
+    ports:
+      - "8000:8000"
+    depends_on:
+      postgres:
+        condition: service_healthy
+
+volumes:
+  nordik_pgdata:

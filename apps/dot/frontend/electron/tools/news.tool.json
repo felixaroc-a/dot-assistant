@@ -1,0 +1,34 @@
+{
+  "name": "monitor_news_keyword",
+  "description": "Busca noticias reales por palabra clave. Usa NewsAPI (si hay key) o fallback Google News RSS.",
+  "category": "monitor",
+  "capability": "B",
+  "parameters": {
+    "keyword": {
+      "type": "string",
+      "required": true,
+      "description": "Palabra clave para buscar noticias (ej: 'tecnología', 'economía')"
+    },
+    "language": {
+      "type": "string",
+      "required": false,
+      "enum": ["es", "en", "pt", "fr", "de"],
+      "default": "es",
+      "description": "Idioma de las noticias (default: español)"
+    },
+    "limit": {
+      "type": "integer",
+      "required": false,
+      "description": "Número máximo de resultados (default: 5, max: 15)"
+    }
+  },
+  "handler": "news.newsapi_rss",
+  "rateLimit": {
+    "maxPerMinute": 5,
+    "maxPerHour": 100
+  },
+  "timeout": 15000,
+  "requiresAuth": true,
+  "authProvider": "newsapi_key",
+  "tags": ["news", "noticias", "search"]
+}

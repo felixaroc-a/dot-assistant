@@ -1,0 +1,14 @@
+# FREE-I03: Redis local para desarrollo (opcional).
+# Sin contraseña; no requerido para que el backend arranque.
+services:
+  redis:
+    image: redis:7-alpine
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis_data:/data
+    command: redis-server --save "" --appendonly no
+    restart: unless-stopped
+
+volumes:
+  redis_data:

@@ -1,0 +1,33 @@
+# Postgres local único para billing (auto-venta1 + Nordik backend comparten tabla).
+#
+# Primera vez:
+#   cd infra/billing && copy .env.example .env   (PowerShell: Copy-Item)
+# Editar .env y poner una contraseña fuerte para NORDIK_PG_PASSWORD.
+#   docker compose --env-file .env up -d
+#
+# El volumen nuevo ejecuta ./schema.sql vía docker-entrypoint-initdb.d/.
+# Para recrear desde cero: docker compose down -v && docker compose --env-file .env up -d
+
+services:
+  nordik-postgres:
+    image: postgres:16-alpine
+    container_name: nordik-postgres-billing
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: ${NORDIK_PG_USER:-nordik}
+      POSTGRES_PASSWORD: ${NORDIK_PG_PASSWORD:?Definí NORDIK_PG_PASSWORD en .env}
+      POSTGRES_DB: ${NORDIK_PG_DATABASE:-nordik_billing}
+    ports:
+      - "${NORDIK_PG_PORT:-5432}:5432"
+    volumes:
+      - nordik_billing_pgdata:/var/lib/postgresql/data
+      - ./schema.sql:/docker-entrypoint-initdb.d/010-nordik-billing-schema.sql:ro
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${NORDIK_PG_USER:-nordik} -d ${NORDIK_PG_DATABASE:-nordik_billing}"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 10s
+
+volumes:
+  nordik_billing_pgdata:

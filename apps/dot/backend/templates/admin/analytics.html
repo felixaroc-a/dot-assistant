@@ -1,0 +1,499 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>DOT Admin — Analytics</title>
+  <style>
+    :root {
+      --bg: #0f172a;
+      --bg-card: #1e293b;
+      --bg-hover: #273548;
+      --border: #334155;
+      --text: #e2e8f0;
+      --text-dim: #94a3b8;
+      --accent: #3b82f6;
+      --accent-glow: rgba(59, 130, 246, 0.25);
+      --green: #22c55e;
+      --red: #ef4444;
+      --yellow: #eab308;
+      --orange: #f97316;
+      --radius: 10px;
+    }
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen,
+                   Ubuntu, Cantarell, sans-serif;
+      background: linear-gradient(135deg, #0b1120 0%, #0f172a 40%, #1a1f35 100%);
+      min-height: 100vh;
+      color: var(--text);
+    }
+
+    .header {
+      background: var(--bg-card);
+      border-bottom: 1px solid var(--border);
+      padding: 1rem 2rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 1rem;
+    }
+    .header h1 {
+      font-size: 1.4rem;
+      font-weight: 700;
+      letter-spacing: -0.01em;
+      background: linear-gradient(135deg, var(--accent), #a78bfa);
+      -webkit-background-clip: text;
+      background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+    .header-right {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      flex-wrap: wrap;
+    }
+    .key-input {
+      background: var(--bg);
+      border: 1px solid var(--border);
+      color: var(--text);
+      padding: 0.4rem 0.75rem;
+      border-radius: 6px;
+      font-size: 0.85rem;
+      width: 240px;
+      font-family: monospace;
+    }
+    .key-input:focus { outline: none; border-color: var(--accent); box-shadow: 0 0 0 3px var(--accent-glow); }
+    .btn {
+      background: var(--accent);
+      color: #fff;
+      border: none;
+      padding: 0.4rem 1rem;
+      border-radius: 6px;
+      cursor: pointer;
+      font-size: 0.85rem;
+      font-weight: 600;
+      transition: background 0.2s;
+    }
+    .btn:hover { background: #2563eb; }
+    .btn:disabled { opacity: 0.5; cursor: not-allowed; }
+
+    .container { max-width: 1280px; margin: 0 auto; padding: 1.5rem 2rem; }
+
+    /* ─── Stats Cards ─────────────────────── */
+    .stats-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+      gap: 1rem;
+      margin-bottom: 2rem;
+    }
+    .stat-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 1.25rem;
+      transition: border-color 0.2s, box-shadow 0.2s;
+    }
+    .stat-card:hover {
+      border-color: var(--accent);
+      box-shadow: 0 0 20px var(--accent-glow);
+    }
+    .stat-card .label {
+      font-size: 0.78rem;
+      color: var(--text-dim);
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      margin-bottom: 0.4rem;
+    }
+    .stat-card .value {
+      font-size: 1.8rem;
+      font-weight: 800;
+      letter-spacing: -0.02em;
+    }
+    .stat-card .sub {
+      font-size: 0.75rem;
+      color: var(--text-dim);
+      margin-top: 0.3rem;
+    }
+    .stat-card.green .value { color: var(--green); }
+    .stat-card.blue .value { color: var(--accent); }
+    .stat-card.yellow .value { color: var(--yellow); }
+    .stat-card.red .value { color: var(--red); }
+    .stat-card.orange .value { color: var(--orange); }
+    .stat-card.neutral .value { color: var(--text); }
+
+    /* ─── Section ─────────────────────────── */
+    .section-title {
+      font-size: 1.1rem;
+      font-weight: 700;
+      margin-bottom: 1rem;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+    .section-title::before {
+      content: '';
+      display: block;
+      width: 4px;
+      height: 20px;
+      background: var(--accent);
+      border-radius: 2px;
+    }
+
+    /* ─── Bar Chart ───────────────────────── */
+    .chart-section {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 1.5rem;
+      margin-bottom: 2rem;
+    }
+    .chart-container {
+      display: flex;
+      align-items: flex-end;
+      gap: 2px;
+      height: 220px;
+      padding-top: 1rem;
+      overflow-x: auto;
+    }
+    .bar-wrapper {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      flex-shrink: 0;
+      min-width: 28px;
+    }
+    .bar {
+      width: 22px;
+      border-radius: 4px 4px 0 0;
+      transition: height 0.3s ease, background 0.2s;
+      position: relative;
+      cursor: pointer;
+    }
+    .bar:hover { filter: brightness(1.3); }
+    .bar-date {
+      font-size: 0.6rem;
+      color: var(--text-dim);
+      margin-top: 4px;
+      writing-mode: vertical-rl;
+      text-orientation: mixed;
+    }
+    .chart-legend {
+      display: flex;
+      gap: 1.5rem;
+      flex-wrap: wrap;
+      margin-bottom: 0.75rem;
+      font-size: 0.78rem;
+    }
+    .legend-item { display: flex; align-items: center; gap: 0.35rem; }
+    .legend-dot { width: 10px; height: 10px; border-radius: 3px; }
+    .chart-tooltip {
+      position: absolute;
+      bottom: 100%;
+      left: 50%;
+      transform: translateX(-50%);
+      background: #0b1120;
+      border: 1px solid var(--border);
+      color: var(--text);
+      padding: 0.3rem 0.5rem;
+      border-radius: 4px;
+      font-size: 0.7rem;
+      white-space: nowrap;
+      pointer-events: none;
+      opacity: 0;
+    }
+    .bar:hover .chart-tooltip { opacity: 1; }
+
+    /* ─── Top Users Table ─────────────────── */
+    .table-section {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 1.5rem;
+      overflow-x: auto;
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 0.88rem;
+    }
+    th {
+      text-align: left;
+      padding: 0.6rem 0.75rem;
+      color: var(--text-dim);
+      font-size: 0.72rem;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      border-bottom: 1px solid var(--border);
+    }
+    td {
+      padding: 0.65rem 0.75rem;
+      border-bottom: 1px solid var(--border);
+    }
+    tbody tr:hover { background: var(--bg-hover); }
+    .rank { color: var(--text-dim); font-weight: 600; width: 40px; }
+    .rank.top { color: var(--accent); }
+    .rank.gold { color: var(--yellow); }
+    .cost-positive { color: var(--green); }
+    .loading, .error {
+      padding: 3rem;
+      text-align: center;
+      color: var(--text-dim);
+    }
+    .error { color: var(--red); }
+
+    .status-bar {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      font-size: 0.8rem;
+      color: var(--text-dim);
+    }
+    .dot { width: 8px; height: 8px; border-radius: 50%; }
+    .dot.ok { background: var(--green); }
+    .dot.err { background: var(--red); }
+    .dot.load { background: var(--yellow); animation: pulse 1s infinite; }
+    @keyframes pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.3; } }
+
+    @media (max-width: 768px) {
+      .container { padding: 1rem; }
+      .header { padding: 0.75rem 1rem; }
+      .stats-grid { grid-template-columns: repeat(auto-fill, minmax(160px, 1fr)); }
+    }
+  </style>
+</head>
+<body>
+  <header class="header">
+    <h1>Nordik-IA Analytics</h1>
+    <div class="header-right">
+      <span class="status-bar" id="statusBar">
+        <span class="dot load" id="statusDot"></span>
+        <span id="statusText">Sin conectar</span>
+      </span>
+      <input
+        type="password"
+        class="key-input"
+        id="adminKey"
+        placeholder="X-Admin-Key..."
+        autocomplete="off"
+      />
+      <button class="btn" id="connectBtn" onclick="connect()">Conectar</button>
+      <button class="btn" id="refreshBtn" onclick="refreshAll()" disabled>Actualizar</button>
+    </div>
+  </header>
+
+  <main class="container">
+    <!-- Stats Cards -->
+    <div class="stats-grid" id="statsGrid">
+      <div class="stat-card blue">
+        <div class="label">Activos Hoy</div>
+        <div class="value" id="ovActivosHoy">—</div>
+      </div>
+      <div class="stat-card blue">
+        <div class="label">Activos Semana</div>
+        <div class="value" id="ovActivosSemana">—</div>
+      </div>
+      <div class="stat-card blue">
+        <div class="label">Activos Mes (30d)</div>
+        <div class="value" id="ovActivosMes">—</div>
+      </div>
+      <div class="stat-card orange">
+        <div class="label">Consumo IA (Mes)</div>
+        <div class="value" id="ovConsumoIA">—</div>
+      </div>
+      <div class="stat-card green">
+        <div class="label">Ganancia Est. (25%)</div>
+        <div class="value" id="ovGanancia">—</div>
+      </div>
+      <div class="stat-card neutral">
+        <div class="label">Pendrives Activos</div>
+        <div class="value" id="ovPendrives">—</div>
+      </div>
+      <div class="stat-card yellow">
+        <div class="label">Recargas (Mes)</div>
+        <div class="value" id="ovRecargas">—</div>
+      </div>
+      <div class="stat-card red">
+        <div class="label">Churn Est. (30d)</div>
+        <div class="value" id="ovChurn">—</div>
+      </div>
+    </div>
+
+    <!-- Bar Chart -->
+    <div class="chart-section">
+      <div class="section-title">Actividad Diaria (Costo IA)</div>
+      <div class="chart-legend">
+        <div class="legend-item"><span class="legend-dot" style="background:var(--accent)"></span> Costo IA (USD)</div>
+      </div>
+      <div class="chart-container" id="chartContainer">
+        <div class="loading">Conecta para cargar datos</div>
+      </div>
+    </div>
+
+    <!-- Top Users -->
+    <div class="table-section">
+      <div class="section-title">Top 20 Usuarios — Consumo IA del Mes</div>
+      <div id="topUsersTable">
+        <div class="loading">Conecta para cargar datos</div>
+      </div>
+    </div>
+  </main>
+
+  <script>
+    const BASE = '';
+
+    function getKey() {
+      return document.getElementById('adminKey').value.trim();
+    }
+
+    function headers() {
+      return {
+        'Accept': 'application/json',
+        'X-Admin-Key': getKey(),
+      };
+    }
+
+    function setStatus(state, text) {
+      const dot = document.getElementById('statusDot');
+      const txt = document.getElementById('statusText');
+      dot.className = 'dot ' + state;
+      txt.textContent = text;
+    }
+
+    async function connect() {
+      const key = getKey();
+      if (!key) { setStatus('err', 'Ingresa la Admin Key'); return; }
+
+      setStatus('load', 'Conectando...');
+      document.getElementById('connectBtn').disabled = true;
+
+      try {
+        const res = await fetch(BASE + '/v1/admin/analytics/overview', { headers: headers() });
+        if (!res.ok) {
+          const detail = await res.json().then(d => d.detail || '').catch(() => '');
+          throw new Error(detail || res.statusText);
+        }
+        setStatus('ok', 'Conectado');
+        document.getElementById('refreshBtn').disabled = false;
+        await refreshAll();
+      } catch (e) {
+        setStatus('err', 'Error: ' + e.message);
+        document.getElementById('connectBtn').disabled = false;
+      }
+    }
+
+    async function refreshAll() {
+      setStatus('load', 'Cargando...');
+      await Promise.all([loadOverview(), loadDaily(), loadTopUsers()]);
+      setStatus('ok', 'Actualizado');
+    }
+
+    async function apiFetch(path) {
+      const res = await fetch(BASE + path, { headers: headers() });
+      if (!res.ok) {
+        const detail = await res.json().then(d => d.detail || '').catch(() => '');
+        throw new Error(detail || res.statusText);
+      }
+      return res.json();
+    }
+
+    async function loadOverview() {
+      try {
+        const data = await apiFetch('/v1/admin/analytics/overview');
+        document.getElementById('ovActivosHoy').textContent = data.usuarios_activos_hoy;
+        document.getElementById('ovActivosSemana').textContent = data.usuarios_activos_semana;
+        document.getElementById('ovActivosMes').textContent = data.usuarios_activos_mes;
+        document.getElementById('ovConsumoIA').textContent = '$' + data.consumo_ia_total_mes.toFixed(2);
+        document.getElementById('ovGanancia').textContent = '$' + data.ganancia_estimada.toFixed(2);
+        document.getElementById('ovPendrives').textContent = data.pendrives_activos;
+        document.getElementById('ovRecargas').textContent = data.recargas_solicitadas;
+        document.getElementById('ovChurn').textContent = data.tasa_churn_estimada + '%';
+      } catch (e) {
+        console.error('overview error', e);
+      }
+    }
+
+    async function loadDaily() {
+      const container = document.getElementById('chartContainer');
+      try {
+        const data = await apiFetch('/v1/admin/analytics/daily?days=30');
+        if (!data.length) {
+          container.innerHTML = '<div class="loading">Sin datos</div>';
+          return;
+        }
+
+        const maxCost = Math.max(...data.map(d => d.costo_ia), 0.001);
+        container.innerHTML = data.map(d => {
+          const height = maxCost > 0 ? Math.max(3, (d.costo_ia / maxCost) * 200) : 3;
+          return `
+            <div class="bar-wrapper">
+              <div class="bar" style="height:${height}px; background:var(--accent);" title="${d.fecha}">
+                <span class="chart-tooltip">$${d.costo_ia.toFixed(3)}</span>
+              </div>
+              <span class="bar-date">${d.fecha.slice(5)}</span>
+            </div>`;
+        }).join('');
+      } catch (e) {
+        container.innerHTML = '<div class="error">Error al cargar datos diarios</div>';
+      }
+    }
+
+    async function loadTopUsers() {
+      const el = document.getElementById('topUsersTable');
+      try {
+        const users = await apiFetch('/v1/admin/analytics/top-users?limit=20');
+        if (!users.length) {
+          el.innerHTML = '<div class="loading">Sin datos de consumo</div>';
+          return;
+        }
+
+        let html = `<table>
+          <thead><tr>
+            <th>#</th><th>Cliente ID</th><th>Nombre</th><th>Consumo USD</th><th>Mensajes</th>
+          </tr></thead><tbody>`;
+
+        users.forEach((u, i) => {
+          const rankClass = i < 3 ? (i === 0 ? 'gold' : 'top') : '';
+          html += `<tr>
+            <td class="rank ${rankClass}">${i + 1}</td>
+            <td><code style="font-size:0.75rem;color:var(--text-dim)">${u.cliente_id.slice(0, 8)}...</code></td>
+            <td>${u.nombre}</td>
+            <td class="cost-positive">$${u.consumo_usd.toFixed(4)}</td>
+            <td>${u.mensajes_totales.toLocaleString()}</td>
+          </tr>`;
+        });
+
+        html += '</tbody></table>';
+        el.innerHTML = html;
+      } catch (e) {
+        el.innerHTML = '<div class="error">Error al cargar top usuarios</div>';
+      }
+    }
+
+    // Restore key from sessionStorage
+    (function() {
+      const saved = sessionStorage.getItem('dotAdminKey');
+      if (saved) {
+        document.getElementById('adminKey').value = saved;
+        connect();
+      }
+    })();
+
+    // Save key on input change
+    document.getElementById('adminKey').addEventListener('change', function() {
+      sessionStorage.setItem('dotAdminKey', this.value.trim());
+    });
+
+    // Auto-refresh every 60s
+    let autoInterval = null;
+    document.getElementById('connectBtn').addEventListener('click', () => {
+      if (autoInterval) clearInterval(autoInterval);
+      autoInterval = setInterval(() => {
+        if (!document.getElementById('refreshBtn').disabled) refreshAll();
+      }, 60000);
+    });
+  </script>
+</body>
+</html>

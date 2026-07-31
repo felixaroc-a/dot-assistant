@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Mi Cuenta - DOT</title>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      background: #0f0f1a;
+      color: #eee;
+      margin: 0;
+      padding: 2rem 1rem;
+      min-height: 100vh;
+    }
+    .card {
+      background: #1a1a2e;
+      padding: 2rem;
+      border-radius: 12px;
+      max-width: 600px;
+      margin: 0 auto;
+      box-shadow: 0 8px 32px rgba(0,0,0,0.3);
+    }
+    h1 {
+      color: #e94560;
+      margin: 0 0 1.5rem;
+      font-size: 1.5rem;
+    }
+    h2 {
+      color: #ccc;
+      font-size: 1.1rem;
+      margin: 0 0 1rem;
+      padding-top: 0.5rem;
+      border-top: 1px solid #333;
+    }
+    .info-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1rem;
+      margin-bottom: 2rem;
+    }
+    .field label {
+      color: #888;
+      font-size: 0.85rem;
+      display: block;
+      margin-bottom: 0.25rem;
+    }
+    .field span {
+      font-size: 1.1rem;
+      color: #fff;
+    }
+    .form-group {
+      margin-bottom: 1rem;
+    }
+    .form-group label {
+      display: block;
+      margin-bottom: 0.5rem;
+      color: #aaa;
+      font-size: 0.9rem;
+    }
+    .form-group input {
+      width: 100%;
+      padding: 0.75rem;
+      border: 1px solid #333;
+      border-radius: 6px;
+      background: #16213e;
+      color: #eee;
+      font-size: 1rem;
+    }
+    .form-group input:focus {
+      outline: none;
+      border-color: #e94560;
+      box-shadow: 0 0 0 2px rgba(233,69,96,0.2);
+    }
+    button {
+      padding: 0.75rem 1.5rem;
+      background: #e94560;
+      color: #fff;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+      font-size: 1rem;
+      font-weight: 600;
+      transition: background 0.2s;
+    }
+    button:hover { background: #d6384f; }
+    .success {
+      color: #4caf50;
+      margin-bottom: 1rem;
+      padding: 0.5rem;
+      background: rgba(76,175,80,0.1);
+      border-radius: 6px;
+      text-align: center;
+    }
+    .error {
+      color: #e94560;
+      margin-bottom: 1rem;
+      padding: 0.5rem;
+      background: rgba(233,69,96,0.1);
+      border-radius: 6px;
+      text-align: center;
+    }
+    .logout-link {
+      display: block;
+      text-align: center;
+      margin-top: 1.5rem;
+      color: #555;
+      font-size: 0.85rem;
+      text-decoration: none;
+    }
+    .logout-link:hover { color: #e94560; }
+    .footer {
+      text-align: center;
+      margin-top: 1.5rem;
+      color: #555;
+      font-size: 0.8rem;
+    }
+    @media (max-width: 480px) {
+      .info-grid { grid-template-columns: 1fr; }
+      .card { padding: 1.5rem; }
+    }
+  </style>
+</head>
+<body>
+  <div class="card">
+    <h1>Mi Cuenta</h1>
+
+    {% if exito %}
+      <div class="success">{{ exito }}</div>
+    {% endif %}
+    {% if error %}
+      <div class="error">{{ error }}</div>
+    {% endif %}
+
+    <div class="info-grid">
+      <div class="field">
+        <label>Nombre</label>
+        <span>{{ cliente.nombre }}</span>
+      </div>
+      <div class="field">
+        <label>Cédula</label>
+        <span>{{ cliente.cedula }}</span>
+      </div>
+      <div class="field">
+        <label>Correo</label>
+        <span>{{ cliente.correo }}</span>
+      </div>
+      <div class="field">
+        <label>Plan</label>
+        <span>{{ cliente.plan }}</span>
+      </div>
+      <div class="field">
+        <label>Vence</label>
+        <span>{{ cliente.fecha_vencimiento }}</span>
+      </div>
+    </div>
+
+    <h2>Cambiar clave</h2>
+    <form method="post" action="/portal/cambiar-clave">
+      <input type="hidden" name="cedula" value="{{ cliente.cedula }}">
+      <div class="form-group">
+        <label for="clave_actual">Clave actual</label>
+        <input id="clave_actual" type="password" name="clave_actual" required autocomplete="current-password">
+      </div>
+      <div class="form-group">
+        <label for="clave_nueva">Clave nueva</label>
+        <input id="clave_nueva" type="password" name="clave_nueva" required minlength="6" autocomplete="new-password">
+      </div>
+      <button type="submit">Cambiar clave</button>
+    </form>
+
+    <a class="logout-link" href="/portal">&larr; Volver al inicio</a>
+    <div class="footer">DOT &mdash; Portal del cliente</div>
+  </div>
+</body>
+</html>

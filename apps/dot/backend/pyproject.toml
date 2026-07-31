@@ -1,0 +1,51 @@
+# pyproject.toml — Configuración de herramientas Python del backend DOT
+#
+# Centraliza: mypy (type checking), pytest (testing + cobertura),
+# y resuelve el problema de que el CI y los devs usaban defaults.
+
+[tool.mypy]
+python_version = "3.11"
+strict = false
+warn_return_any = true
+warn_unused_configs = true
+warn_redundant_casts = true
+warn_unused_ignores = true
+disallow_untyped_defs = true
+disallow_any_generics = false
+disallow_incomplete_defs = true
+check_untyped_defs = true
+no_implicit_optional = true
+warn_no_return = true
+show_error_codes = true
+exclude = [
+    "alembic/",
+    "auto-venta1/",
+    ".*/tests/",
+]
+
+[tool.pytest.ini_options]
+testpaths = ["app/tests"]
+python_files = ["test_*.py"]
+addopts = [
+    "-v",
+    "--tb=short",
+    "--strict-markers",
+    "--cov=app",
+    "--cov-report=term",
+    "--cov-report=html:coverage-report",
+    "--cov-fail-under=60",
+]
+# Excluir archivos que no aportan cobertura significativa
+[tool.coverage.run]
+omit = [
+    "*/tests/*",
+    "*/alembic/*",
+    "*/scripts/*",
+    "*/__pycache__/*",
+    "*/worker/*",  # worker se prueba por separado
+]
+
+[tool.ruff]
+# La configuración principal está en ruff.toml (raíz del repo).
+# Esta sección solo declara que este directorio usa ruff.
+extend = "../../ruff.toml"

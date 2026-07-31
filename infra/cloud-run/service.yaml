@@ -1,0 +1,286 @@
+# Cloud Run Service — nordik-api (FastAPI backend)
+#
+# Despliega la API DOT en Cloud Run con conexión a Cloud SQL (Postgres)
+# y VPC connector para Redis Memorystore.
+#
+# Uso:
+#   gcloud builds submit --config infra/cloud-run/cloudbuild.yaml .
+#   gcloud run services replace infra/cloud-run/service.yaml
+#
+# Requisitos previos:
+#   - Artifact Registry repo creado (nordik-repo)
+#   - Cloud SQL instancia Postgres corriendo (nordik-postgres)
+#   - VPC connector serverless creado (nordik-vpc-connector)
+#   - Secret Manager secretos poblados (ver § Environment)
+#   - Cloud Build SA con permisos: Cloud Run Admin, Artifact Registry Writer,
+#     Secret Manager Accessor, Cloud SQL Client, Service Account User
+
+apiVersion: serving.knative.dev/v1
+kind: Service
+metadata:
+  name: nordik-api
+  labels:
+    cloud.googleapis.com/location: southamerica-west1
+    app: nordik-api
+    component: dot-backend
+  annotations:
+    run.googleapis.com/ingress: all
+    run.googleapis.com/ingress-status: all
+    run.googleapis.com/cloudsql-instances: nordikia:northamerica-south1:nordik-postgres
+    run.googleapis.com/vpc-access-egress: private-ranges-only
+spec:
+  template:
+    metadata:
+      annotations:
+        autoscaling.knative.dev/minScale: "0"
+        autoscaling.knative.dev/maxScale: "10"
+        run.googleapis.com/startup-cpu-boost: "true"
+        run.googleapis.com/cpu-throttling: "false"
+        run.googleapis.com/vpc-access-connector: >-
+          projects/nordikia/locations/southamerica-west1/connectors/nordik-vpc-connector
+    spec:
+      containerConcurrency: 80
+      timeoutSeconds: 300
+      serviceAccountName: nordik-api-sa@nordikia.iam.gserviceaccount.com
+      containers:
+        - name: nordik-api
+          image: southamerica-west1-docker.pkg.dev/nordikia/nordik-repo/nordik-api:latest
+          ports:
+            - containerPort: 8000
+              name: http1
+          resources:
+            limits:
+              memory: "512Mi"
+              cpu: "1000m"
+          env:
+            # ── Entorno ──────────────────────────────────────────────
+            - name: DOT_ENV
+              value: "production"
+
+            # ── Base de datos (Cloud SQL) ────────────────────────────
+            - name: DATABASE_URL
+              valueFrom:
+                secretKeyRef:
+                  key: latest
+                  name: nordik-database-url
+
+            # ── JWT ──────────────────────────────────────────────────
+            - name: JWT_PRIVATE_KEY_PEM
+              valueFrom:
+                secretKeyRef:
+                  key: latest
+                  name: nordik-jwt-private-key
+            - name: JWT_PUBLIC_KEY_PEM
+              valueFrom:
+                secretKeyRef:
+                  key: latest
+                  name: nordik-jwt-public-key
+            - name: JWT_ACCESS_EXPIRES_MINUTES
+              value: "30"
+            - name: JWT_REFRESH_EXPIRES_DAYS
+              value: "30"
+
+            # ── Encryption ───────────────────────────────────────────
+            - name: TOKEN_ENCRYPTION_KEY
+              valueFrom:
+                secretKeyRef:
+                  key: latest
+                  name: nordik-token-encryption-key
+            - name: CHAT_ENCRYPTION_KEY
+              valueFrom:
+                secretKeyRef:
+                  key: latest
+                  name: nordik-chat-encryption-key
+
+            # ── Admin / Hardware ─────────────────────────────────────
+            - name: ADMIN_API_KEY
+              valueFrom:
+                secretKeyRef:
+                  key: latest
+                  name: nordik-admin-api-key
+            - name: HARDWARE_TOKEN_PEPPER
+              valueFrom:
+                secretKeyRef:
+                  key: latest
+                  name: nordik-hardware-token-pepper
+
+            # ── Firebase / Firestore ─────────────────────────────────
+            - name: FIREBASE_SERVICE_ACCOUNT_PATH
+              value: "/secrets/firebase/firebase-service-account.json"
+            - name: GOOGLE_CLIENT_SECRETS_PATH
+              value: "/secrets/oauth/client_secret.json"
+            - name: OAUTH_REDIRECT_URI
+              value: "https://nordik-api-xxxxxxxxx-uc.a.run.app/oauth/google/callback"
+            - name: REFRESH_USE_FIRESTORE_ONLY
+              value: "true"
+
+            # ── CORS / Trusted Hosts ─────────────────────────────────
+            - name: CORS_ALLOW_ORIGINS
+              value: "app://.,electron://."
+            - name: TRUSTED_HOSTS
+              value: "*"
+            - name: ALLOW_OAUTH_DEV_WITHOUT_FIREBASE_AUTH
+              value: ""
+
+            # ── Feature flags ────────────────────────────────────────
+            - name: ENABLE_CHAT
+              value: "true"
+            - name: ENABLE_WEB_SEARCH
+              value: "true"
+            - name: BROWSER_AGENT_ENABLED
+              value: "false"
+
+            # ── Proveedores IA ───────────────────────────────────────
+            - name: DEEPSEEK_API_KEY
+              valueFrom:
+                secretKeyRef:
+                  key: latest
+                  name: nordik-deepseek-api-key
+            - name: GEMINI_API_KEY
+              valueFrom:
+                secretKeyRef:
+                  key: latest
+                  name: nordik-gemini-api-key
+            - name: GEMINI_MODEL
+              value: "gemini-1.5-flash"
+            - name: GEMINI_PROVIDER
+              value: "api_key"
+            - name: GEMINI_VERTEX_MODEL
+              value: "gemini-2.5-flash"
+            - name: GOOGLE_CLOUD_PROJECT
+              value: "nordikia"
+            - name: GOOGLE_CLOUD_LOCATION
+              value: "us-central1"
+            - name: GOOGLE_TRANSLATE_API_KEY
+              valueFrom:
+                secretKeyRef:
+                  key: latest
+                  name: nordik-google-translate-api-key
+
+            # ── Sentry ───────────────────────────────────────────────
+            - name: SENTRY_DSN
+              valueFrom:
+                secretKeyRef:
+                  key: latest
+                  name: nordik-sentry-dsn
+
+            # ── Skills APIs ──────────────────────────────────────────
+            - name: OPENWEATHER_API_KEY
+              valueFrom:
+                secretKeyRef:
+                  key: latest
+                  name: nordik-openweather-api-key
+            - name: NEWSAPI_KEY
+              valueFrom:
+                secretKeyRef:
+                  key: latest
+                  name: nordik-newsapi-key
+
+            # ── Límite consumo IA (Sprint 2.5) ──────────────────────
+            - name: AI_USAGE_LIMIT_ENABLED
+              value: "true"
+            - name: AI_USAGE_MONTHLY_LIMIT_USD
+              value: "7.5"
+            - name: AI_USAGE_BILLING_TIMEZONE
+              value: "America/Bogota"
+            - name: AI_COST_DEEPSEEK_INPUT_PER_1M
+              value: "0.14"
+            - name: AI_COST_DEEPSEEK_OUTPUT_PER_1M
+              value: "0.28"
+            - name: AI_COST_GEMINI_VISION_PER_REQUEST
+              value: "0.001"
+            - name: AI_COST_IMAGEN_PER_IMAGE
+              value: "0.04"
+
+            # ── Generación de imágenes ───────────────────────────────
+            - name: ENABLE_IMAGE_GENERATION
+              value: "true"
+            - name: IMAGEN_VERTEX_MODEL
+              value: "imagen-3.0-generate-002"
+            - name: IMAGE_GEN_MAX_IMAGES_PER_REQUEST
+              value: "4"
+            - name: IMAGE_GEN_DEFAULT_RESOLUTION
+              value: "1024x1024"
+            - name: IMAGE_GEN_ENABLE_1080P
+              value: "false"
+
+            # ── Webhook seguridad ────────────────────────────────────
+            - name: SECURITY_WEBHOOK_URL
+              valueFrom:
+                secretKeyRef:
+                  key: latest
+                  name: nordik-security-webhook-url
+
+            # ── WhatsApp bridge ──────────────────────────────────────
+            - name: WHATSAPP_WEBHOOK_SECRET
+              valueFrom:
+                secretKeyRef:
+                  key: latest
+                  name: nordik-whatsapp-webhook-secret
+            - name: WHATSAPP_BRIDGE_SECRET
+              valueFrom:
+                secretKeyRef:
+                  key: latest
+                  name: nordik-whatsapp-bridge-secret
+
+            # ── Logging (Better Stack / Logtail) ─────────────────────
+            - name: LOGTAIL_SOURCE_TOKEN
+              valueFrom:
+                secretKeyRef:
+                  key: latest
+                  name: nordik-logtail-source-token
+            - name: LOGTAIL_HOST
+              value: "https://logs.betterstack.com"
+            - name: LOG_LEVEL
+              value: "INFO"
+
+            # ── Redis (Memorystore) ──────────────────────────────────
+            # Si Redis está habilitado, descomentar y crear el secreto.
+            # - name: REDIS_URL
+            #   valueFrom:
+            #     secretKeyRef:
+            #       key: latest
+            #       name: nordik-redis-url
+
+          volumeMounts:
+            - name: firebase-secret
+              mountPath: /secrets/firebase
+              readOnly: true
+            - name: oauth-secret
+              mountPath: /secrets/oauth
+              readOnly: true
+
+          startupProbe:
+            httpGet:
+              path: /health
+              port: 8000
+            initialDelaySeconds: 10
+            timeoutSeconds: 5
+            periodSeconds: 10
+            failureThreshold: 5
+
+          livenessProbe:
+            httpGet:
+              path: /health
+              port: 8000
+            timeoutSeconds: 5
+            periodSeconds: 30
+            failureThreshold: 3
+
+      volumes:
+        - name: firebase-secret
+          secret:
+            secretName: nordik-firebase-service-account
+            items:
+              - key: latest
+                path: firebase-service-account.json
+        - name: oauth-secret
+          secret:
+            secretName: nordik-oauth-client-secret
+            items:
+              - key: latest
+                path: client_secret.json
+
+  traffic:
+    - percent: 100
+      latestRevision: true

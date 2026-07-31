@@ -1,0 +1,273 @@
+:root,
+[data-theme='dark'] {
+  color-scheme: dark;
+  --bg-primary: #000000;
+  --bg-secondary: #1c1c1e;
+  --bg-card: #2c2c2e;
+  --text-primary: #ffffff;
+  --text-secondary: #8e8e93;
+  --text-muted: #636366;
+  --border-color: #2c2c2e;
+  --accent: #ffffff;
+  --accent-hover: #f5f5f7;
+  --success: #30d158;
+  --warning: #ffd60a;
+  --danger: #ff453a;
+  --welcome-bg: #000000;
+  --welcome-fg: #ffffff;
+  --welcome-muted: rgba(235, 235, 245, 0.55);
+  --welcome-line: rgba(255, 255, 255, 0.18);
+  --welcome-line-strong: rgba(255, 255, 255, 0.42);
+  --welcome-glow: rgba(255, 255, 255, 0.07);
+  --onboarding-card-bg: linear-gradient(165deg, rgba(28, 28, 32, 0.92), rgba(14, 14, 16, 0.96));
+  --onboarding-card-border: rgba(255, 255, 255, 0.12);
+  --onboarding-card-shadow: 0 24px 80px rgba(0, 0, 0, 0.55);
+  --onboarding-input-bg: rgba(0, 0, 0, 0.35);
+  --onboarding-input-border: rgba(255, 255, 255, 0.14);
+  font-family:
+    system-ui,
+    -apple-system,
+    BlinkMacSystemFont,
+    'Segoe UI',
+    sans-serif;
+  font-synthesis-weight: none;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+}
+
+[data-theme='light'] {
+  color-scheme: light;
+  --bg-primary: #ffffff;
+  --bg-secondary: #f5f5f7;
+  --bg-card: #ffffff;
+  --text-primary: #000000;
+  --text-secondary: #6e6e73;
+  --text-muted: #98989d;
+  --border-color: #e5e5ea;
+  --accent: #000000;
+  --accent-hover: #333333;
+  --success: #34c759;
+  --warning: #ffcc00;
+  --danger: #ff3b30;
+  --welcome-bg: #ffffff;
+  --welcome-fg: #000000;
+  --welcome-muted: #98989d;
+  --welcome-line: #e5e5ea;
+  --welcome-line-strong: #d2d2d7;
+  --welcome-glow: rgba(0, 0, 0, 0.12);
+  --onboarding-card-bg: #ffffff;
+  --onboarding-card-border: #e5e5ea;
+  --onboarding-card-shadow: 0 24px 80px rgba(0, 0, 0, 0.14);
+  --onboarding-input-bg: #ffffff;
+  --onboarding-input-border: #d2d2d7;
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html {
+  outline: none;
+  scroll-behavior: smooth;
+}
+
+body {
+  margin: 0;
+  min-height: 100vh;
+  background: var(--welcome-bg);
+  color: var(--welcome-fg);
+  outline: none;
+  overflow-x: hidden;
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+/* Micro-interacciones globales */
+button {
+  transition: transform 0.1s ease, opacity 0.2s ease;
+}
+
+button:active:not(:disabled) {
+  transform: scale(0.96);
+}
+
+a {
+  transition: opacity 0.2s ease;
+}
+
+a:hover {
+  opacity: 0.8;
+}
+
+/* Scroll bar estilizada */
+::-webkit-scrollbar {
+  width: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.15);
+  border-radius: 3px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(255, 255, 255, 0.25);
+}
+
+[data-theme='light'] :is(
+  .channel__grain,
+  .integration-step__grain,
+  .integration-summary__grain,
+  .preferred-name__grain,
+  .wa-openclaw__grain,
+  .completion-splash__grain
+) {
+  background-image: radial-gradient(rgba(0, 0, 0, 0.36) 0.65px, transparent 0.7px);
+  mix-blend-mode: multiply;
+}
+
+[data-theme='light'] :is(
+  .channel__glow--a,
+  .channel__glow--b,
+  .integration-step__glow--a,
+  .integration-step__glow--b,
+  .integration-summary__glow--a,
+  .integration-summary__glow--b,
+  .preferred-name__glow--a,
+  .preferred-name__glow--b,
+  .wa-openclaw__glow--a,
+  .wa-openclaw__glow--b,
+  .completion-splash__glow--a,
+  .completion-splash__glow--b
+) {
+  background: radial-gradient(circle, rgba(0, 0, 0, 0.06) 0%, transparent 70%);
+}
+
+[data-theme='light'] :is(
+  .channel-card,
+  .channel-card--active,
+  .channel-card:hover,
+  .channel-card--active:hover,
+  .integration-step__tile,
+  .integration-step__tile:hover,
+  .integration-step__tile--active
+) {
+  border-color: #e5e5ea;
+  background: #ffffff;
+  color: #000000;
+  box-shadow:
+    inset 0 1px 0 #ffffff,
+    0 14px 40px rgba(0, 0, 0, 0.16);
+}
+
+[data-theme='light'] :is(
+  .channel-card__name,
+  .channel-card__helper,
+  .channel-card:hover .channel-card__name,
+  .channel-card:hover .channel-card__helper,
+  .channel-card--active:hover .channel-card__name,
+  .channel-card--active:hover .channel-card__helper,
+  .channel__back,
+  .channel__back:hover,
+  .channel__skip,
+  .integration-step__back,
+  .integration-step__back:hover,
+  .integration-step__omit,
+  .integration-step__omit:hover,
+  .integration-step__google-hint,
+  .integration-step__google-note,
+  .integration-step__secondary,
+  .integration-summary__back,
+  .integration-summary__back:hover,
+  .integration-summary__modal-text,
+  .integration-summary__modal-back,
+  .integration-summary__modal-back:hover,
+  .wa-openclaw__back,
+  .wa-openclaw__back:hover,
+  .wa-openclaw__secondary,
+  .wa-openclaw__scan-hint,
+  .wa-openclaw__status,
+  .wa-openclaw__loading-text,
+  .wa-openclaw__countdown,
+  .completion-splash__skip,
+  .completion-splash__skip:hover
+) {
+  color: #6e6e73;
+}
+
+[data-theme='light'] :is(
+  .channel__continue,
+  .integration-step__continue,
+  .integration-summary__confirm,
+  .integration-summary__modal-confirm,
+  .preferred-name__continue,
+  .wa-openclaw__primary,
+  .wa-openclaw__regenerate
+) {
+  border: 1px solid #000000;
+  background: #000000;
+  color: #ffffff;
+  box-shadow: none;
+}
+
+[data-theme='light'] :is(
+  .channel-card__badge,
+  .integration-step__icon,
+  .integration-step__placeholder,
+  .integration-summary__thumb,
+  .integration-summary__thumb--num,
+  .wa-openclaw__qr-frame,
+  .wa-openclaw__ascii-wrap,
+  .wa-openclaw__ansi-qr,
+  .integration-summary__modal
+) {
+  border-color: #e5e5ea;
+  background: #ffffff;
+  color: #000000;
+  box-shadow: inset 0 0 0 1px #e5e5ea;
+}
+
+[data-theme='light'] :is(
+  .integration-summary__aside,
+  .integration-summary__item,
+  .integration-summary__overlay,
+  .integration-summary__modal-overlay
+) {
+  border-color: #e5e5ea;
+}
+
+[data-theme='light'] :is(
+  .integration-summary__overlay,
+  .integration-summary__modal-overlay
+) {
+  background: rgba(255, 255, 255, 0.74);
+}
+
+#root {
+  min-height: 100vh;
+  outline: none;
+  overflow-x: hidden;
+}
+
+@keyframes slideIn {
+  from { transform: translateX(100%); opacity: 0; }
+  to { transform: translateX(0); opacity: 1; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+  }
+
+  body {
+    scroll-behavior: auto;
+  }
+}

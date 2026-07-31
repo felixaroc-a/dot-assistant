@@ -1,0 +1,6 @@
+export type { ChannelId } from './channel.types'
+export type { ChannelMeta } from './channel.meta'
+export { CHANNEL_META, getChannelMeta } from './channel.meta'
+export type { OnboardingFlowStep } from './flow.types'
+export { stepToNumber, TOTAL_ONBOARDING_STEPS } from './flow.types'
+export { ONBOARDING_SPLASH_DURATION_MS } from './flow.constants'

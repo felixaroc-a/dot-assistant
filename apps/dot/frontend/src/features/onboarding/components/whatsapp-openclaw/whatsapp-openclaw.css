@@ -1,0 +1,413 @@
+.wa-openclaw {
+  position: relative;
+  isolation: isolate;
+  box-sizing: border-box;
+  height: 100dvh;
+  min-height: 100dvh;
+  max-height: 100dvh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: clamp(0.6rem, 1.8vh, 1.25rem) clamp(1rem, 3vw, 2rem);
+  overflow: hidden;
+  background: var(--welcome-bg);
+}
+
+.wa-openclaw__grain {
+  position: absolute;
+  inset: -30%;
+  z-index: 0;
+  pointer-events: none;
+  opacity: 0.032;
+  background-image: radial-gradient(rgba(255, 255, 255, 0.36) 0.65px, transparent 0.7px);
+  background-size: 3px 3px;
+  mix-blend-mode: screen;
+}
+
+.wa-openclaw__glow {
+  position: absolute;
+  width: min(620px, 86vw);
+  height: min(620px, 86vw);
+  border-radius: 50%;
+  pointer-events: none;
+  filter: blur(120px);
+  z-index: 0;
+}
+
+.wa-openclaw__glow--a {
+  top: -18%;
+  left: 14%;
+  background: radial-gradient(circle, rgba(255, 255, 255, 0.06) 0%, transparent 67%);
+  animation: welcome-float-a 24s ease-in-out infinite alternate;
+}
+
+.wa-openclaw__glow--b {
+  right: 2%;
+  bottom: -26%;
+  background: radial-gradient(circle, rgba(255, 255, 255, 0.04) 0%, transparent 72%);
+  animation: welcome-float-b 30s ease-in-out infinite alternate;
+}
+
+.wa-openclaw__content {
+  position: relative;
+  z-index: 1;
+  width: min(820px, 100%);
+  max-height: 100%;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  min-height: 0;
+  flex: 1 1 auto;
+}
+
+/* T-P1-003 / M-034: título en uppercase */
+.wa-openclaw__title {
+  margin: 0;
+  flex-shrink: 0;
+  font-size: clamp(1.35rem, 3.2vh, 2.4rem);
+  line-height: 1.08;
+  letter-spacing: -0.045em;
+  font-weight: 600;
+  color: var(--welcome-fg);
+  text-transform: uppercase;
+}
+
+.wa-openclaw__lead {
+  margin: 0.75rem auto 0;
+  max-width: 46rem;
+  font-size: 1.05rem;
+  line-height: 1.5;
+  color: var(--welcome-muted);
+}
+
+.wa-openclaw__panel {
+  flex: 1 1 auto;
+  min-height: 0;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.wa-openclaw__qr-stage {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: clamp(0.45rem, 1.2vh, 0.85rem);
+  width: 100%;
+  min-height: 0;
+  flex: 1 1 auto;
+}
+
+.wa-openclaw__qr-frame {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: clamp(0.55rem, 1.4vh, 1rem);
+  border-radius: 16px;
+  background: #f6f6f8;
+  box-shadow:
+    inset 0 0 0 1px rgba(14, 14, 18, 0.06),
+    0 12px 32px rgba(0, 0, 0, 0.35);
+  animation: qr-fade-in 0.6s ease-out both;
+}
+
+.wa-openclaw__qr-frame img {
+  display: block;
+  width: min(38vmin, 220px);
+  height: auto;
+  max-width: 100%;
+  max-height: min(38vh, 220px);
+}
+
+.wa-openclaw__ascii-wrap {
+  max-width: 100%;
+  overflow: auto;
+  padding: clamp(0.75rem, 2vw, 1.1rem);
+  border-radius: 16px;
+  background: #f6f6f8;
+  box-shadow: inset 0 0 0 1px rgba(14, 14, 18, 0.06);
+}
+
+.wa-openclaw__ascii {
+  margin: 0;
+  font-family: ui-monospace, 'Cascadia Mono', 'Segoe UI Mono', Menlo, Consolas, monospace;
+  font-size: clamp(11px, 2.65vmin, 18px);
+  line-height: 0.97;
+  letter-spacing: 0;
+  color: #0a0a0c;
+  white-space: pre;
+  transform-origin: top center;
+}
+
+/* QR renderizado con ANSI a HTML (OpenClaw 2026.6.11+) */
+.wa-openclaw__ansi-qr {
+  max-width: 100%;
+  overflow: auto;
+  padding: clamp(0.75rem, 2vw, 1.1rem);
+  border-radius: 16px;
+  background: #ffffff;
+  box-shadow: inset 0 0 0 1px rgba(14, 14, 18, 0.06);
+  line-height: 0;
+  font-size: 0;
+}
+.wa-openclaw__ansi-qr div {
+  margin: 0;
+  padding: 0;
+  height: auto;
+}
+
+@media (min-width: 900px) {
+  .wa-openclaw__ascii {
+    font-size: clamp(13px, 2vmin, 20px);
+  }
+}
+
+.wa-openclaw__placeholder {
+  font-size: 0.98rem;
+  color: var(--welcome-muted);
+  max-width: 26rem;
+  text-align: center;
+  line-height: 1.45;
+}
+
+/* M-035: "escanea qr" minimalista */
+.wa-openclaw__scan-hint {
+  margin: 0;
+  font-size: 0.9rem;
+  color: var(--welcome-muted);
+  text-align: center;
+  text-transform: lowercase;
+}
+
+.wa-openclaw__status {
+  min-height: 1.25rem;
+  max-width: 28rem;
+  font-size: 0.88rem;
+  color: var(--welcome-muted);
+}
+
+.wa-openclaw__status--error {
+  color: var(--danger);
+}
+
+.wa-openclaw__status--ok {
+  color: var(--success);
+}
+
+.wa-openclaw__error-lead {
+  margin: 0 0 0.65rem;
+}
+
+.wa-openclaw__log {
+  margin-top: 1rem;
+  max-height: 160px;
+  overflow: auto;
+  text-align: left;
+  padding: 0.75rem 1rem;
+  border-radius: 14px;
+  background: rgba(0, 0, 0, 0.35);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  font-family: ui-monospace, Menlo, Consolas, monospace;
+  font-size: 0.72rem;
+  line-height: 1.35;
+  color: rgba(235, 235, 245, 0.78);
+  white-space: pre-wrap;
+  word-break: break-word;
+}
+
+/* T-P1-003: botones footer compactos */
+.wa-openclaw__actions {
+  margin-top: clamp(0.45rem, 1.4vh, 0.9rem);
+  flex-shrink: 0;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  gap: 0.65rem 1.25rem;
+}
+
+.wa-openclaw__back {
+  margin: 0;
+  border: 0;
+  background: transparent;
+  color: var(--welcome-muted);
+  font-size: 0.9rem;
+  letter-spacing: 0.02em;
+  cursor: pointer;
+  padding: 0.35rem 0.25rem;
+  transition: color 0.18s ease;
+}
+
+.wa-openclaw__back:hover {
+  color: var(--welcome-fg);
+}
+
+.wa-openclaw__back:focus-visible {
+  outline: none;
+  text-decoration: underline;
+  text-underline-offset: 0.25rem;
+}
+
+.wa-openclaw__secondary {
+  border: 0;
+  background: transparent;
+  color: var(--text-secondary);
+  font-size: 0.95rem;
+  cursor: pointer;
+  transition: opacity 0.18s ease;
+}
+
+.wa-openclaw__secondary:hover {
+  opacity: 0.86;
+}
+
+.wa-openclaw__secondary:focus-visible {
+  outline: none;
+  text-decoration: underline;
+  text-underline-offset: 0.25rem;
+}
+
+.wa-openclaw__primary {
+  border: 1px solid rgba(255, 255, 255, 0.38);
+  border-radius: 999px;
+  padding: 0.45rem 1.2rem;
+  font-size: 0.9rem;
+  font-weight: 500;
+  letter-spacing: -0.015em;
+  color: #0a0a0c;
+  cursor: pointer;
+  background: linear-gradient(180deg, #fbfbff 0%, #e4e4ea 100%);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.75),
+    0 10px 26px rgba(0, 0, 0, 0.38);
+  transition: opacity 0.2s ease, border-color 0.2s ease;
+}
+
+.wa-openclaw__primary:hover:not(:disabled) {
+  border-color: rgba(255, 255, 255, 0.55);
+}
+
+.wa-openclaw__primary:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+
+.wa-openclaw__progress-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 1rem;
+  width: 100%;
+  max-width: 320px;
+  margin: 0 auto;
+}
+
+.wa-openclaw__progress-text {
+  font-size: 0.95rem;
+  font-weight: 500;
+  color: var(--welcome-fg);
+  margin: 0;
+}
+
+.wa-openclaw__progress-track {
+  width: 100%;
+  height: 4px;
+  border-radius: 2px;
+  background: var(--welcome-line);
+  overflow: hidden;
+  position: relative;
+}
+
+.wa-openclaw__progress-fill {
+  height: 100%;
+  background: var(--welcome-fg);
+  border-radius: 2px;
+  transform-origin: left;
+}
+
+.wa-openclaw__qr-wrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.65rem;
+}
+
+/* LoadingScreen embebido: NO usar 100vh (rompe el layout del paso). */
+.wa-openclaw__inline-loading.loading-screen,
+.loading-screen.wa-openclaw__inline-loading {
+  min-height: 0;
+  height: auto;
+  padding: clamp(0.75rem, 2vh, 1.25rem) 1rem;
+  background: transparent;
+  gap: 0.85rem;
+}
+
+.wa-openclaw__countdown {
+  font-size: 0.92rem;
+  color: rgba(235, 235, 245, 0.62);
+  text-align: center;
+}
+
+.wa-openclaw__regenerate {
+  border: 1px solid rgba(255, 255, 255, 0.38);
+  border-radius: 999px;
+  padding: 0.45rem 1.2rem;
+  font-size: 0.9rem;
+  font-weight: 500;
+  letter-spacing: -0.015em;
+  color: #0a0a0c;
+  cursor: pointer;
+  background: linear-gradient(180deg, #fbfbff 0%, #e4e4ea 100%);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.75),
+    0 10px 26px rgba(0, 0, 0, 0.38);
+  transition: opacity 0.2s ease, border-color 0.2s ease;
+}
+
+.wa-openclaw__regenerate:hover {
+  border-color: rgba(255, 255, 255, 0.55);
+}
+
+@keyframes qr-fade-in {
+  from {
+    opacity: 0;
+    transform: scale(0.95);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+@keyframes welcome-float-a {
+  0% { transform: translate(0, 0) scale(1); }
+  100% { transform: translate(4%, -6%) scale(1.08); }
+}
+
+@keyframes welcome-float-b {
+  0% { transform: translate(0, 0) scale(1); }
+  100% { transform: translate(-6%, 3%) scale(1.06); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .wa-openclaw__glow {
+    animation: none !important;
+  }
+}
+
+@media (max-height: 720px) {
+  .wa-openclaw__title {
+    font-size: clamp(1.2rem, 2.8vh, 1.85rem);
+  }
+
+  .wa-openclaw__qr-frame img {
+    width: min(34vmin, 180px);
+    max-height: min(32vh, 180px);
+  }
+}

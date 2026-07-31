@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>DOT API - Documentacion</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen,
+                   Ubuntu, Cantarell, sans-serif;
+      background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #e2e8f0;
+    }
+    .container {
+      max-width: 640px;
+      width: 90%;
+      padding: 2rem;
+      text-align: center;
+    }
+    .logo {
+      font-size: 2.5rem;
+      font-weight: 800;
+      letter-spacing: -0.02em;
+      margin-bottom: 0.5rem;
+    }
+    .logo span { color: #38bdf8; }
+    .subtitle {
+      font-size: 1.1rem;
+      color: #94a3b8;
+      margin-bottom: 2.5rem;
+    }
+    .cards {
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+    }
+    .card {
+      background: rgba(255, 255, 255, 0.04);
+      backdrop-filter: blur(12px);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      border-radius: 12px;
+      padding: 1.25rem 1.5rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      transition: background 0.2s, border-color 0.2s;
+      text-decoration: none;
+      color: inherit;
+    }
+    .card:hover {
+      background: rgba(56, 189, 248, 0.08);
+      border-color: #38bdf880;
+    }
+    .card-info {
+      text-align: left;
+    }
+    .card-title {
+      font-size: 1.1rem;
+      font-weight: 600;
+      margin-bottom: 0.2rem;
+    }
+    .card-desc {
+      font-size: 0.85rem;
+      color: #94a3b8;
+    }
+    .card-badge {
+      background: #38bdf8;
+      color: #0f172a;
+      font-size: 0.75rem;
+      font-weight: 700;
+      padding: 0.25rem 0.6rem;
+      border-radius: 6px;
+      white-space: nowrap;
+      margin-left: 1rem;
+    }
+    .footer {
+      margin-top: 2.5rem;
+      font-size: 0.85rem;
+      color: #64748b;
+    }
+    .footer a {
+      color: #38bdf8;
+      text-decoration: none;
+    }
+    .footer a:hover { text-decoration: underline; }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="logo">DOT<span>API</span></div>
+    <p class="subtitle">Documentacion interactiva de la API publica</p>
+
+    <div class="cards">
+      <a class="card" href="/docs">
+        <div class="card-info">
+          <div class="card-title">Swagger UI</div>
+          <div class="card-desc">Explora y prueba los endpoints desde el navegador</div>
+        </div>
+        <span class="card-badge">/docs</span>
+      </a>
+      <a class="card" href="/redoc">
+        <div class="card-info">
+          <div class="card-title">ReDoc</div>
+          <div class="card-desc">Documentacion visual alternativa con esquemas detallados</div>
+        </div>
+        <span class="card-badge">/redoc</span>
+      </a>
+      <a class="card" href="/openapi.json">
+        <div class="card-info">
+          <div class="card-title">OpenAPI Schema</div>
+          <div class="card-desc">Schema JSON raw para integracion con herramientas externas</div>
+        </div>
+        <span class="card-badge">JSON</span>
+      </a>
+    </div>
+
+    <p class="footer">
+      DOT &mdash; <a href="https://dot.ai" target="_blank" rel="noopener">dot.ai</a>
+    </p>
+  </div>
+</body>
+</html>

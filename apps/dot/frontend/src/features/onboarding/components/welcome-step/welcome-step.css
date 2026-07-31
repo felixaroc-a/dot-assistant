@@ -1,0 +1,179 @@
+.welcome-step {
+  position: relative;
+  isolation: isolate;
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: clamp(1.75rem, 4vw, 3.5rem);
+  overflow: hidden;
+  background: var(--welcome-bg, #0a0a0f);
+    10|}
+
+.welcome-step__grain {
+  position: absolute;
+  inset: -30%;
+  z-index: 0;
+  pointer-events: none;
+  opacity: 0.035;
+  background-image: radial-gradient(rgba(255, 255, 255, 0.42) 0.65px, transparent 0.7px);
+  background-size: 3px 3px;
+    20|  mix-blend-mode: screen;
+}
+
+.welcome-step__glow {
+  position: absolute;
+  width: min(640px, 90vw);
+  height: min(640px, 90vw);
+  border-radius: 50%;
+  pointer-events: none;
+  filter: blur(140px);
+  z-index: 0;
+    30|}
+
+.welcome-step__glow--a {
+  left: -18%;
+  top: -12%;
+  background: radial-gradient(circle, var(--welcome-glow, rgba(100, 140, 255, 0.12)) 0%, transparent 68%);
+  animation: welcome-float-a 26s ease-in-out infinite alternate;
+}
+
+.welcome-step__glow--b {
+  right: -20%;
+    40|  bottom: -18%;
+  background: radial-gradient(circle, rgba(255, 255, 255, 0.05) 0%, transparent 72%);
+  animation: welcome-float-b 30s ease-in-out infinite alternate;
+}
+
+.welcome-step__pulse--backdrop {
+  position: absolute;
+  inset: 10% auto auto 50%;
+  width: min(780px, 110vw);
+  height: min(780px, 110vw);
+    50|  translate: -50% 0;
+  z-index: 0;
+  border-radius: 50%;
+  pointer-events: none;
+  background: radial-gradient(
+    ellipse at center,
+    rgba(255, 255, 255, 0.075) 0%,
+    rgba(255, 255, 255, 0.018) 38%,
+    transparent 60%
+  );
+    60|  filter: blur(14px);
+}
+
+.welcome-step__content {
+  position: relative;
+  z-index: 1;
+  text-align: center;
+  max-width: 36rem;
+  width: 100%;
+}
+
+.welcome-step__icon {
+  margin-bottom: 1rem;
+  width: 80px;
+  height: 80px;
+  display: inline-block;
+}
+
+.welcome-step__icon svg {
+  width: 100%;
+  height: 100%;
+}
+
+.welcome-step__logo {
+    70|  margin: 0;
+  font-size: clamp(3.2rem, 8vw, 5.5rem);
+  font-weight: 600;
+  line-height: 1.05;
+  letter-spacing: -0.05em;
+  color: var(--welcome-fg, #f9f9fb);
+}
+
+.welcome-step__char {
+  display: inline-block;
+  white-space: pre;
+    80|}
+
+.welcome-step__tagline {
+  margin: 1rem auto 0;
+  font-size: 1.125rem;
+  line-height: 1.45;
+  font-weight: 400;
+  letter-spacing: -0.01em;
+  color: rgba(249, 249, 251, 0.82);
+}
+
+    90|.welcome-step__description {
+  margin: 0.6rem auto 0;
+  font-size: 0.85rem;
+  font-weight: 400;
+  letter-spacing: 0.03em;
+  color: rgba(235, 235, 245, 0.5);
+}
+
+.welcome-step__cta {
+  display: inline-flex;
+  align-items: center;
+   100|  gap: 0.55rem;
+  margin-top: 2.25rem;
+  padding: 0.75rem 2rem;
+  font-size: 0.95rem;
+  font-weight: 500;
+  font-family: inherit;
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  border-radius: 10px;
+  background: rgba(255, 255, 255, 0.06);
+  color: rgba(249, 249, 251, 0.92);
+  cursor: pointer;
+   110|  transition: background 0.2s ease, border-color 0.2s ease, transform 0.15s ease;
+}
+
+.welcome-step__cta:hover {
+  background: rgba(255, 255, 255, 0.12);
+  border-color: rgba(255, 255, 255, 0.3);
+  transform: translateY(-1px);
+}
+
+.welcome-step__cta:active {
+  transform: translateY(0);
+   120|}
+
+.welcome-step__cta-arrow {
+  font-size: 1.1rem;
+  transition: transform 0.2s ease;
+}
+
+.welcome-step__cta:hover .welcome-step__cta-arrow {
+  transform: translateX(3px);
+}
+
+.welcome-step__step-indicator {
+   130|  margin-top: 1.6rem;
+  font-size: 0.6875rem;
+  font-weight: 500;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: rgba(235, 235, 245, 0.3);
+}
+
+@keyframes welcome-float-a {
+  0%   { transform: translate(0, 0) scale(1); }
+   140|  100% { transform: translate(18px, -14px) scale(1.05); }
+}
+
+@keyframes welcome-float-b {
+  0%   { transform: translate(0, 0) scale(1); }
+  100% { transform: translate(-20px, 16px) scale(1.05); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .welcome-step__glow,
+  .welcome-step__cta,
+  .welcome-step__cta-arrow {
+   150|    animation: none !important;
+    transition: none !important;
+  }
+}

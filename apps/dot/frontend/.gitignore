@@ -1,0 +1,55 @@
+# Logs
+logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+lerna-debug.log*
+
+node_modules
+dist
+dist-ssr
+release
+
+*.local
+
+# Test artifacts
+test_*.mjs
+test_*.cjs
+test_*.js
+*_log.txt
+stderr_electron.txt
+stdout_electron.txt
+builder-debug.yml
+
+# Cursor (metadatos locales del IDE)
+.cursor/
+
+# Google OAuth / credenciales locales (no subir a git)
+client_secret.json
+client_secret*.json
+token.pickle
+.env.local
+.env
+electron/build-secrets.json
+
+# Backend Python (FastAPI / Firebase Admin)
+backend/.env
+backend/.venv/
+backend/venv/
+**/firebase-service-account.json
+**/firebase-adminsdk*.json
+**/__pycache__/
+*.py[cod]
+
+# Editor directories and files
+.vscode/*
+!.vscode/extensions.json
+.idea
+.DS_Store
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?

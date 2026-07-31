@@ -1,0 +1,29 @@
+{
+  "name": "twitter_post",
+  "description": "Publica un tweet en X/Twitter usando API v2. Máximo 280 caracteres. Requiere OAuth 1.0a configurado.",
+  "category": "social",
+  "capability": "B",
+  "parameters": {
+    "text": {
+      "type": "string",
+      "required": true,
+      "maxLength": 280,
+      "description": "Texto del tweet (máximo 280 caracteres)"
+    },
+    "reply_to": {
+      "type": "string",
+      "required": false,
+      "description": "ID del tweet al que responder (opcional)"
+    }
+  },
+  "handler": "twitter.post",
+  "rateLimit": {
+    "maxPerMinute": 3,
+    "maxPerHour": 50,
+    "maxPerDay": 1500
+  },
+  "timeout": 15000,
+  "requiresAuth": true,
+  "authProvider": "twitter_oauth1a",
+  "tags": ["twitter", "social", "post"]
+}

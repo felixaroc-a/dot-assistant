@@ -1,0 +1,67 @@
+/* Paleta Apple Monocromática Premium — scoped al dashboard */
+.main-dashboard {
+  --dash-bg: #000000;
+  --dash-surface: #1c1c1e;
+  --dash-surface-elevated: #2c2c2e;
+  --dash-text-primary: #ffffff;
+  --dash-text-secondary: #8e8e93;
+  --dash-accent: #ffffff;
+  --dash-accent-hover: #f5f5f7;
+  --dash-border: #2c2c2e;
+  --dash-success: #30d158;
+  --dash-warning: #ffd60a;
+  --dash-error: #ff453a;
+
+  /* Medidor de consumo IA */
+  --usage-green: var(--dash-success);
+  --usage-yellow: var(--dash-warning);
+  --usage-red: var(--dash-error);
+  
+  /* Burbujas de Chat */
+  --dash-bubble-user: #1c1c1e;
+  --dash-bubble-user-border: #3a3a3c;
+  --dash-bubble-user-text: #ffffff;
+  --dash-bubble-agent: #2c2c2e;
+  --dash-bubble-agent-border: #3a3a3c;
+  --dash-bubble-agent-text: #e5e5ea;
+
+  --dash-shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.3);
+  --dash-shadow-md: 0 4px 16px rgba(0, 0, 0, 0.4);
+  --dash-radius: 12px;
+  --dash-radius-lg: 18px;
+  --dash-transition: 0.25s cubic-bezier(0.25, 0.1, 0.25, 1);
+
+  /* Brand gold accent (invariante entre temas) */
+  --dash-gold: #c4a574;
+  --dash-gold-light: #e0c090;
+  --dash-gold-text: #1a1408;
+
+  /* Overlays adaptativos */
+  --dash-overlay-hover: color-mix(in srgb, var(--dash-text-primary) 4%, transparent);
+  --dash-overlay-active: color-mix(in srgb, var(--dash-text-primary) 7%, transparent);
+}
+
+[data-theme='light'] .main-dashboard {
+  --dash-bg: #ffffff;
+  --dash-surface: #f5f5f7;
+  --dash-surface-elevated: #ffffff;
+  --dash-text-primary: #000000;
+  --dash-text-secondary: #6e6e73;
+  --dash-accent: #000000;
+  --dash-accent-hover: #333333;
+  --dash-border: #e5e5ea;
+  --dash-success: #34c759;
+  --dash-warning: #ffcc00;
+  --dash-error: #ff3b30;
+
+  /* Burbujas de Chat (Apple-style) */
+  --dash-bubble-user: #000000;
+  --dash-bubble-user-border: transparent;
+  --dash-bubble-user-text: #ffffff;
+  --dash-bubble-agent: #f5f5f7;
+  --dash-bubble-agent-border: transparent;
+  --dash-bubble-agent-text: #000000;
+
+  --dash-shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.05);
+  --dash-shadow-md: 0 4px 16px rgba(0, 0, 0, 0.08);
+}

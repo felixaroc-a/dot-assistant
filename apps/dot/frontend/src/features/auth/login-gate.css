@@ -1,0 +1,565 @@
+.login-gate {
+  position: relative;
+  isolation: isolate;
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: clamp(1.5rem, 4vw, 2.75rem);
+  overflow: hidden;
+  background: var(--welcome-bg, #050505);
+}
+
+.login-gate--auth {
+  min-height: 100vh;
+}
+
+.login-gate__loading,
+.login-gate--error {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 0.75rem;
+  padding: 2rem;
+  color: rgba(235, 235, 245, 0.88);
+  background: var(--welcome-bg, #050505);
+  text-align: center;
+}
+
+.login-gate__card {
+  position: relative;
+  z-index: 1;
+  width: min(100%, 520px);
+  padding: clamp(1.6rem, 3vw, 2.1rem) clamp(1.25rem, 3vw, 1.85rem);
+  border-radius: 20px;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  background: linear-gradient(165deg, rgba(28, 28, 32, 0.92), rgba(14, 14, 16, 0.96));
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.06),
+    0 24px 80px rgba(0, 0, 0, 0.55);
+}
+
+.login-gate__card--auth {
+  width: min(100%, 560px);
+  padding: clamp(2rem, 4vw, 2.75rem) clamp(1.5rem, 4vw, 2.25rem);
+}
+
+.login-gate__header {
+  margin-bottom: clamp(1.5rem, 3vw, 2rem);
+  text-align: center;
+}
+
+.login-gate__eyebrow {
+  margin: 0 0 0.65rem;
+  font-size: 0.78rem;
+  font-weight: 600;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: rgba(235, 235, 245, 0.42);
+}
+
+.login-gate__title {
+  margin: 0;
+  font-size: clamp(1.75rem, 4vw, 2.35rem);
+  font-weight: 600;
+  letter-spacing: -0.04em;
+  color: var(--welcome-fg, #f5f5f7);
+}
+
+.login-gate__lead {
+  margin: 0.75rem auto 0;
+  max-width: 34rem;
+  font-size: clamp(0.95rem, 2vw, 1.05rem);
+  color: rgba(235, 235, 245, 0.62);
+  line-height: 1.55;
+}
+
+.login-gate__form {
+  display: flex;
+  flex-direction: column;
+  gap: 0.15rem;
+}
+
+.login-gate__label {
+  display: flex;
+  flex-direction: column;
+  gap: 0.55rem;
+  margin-bottom: 1.1rem;
+}
+
+.login-gate__label-text {
+  font-size: 0.72rem;
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: rgba(235, 235, 245, 0.52);
+}
+
+.login-gate__input {
+  padding: 0.82rem 1rem;
+  border-radius: 14px;
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  background: rgba(0, 0, 0, 0.35);
+  color: #f5f5f7;
+  font-size: 1.05rem;
+  font-family: inherit;
+  outline: none;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.login-gate__input::placeholder {
+  color: rgba(235, 235, 245, 0.38);
+}
+
+.login-gate__input:focus-visible {
+  border-color: rgba(255, 255, 255, 0.42);
+  box-shadow: 0 0 0 3px rgba(255, 255, 255, 0.08);
+}
+
+.login-gate__error {
+  margin: 0 0 0.75rem;
+  font-size: 0.88rem;
+  color: #ffb4b4;
+}
+
+.login-gate__row {
+  display: flex;
+  gap: 0.65rem;
+  flex-wrap: wrap;
+}
+
+.login-gate__primary,
+.login-gate__secondary,
+.login-gate__google {
+  font-size: 0.95rem;
+  font-weight: 500;
+  padding: 0.65rem 1rem;
+  border-radius: 10px;
+  cursor: pointer;
+  border: 1px solid transparent;
+}
+
+.login-gate__primary {
+  flex: 1;
+  min-width: 120px;
+  min-height: 3.1rem;
+  font-size: 1rem;
+  font-weight: 600;
+  letter-spacing: 0.01em;
+  font-family: inherit;
+  background: linear-gradient(165deg, rgba(255, 255, 255, 1), rgba(244, 244, 248, 0.99));
+  color: #0e0e12;
+  transition: transform 0.18s ease, opacity 0.18s ease;
+}
+
+.login-gate__primary:hover:not(:disabled) {
+  transform: translateY(-1px);
+}
+
+.login-gate__primary--full {
+  width: 100%;
+  margin-top: 0.35rem;
+}
+
+.login-gate__primary:disabled {
+  opacity: 0.45;
+  cursor: not-allowed;
+  transform: none;
+}
+
+.login-gate__secondary {
+  flex: 1;
+  min-width: 120px;
+  background: transparent;
+  border-color: rgba(255, 255, 255, 0.2);
+  color: rgba(235, 235, 245, 0.92);
+}
+
+.login-gate__secondary:disabled {
+  opacity: 0.55;
+  cursor: not-allowed;
+}
+
+.login-gate__divider {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  margin: 1.1rem 0;
+  color: rgba(235, 235, 245, 0.45);
+  font-size: 0.85rem;
+}
+
+.login-gate__divider::before,
+.login-gate__divider::after {
+  content: '';
+  flex: 1;
+  height: 1px;
+  background: rgba(255, 255, 255, 0.12);
+}
+
+.login-gate__google {
+  width: 100%;
+  background: rgba(66, 133, 244, 0.15);
+  border-color: rgba(66, 133, 244, 0.35);
+  color: #e8f1ff;
+}
+
+.login-gate__google:disabled {
+  opacity: 0.55;
+  cursor: not-allowed;
+}
+
+.login-gate__text {
+  max-width: 36rem;
+  margin: 0;
+  color: rgba(235, 235, 245, 0.72);
+  line-height: 1.5;
+}
+
+/* ─── Grain & glow (shared with subscription expired) ─── */
+
+.login-gate__grain {
+  position: absolute;
+  inset: -28%;
+  z-index: 0;
+  pointer-events: none;
+  opacity: 0.032;
+  background-image: radial-gradient(rgba(255, 255, 255, 0.36) 0.65px, transparent 0.7px);
+  background-size: 3px 3px;
+  mix-blend-mode: screen;
+}
+
+.login-gate__glow {
+  position: absolute;
+  width: min(720px, 95vw);
+  height: min(720px, 95vw);
+  border-radius: 50%;
+  pointer-events: none;
+  z-index: 0;
+  filter: blur(130px);
+}
+
+.login-gate__glow--a {
+  top: -20%;
+  left: 8%;
+  background: radial-gradient(circle, rgba(255, 255, 255, 0.055) 0%, transparent 68%);
+  animation: welcome-float-a 26s ease-in-out infinite alternate;
+}
+
+.login-gate__glow--b {
+  right: -12%;
+  bottom: -24%;
+  background: radial-gradient(circle, rgba(255, 255, 255, 0.04) 0%, transparent 72%);
+  animation: welcome-float-b 30s ease-in-out infinite alternate;
+}
+
+.login-gate__expired-icon {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 1rem;
+  color: rgba(255, 180, 60, 0.8);
+}
+
+/* ─── Logout confirm modal ─── */
+
+.logout-modal__overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 100;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1rem;
+}
+
+.logout-modal__backdrop {
+  position: absolute;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.5);
+  backdrop-filter: blur(4px);
+}
+
+.logout-modal {
+  position: relative;
+  z-index: 1;
+  width: min(360px, calc(100vw - 2rem));
+  padding: 1.5rem;
+  border-radius: 20px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  background: linear-gradient(160deg, rgba(36, 36, 40, 0.96), rgba(18, 18, 20, 0.98));
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.06),
+    0 20px 60px rgba(0, 0, 0, 0.5);
+  text-align: center;
+}
+
+.logout-modal__icon {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 0.75rem;
+  color: rgba(235, 235, 245, 0.55);
+}
+
+.logout-modal__title {
+  margin: 0 0 0.5rem;
+  font-size: 1.15rem;
+  font-weight: 600;
+  letter-spacing: -0.02em;
+  color: var(--welcome-fg, #f5f5f7);
+}
+
+.logout-modal__desc {
+  margin: 0 0 1.25rem;
+  font-size: 0.9rem;
+  color: rgba(235, 235, 245, 0.6);
+  line-height: 1.4;
+}
+
+.logout-modal__actions {
+  display: flex;
+  gap: 0.65rem;
+}
+
+.logout-modal__btn {
+  flex: 1;
+  font-size: 0.9rem;
+  font-weight: 500;
+  padding: 0.65rem 1rem;
+  border-radius: 10px;
+  cursor: pointer;
+  font-family: inherit;
+  border: 1px solid transparent;
+  transition: background 0.2s ease, border-color 0.2s ease;
+}
+
+.logout-modal__btn--cancel {
+  background: transparent;
+  border-color: rgba(255, 255, 255, 0.2);
+  color: rgba(235, 235, 245, 0.92);
+}
+
+.logout-modal__btn--cancel:hover {
+  background: rgba(255, 255, 255, 0.06);
+}
+
+.logout-modal__btn--confirm {
+  background: rgba(255, 69, 58, 0.15);
+  border-color: rgba(255, 69, 58, 0.3);
+  color: #ff453a;
+}
+
+.logout-modal__btn--confirm:hover {
+  background: rgba(255, 69, 58, 0.25);
+  border-color: rgba(255, 69, 58, 0.45);
+}
+
+/* ─── Cédula prefix select + digits ─── */
+
+.login-gate__cedula-row {
+  display: flex;
+  gap: 0.5rem;
+  align-items: stretch;
+}
+
+.login-gate__cedula-prefix {
+  flex: 0 0 auto;
+  padding: 0.82rem 0.65rem;
+  border-radius: 14px;
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  background: rgba(0, 0, 0, 0.35);
+  color: #f5f5f7;
+  font-size: 1.05rem;
+  font-family: inherit;
+  cursor: pointer;
+  appearance: none;
+  -webkit-appearance: none;
+  min-width: 3.6rem;
+  text-align: center;
+  outline: none;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.login-gate__cedula-prefix:focus-visible {
+  border-color: rgba(255, 255, 255, 0.42);
+  box-shadow: 0 0 0 3px rgba(255, 255, 255, 0.08);
+}
+
+.login-gate__cedula-digits {
+  flex: 1;
+  padding: 0.82rem 1rem;
+  border-radius: 14px;
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  background: rgba(0, 0, 0, 0.35);
+  color: #f5f5f7;
+  font-size: 1.05rem;
+  font-family: inherit;
+  outline: none;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.login-gate__cedula-digits::placeholder {
+  color: rgba(235, 235, 245, 0.38);
+}
+
+.login-gate__cedula-digits:focus-visible {
+  border-color: rgba(255, 255, 255, 0.42);
+  box-shadow: 0 0 0 3px rgba(255, 255, 255, 0.08);
+}
+
+/* ─── Password toggle ─── */
+
+.login-gate__password-row {
+  display: flex;
+  align-items: stretch;
+  gap: 0;
+}
+
+.login-gate__password-input {
+  flex: 1;
+  padding: 0.82rem 1rem;
+  border-radius: 14px 0 0 14px;
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  border-right: none;
+  background: rgba(0, 0, 0, 0.35);
+  color: #f5f5f7;
+  font-size: 1.05rem;
+  font-family: inherit;
+  outline: none;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.login-gate__password-input::placeholder {
+  color: rgba(235, 235, 245, 0.38);
+}
+
+.login-gate__password-input:focus-visible {
+  border-color: rgba(255, 255, 255, 0.42);
+  box-shadow: 0 0 0 3px rgba(255, 255, 255, 0.08);
+}
+
+.login-gate__password-toggle {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0.82rem 0.95rem;
+  border-radius: 0 14px 14px 0;
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  background: rgba(0, 0, 0, 0.35);
+  color: rgba(235, 235, 245, 0.55);
+  cursor: pointer;
+  font-family: inherit;
+  transition: color 0.2s ease, border-color 0.2s ease;
+}
+
+.login-gate__password-toggle:hover {
+  color: rgba(235, 235, 245, 0.9);
+}
+
+/* ─── Lost pendrive link ─── */
+
+.login-gate__lost-link {
+  display: block;
+  width: fit-content;
+  margin: 1rem auto 0;
+  padding: 0.35rem 0.25rem;
+  font-size: 0.88rem;
+  color: rgba(235, 235, 245, 0.52);
+  background: none;
+  border: none;
+  cursor: pointer;
+  text-decoration: underline;
+  text-underline-offset: 4px;
+  font-family: inherit;
+  transition: color 0.2s ease;
+}
+
+.login-gate__lost-link:hover {
+  color: rgba(235, 235, 245, 0.85);
+}
+
+/* ─── Compact layout (pendrive gate) ─── */
+
+.login-gate--compact {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 0.75rem;
+  padding: 2rem;
+  background: var(--welcome-bg, #050505);
+  text-align: center;
+}
+
+.login-gate__retry {
+  flex: 0 0 auto;
+  min-width: auto;
+  padding: 0.5rem 1rem;
+  font-size: 0.85rem;
+  border-radius: 8px;
+  background: transparent;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  color: rgba(235, 235, 245, 0.92);
+  cursor: pointer;
+}
+
+/* ─── CedulaField (prefijo + número) ─── */
+
+.cedula-field {
+  display: flex;
+  gap: 0;
+}
+
+.cedula-field__prefix {
+  width: 60px;
+  padding: 0.65rem 0.5rem;
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  border-right: none;
+  border-radius: 10px 0 0 10px;
+  background: rgba(0, 0, 0, 0.28);
+  color: #f5f5f7;
+  font-size: 1rem;
+  text-align: center;
+  cursor: pointer;
+  appearance: none;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+}
+
+.cedula-field__prefix:focus {
+  outline: 2px solid rgba(120, 160, 255, 0.45);
+  outline-offset: 1px;
+}
+
+.cedula-field__input {
+  flex: 1;
+  padding: 0.65rem 0.85rem;
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  border-radius: 0 10px 10px 0;
+  background: rgba(0, 0, 0, 0.28);
+  color: #f5f5f7;
+  font-size: 1rem;
+}
+
+.cedula-field__input:focus {
+  outline: 2px solid rgba(120, 160, 255, 0.45);
+  outline-offset: 1px;
+}
+
+.cedula-field__error {
+  margin: 0.35rem 0 0;
+  font-size: 0.82rem;
+  color: #ffb4b4;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .login-gate__glow {
+    animation: none !important;
+  }
+
+  .login-gate__primary:hover:not(:disabled) {
+    transform: none;
+  }
+}

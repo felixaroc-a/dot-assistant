@@ -1,0 +1,347 @@
+.channel {
+  position: relative;
+  isolation: isolate;
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: clamp(1.75rem, 4vw, 3.5rem);
+  overflow: hidden;
+  background: var(--welcome-bg);
+}
+
+.channel__grain {
+  position: absolute;
+  inset: -30%;
+  z-index: 0;
+  pointer-events: none;
+  opacity: 0.032;
+  background-image: radial-gradient(rgba(255, 255, 255, 0.36) 0.65px, transparent 0.7px);
+  background-size: 3px 3px;
+  mix-blend-mode: screen;
+}
+
+.channel__glow {
+  position: absolute;
+  width: min(620px, 86vw);
+  height: min(620px, 86vw);
+  border-radius: 50%;
+  pointer-events: none;
+  filter: blur(120px);
+  z-index: 0;
+}
+
+.channel__glow--a {
+  top: -18%;
+  left: 14%;
+  background: radial-gradient(circle, rgba(255, 255, 255, 0.06) 0%, transparent 67%);
+  animation: welcome-float-a 24s ease-in-out infinite alternate;
+}
+
+.channel__glow--b {
+  right: 2%;
+  bottom: -26%;
+  background: radial-gradient(circle, rgba(255, 255, 255, 0.04) 0%, transparent 72%);
+  animation: welcome-float-b 30s ease-in-out infinite alternate;
+}
+
+.channel__content {
+  position: relative;
+  z-index: 1;
+  width: min(760px, 100%);
+  text-align: center;
+}
+
+.channel__title {
+  margin: 0;
+  font-size: clamp(2rem, 5.2vw, 3.8rem);
+  line-height: 1.08;
+  letter-spacing: -0.045em;
+  font-weight: 600;
+  color: var(--welcome-fg);
+}
+
+.channel__grid {
+  margin-top: clamp(1.8rem, 4vw, 2.4rem);
+  display: grid;
+  grid-template-columns: repeat(2, minmax(180px, 230px));
+  justify-content: center;
+  gap: clamp(0.8rem, 2vw, 1.1rem);
+}
+
+.channel__grid--single {
+  grid-template-columns: minmax(180px, 230px);
+}
+
+.channel-card {
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  background: linear-gradient(160deg, rgba(36, 36, 40, 0.9), rgba(22, 22, 24, 0.92));
+  border-radius: 20px;
+  color: var(--welcome-fg);
+  padding: 1.2rem 1rem 1.05rem;
+  min-height: 176px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  isolation: isolate;
+  cursor: pointer;
+  transition:
+    background 0.42s cubic-bezier(0.16, 1, 0.3, 1),
+    border-color 0.42s cubic-bezier(0.16, 1, 0.3, 1),
+    box-shadow 0.42s cubic-bezier(0.16, 1, 0.3, 1),
+    color 0.42s cubic-bezier(0.16, 1, 0.3, 1),
+    transform 0.42s cubic-bezier(0.16, 1, 0.3, 1);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.06),
+    0 14px 40px rgba(0, 0, 0, 0.45);
+}
+
+.channel-card:hover {
+  transform: translateY(-3px);
+  border-color: rgba(255, 255, 255, 0.82);
+  background: linear-gradient(165deg, rgba(252, 252, 254, 0.98), rgba(236, 236, 242, 0.97));
+  color: #0e0e12;
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.95),
+    0 18px 48px rgba(0, 0, 0, 0.28);
+}
+
+.channel-card:hover .channel-card__name {
+  color: #0e0e12;
+}
+
+.channel-card:hover .channel-card__helper {
+  color: rgba(14, 14, 18, 0.52);
+}
+
+.channel-card:hover .channel-card__badge {
+  border-color: rgba(14, 14, 18, 0.14);
+  box-shadow:
+    inset 0 1px 1px rgba(255, 255, 255, 0.9),
+    0 6px 18px rgba(0, 0, 0, 0.12);
+}
+
+.channel-card:focus-visible {
+  outline: none;
+  border-color: rgba(255, 255, 255, 0.55);
+  box-shadow:
+    0 0 0 3px rgba(255, 255, 255, 0.15),
+    inset 0 1px 0 rgba(255, 255, 255, 0.06),
+    0 14px 40px rgba(0, 0, 0, 0.45);
+}
+
+.channel-card--active {
+  border-color: var(--success);
+  border-width: 2px;
+  background: linear-gradient(160deg, rgba(52, 52, 58, 0.95), rgba(24, 24, 30, 0.98));
+  box-shadow:
+    0 0 0 3px rgba(255, 255, 255, 0.12),
+    inset 0 1px 0 rgba(255, 255, 255, 0.14),
+    0 20px 50px rgba(0, 0, 0, 0.55);
+}
+
+.channel-card--active:hover {
+  border-color: rgba(255, 255, 255, 0.95);
+  background: linear-gradient(165deg, #ffffff 0%, rgba(242, 242, 248, 0.99) 100%);
+  color: #0e0e12;
+  box-shadow:
+    0 0 0 2px rgba(14, 14, 18, 0.08),
+    inset 0 1px 0 rgba(255, 255, 255, 1),
+    0 22px 52px rgba(0, 0, 0, 0.22);
+}
+
+.channel-card--active:hover .channel-card__name {
+  color: #0e0e12;
+}
+
+.channel-card--active:hover .channel-card__helper {
+  color: rgba(14, 14, 18, 0.52);
+}
+
+.channel-card__badge {
+  width: 72px;
+  height: 72px;
+  border-radius: 50%;
+  display: grid;
+  place-items: center;
+  overflow: hidden;
+  flex-shrink: 0;
+  padding: 13px;
+  box-sizing: border-box;
+  border: 1px solid rgba(255, 255, 255, 0.42);
+  background:
+    radial-gradient(circle at 38% 32%, rgba(255, 255, 255, 1) 0%, rgba(239, 239, 244, 0.98) 52%, rgba(226, 226, 234, 0.96) 100%);
+  box-shadow:
+    inset 0 1px 1px rgba(255, 255, 255, 0.75),
+    0 8px 20px rgba(0, 0, 0, 0.35);
+  transition:
+    border-color 0.42s cubic-bezier(0.16, 1, 0.3, 1),
+    box-shadow 0.42s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.channel-card--active .channel-card__badge {
+  border-color: rgba(255, 255, 255, 0.72);
+  box-shadow:
+    inset 0 1px 1px rgba(255, 255, 255, 0.9),
+    0 0 0 2px rgba(255, 255, 255, 0.28),
+    0 10px 24px rgba(0, 0, 0, 0.4);
+}
+
+.channel-card__badge-img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  display: block;
+  user-select: none;
+  pointer-events: none;
+}
+
+.channel-card--active::after {
+  content: '✓';
+  position: absolute;
+  top: 12px;
+  right: 12px;
+  width: 34px;
+  height: 34px;
+  border-radius: 50%;
+  border: 2px solid rgba(255, 255, 255, 0.9);
+  background: var(--success);
+  color: var(--bg-primary);
+  display: grid;
+  place-items: center;
+  font-size: 1rem;
+  font-weight: 600;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.25);
+}
+
+.channel-card::after {
+  pointer-events: none;
+}
+
+.channel-card__name {
+  margin-top: 0.9rem;
+  font-size: 1.88rem;
+  line-height: 1.06;
+  letter-spacing: -0.03em;
+  font-weight: 510;
+  transition: color 0.42s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.channel-card__helper {
+  margin-top: 0.25rem;
+  font-size: 0.95rem;
+  color: rgba(235, 235, 245, 0.58);
+  transition: color 0.42s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.channel__back-row {
+  margin-top: clamp(1.25rem, 3vw, 1.75rem);
+  display: flex;
+  justify-content: flex-start;
+}
+
+.channel__back {
+  margin: 0;
+  border: 0;
+  background: transparent;
+  color: rgba(235, 235, 245, 0.52);
+  font-size: 0.95rem;
+  letter-spacing: 0.02em;
+  cursor: pointer;
+  padding: 0.35rem 0.25rem;
+  transition: color 0.18s ease;
+}
+
+.channel__back:hover {
+  color: rgba(245, 245, 250, 0.86);
+}
+
+.channel__back:focus-visible {
+  outline: none;
+  text-decoration: underline;
+  text-underline-offset: 0.25rem;
+}
+
+.channel__skip {
+  margin-top: 0;
+  border: 0;
+  background: transparent;
+  color: rgba(245, 245, 250, 0.78);
+  font-size: 1.02rem;
+  letter-spacing: -0.01em;
+  cursor: pointer;
+  transition: opacity 0.18s ease;
+}
+
+.channel__actions {
+  margin-top: clamp(1.75rem, 4vw, 2.25rem);
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  gap: 1rem 1.75rem;
+}
+
+.channel__continue {
+  border: 1px solid rgba(255, 255, 255, 0.38);
+  border-radius: 999px;
+  padding: 0.55rem 1.35rem;
+  font-size: 0.9375rem;
+  font-weight: 500;
+  letter-spacing: -0.015em;
+  color: #0a0a0c;
+  cursor: pointer;
+  background: linear-gradient(180deg, #fbfbff 0%, #e4e4ea 100%);
+  transition:
+    opacity 0.18s ease,
+    border-color 0.18s ease;
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.75),
+    0 10px 26px rgba(0, 0, 0, 0.38);
+}
+
+.channel__continue:hover:not(:disabled) {
+  border-color: rgba(255, 255, 255, 0.55);
+}
+
+.channel__continue:disabled {
+  opacity: 0.35;
+  cursor: not-allowed;
+}
+
+.channel__continue:focus-visible {
+  outline: none;
+  box-shadow:
+    0 0 0 3px rgba(255, 255, 255, 0.2),
+    inset 0 1px 0 rgba(255, 255, 255, 0.75),
+    0 10px 26px rgba(0, 0, 0, 0.38);
+}
+
+.channel__skip:hover {
+  opacity: 0.86;
+}
+
+.channel__skip:focus-visible {
+  outline: none;
+  text-decoration: underline;
+  text-underline-offset: 0.25rem;
+}
+
+@media (max-width: 720px) {
+  .channel__grid {
+    grid-template-columns: minmax(220px, 320px);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .channel__glow {
+    animation: none !important;
+  }
+
+  .channel-card:hover,
+  .channel-card--active:hover {
+    transform: none;
+  }
+}

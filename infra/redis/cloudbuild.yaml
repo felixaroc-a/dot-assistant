@@ -1,0 +1,103 @@
+# Cloud Build — Redis Memorystore + VPC Connector (Terraform)
+#
+# Memorystore no puede crearse directamente desde Cloud Build (requiere
+# API de red VPC). Este pipeline ejecuta Terraform apply que:
+#   1. Crea/actualiza la VPC connector serverless
+#   2. Crea/actualiza la instancia Redis Memorystore (BASIC, 1GB)
+#   3. Guarda la connection string en Secret Manager
+#
+# Uso:
+#   gcloud builds submit --config infra/redis/cloudbuild.yaml --no-source .
+#
+# Requisitos:
+#   - Cloud Build SA con roles: Service Account User, Secret Manager Admin,
+#     Redis Admin, Compute Network Admin, Serverless VPC Access Admin
+#   - Bucket GCS para Terraform state: gs://nordikia-tfstate/redis/
+#   - Archivos terraform en infra/redis/terraform/
+
+steps:
+  # ── Paso 1: Inicializar Terraform ─────────────────────────────────
+  - id: "terraform init"
+    name: hashicorp/terraform:1.9
+    entrypoint: sh
+    args:
+      - "-c"
+      - |
+        cd infra/redis/terraform
+        terraform init \
+          -backend-config="bucket=nordikia-tfstate" \
+          -backend-config="prefix=redis" \
+          -no-color
+
+  # ── Paso 2: Validar configuración ─────────────────────────────────
+  - id: "terraform validate"
+    name: hashicorp/terraform:1.9
+    entrypoint: sh
+    args:
+      - "-c"
+      - |
+        cd infra/redis/terraform
+        terraform validate -no-color
+
+  # ── Paso 3: Plan ──────────────────────────────────────────────────
+  - id: "terraform plan"
+    name: hashicorp/terraform:1.9
+    entrypoint: sh
+    args:
+      - "-c"
+      - |
+        cd infra/redis/terraform
+        terraform plan \
+          -var="project_id=nordikia" \
+          -var="region=southamerica-west1" \
+          -out=tfplan \
+          -no-color
+
+  # ── Paso 4: Apply (solo en push a main) ──────────────────────────
+  - id: "terraform apply"
+    name: hashicorp/terraform:1.9
+    entrypoint: sh
+    args:
+      - "-c"
+      - |
+        cd infra/redis/terraform
+        terraform apply -auto-approve tfplan -no-color
+
+  # ── Paso 5: Guardar connection string en Secret Manager ───────────
+  - id: "store redis connection string"
+    name: gcr.io/google.com/cloudsdktool/google-cloud-cli:alpine
+    entrypoint: sh
+    args:
+      - "-c"
+      - |
+        REDIS_HOST="$$(terraform -chdir=infra/redis/terraform output -raw redis_host)"
+        REDIS_PORT="$$(terraform -chdir=infra/redis/terraform output -raw redis_port)"
+        REDIS_URL="redis://$${REDIS_HOST}:$${REDIS_PORT}/0"
+
+        # Verificar si el secreto ya existe
+        if gcloud secrets describe nordik-redis-url --project=nordikia > /dev/null 2>&1; then
+          echo "$${REDIS_URL}" | gcloud secrets versions add nordik-redis-url \
+            --data-file=- \
+            --project=nordikia
+        else
+          echo "$${REDIS_URL}" | gcloud secrets create nordik-redis-url \
+            --data-file=- \
+            --replication-policy=automatic \
+            --project=nordikia
+        fi
+
+        echo "Redis connection string stored in Secret Manager: nordik-redis-url"
+
+options:
+  logging: CLOUD_LOGGING_ONLY
+  substitution_option: ALLOW_LOOSE
+
+timeout: 1800s
+
+# Disparadores sugeridos (configurar en Cloud Build Trigger):
+#   - Rama: main
+#   - Evento: push a infra/redis/**
+#   - Archivo incluido: infra/redis/terraform/**
+#
+# O ejecutar manualmente:
+#   gcloud builds submit --config infra/redis/cloudbuild.yaml --no-source .

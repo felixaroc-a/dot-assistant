@@ -1,0 +1,450 @@
+/* ── ConversationList B01 ──────────────────────────────────────── */
+
+.conv-list {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  min-height: 0;
+  background: var(--dash-surface);
+  min-width: 0;
+  max-width: none;
+  width: 100%;
+}
+
+.conv-list__header {
+  padding: 12px 16px 8px;
+  border-bottom: 1px solid var(--dash-border);
+}
+
+.conv-list__title {
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--dash-text-secondary);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  margin: 0 0 8px;
+}
+
+.conv-list__search {
+  width: 100%;
+  padding: 7px 10px;
+  border: 1px solid var(--dash-border);
+  border-radius: 8px;
+  background: var(--dash-bg);
+  color: var(--dash-text-primary);
+  font-size: 13px;
+  outline: none;
+  transition: border-color 0.15s;
+}
+
+.conv-list__search:focus {
+  border-color: var(--dash-accent);
+}
+
+.conv-list__search::placeholder {
+  color: var(--dash-text-muted);
+}
+
+.conv-list__new-btn {
+  margin: 10px 12px;
+  padding: 8px 14px;
+  border: 1px dashed var(--dash-border);
+  border-radius: 8px;
+  background: transparent;
+  color: var(--dash-accent);
+  font-size: 13px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background 0.15s, border-color 0.15s;
+  text-align: left;
+  width: calc(100% - 24px);
+}
+
+.conv-list__new-btn:hover {
+  background: var(--dash-accent-muted);
+  border-color: var(--dash-accent);
+}
+
+.conv-list__scroll {
+  flex: 1;
+  overflow-y: auto;
+  padding: 0 8px 8px;
+}
+
+.conv-list__empty {
+  color: var(--dash-text-muted);
+  font-size: 12px;
+  text-align: center;
+  padding: 24px 12px;
+}
+
+/* ── Empty state con ilustración ───────────────────────── */
+
+.conv-list__empty-state {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 2rem 1rem;
+  text-align: center;
+}
+
+.conv-list__empty-icon {
+  color: var(--dash-text-muted);
+  opacity: 0.35;
+  margin-bottom: 0.25rem;
+}
+
+.conv-list__empty-title {
+  font-size: 0.8rem;
+  font-weight: 500;
+  color: var(--dash-text-secondary);
+  margin: 0;
+}
+
+.conv-list__empty-desc {
+  font-size: 0.7rem;
+  color: var(--dash-text-muted);
+  margin: 0;
+  line-height: 1.4;
+  max-width: 180px;
+}
+
+/* ── Loading skeleton ───────────────────────────────────── */
+
+.conv-list__skeleton {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.conv-list__skeleton-item {
+  height: 42px;
+  border-radius: 8px;
+  background: var(--dash-surface);
+  overflow: hidden;
+  position: relative;
+}
+
+.conv-list__skeleton-item::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    color-mix(in srgb, var(--dash-text-primary) 5%, transparent),
+    transparent
+  );
+  animation: conv-list-shimmer 1.8s ease-in-out infinite;
+}
+
+@keyframes conv-list-shimmer {
+  0% { transform: translateX(-100%); }
+  100% { transform: translateX(100%); }
+}
+
+/* ── Item ─────────────────────────────────────────────────────── */
+
+.conv-list__item {
+  position: relative;
+  padding: 10px 12px;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background 0.15s ease, transform 0.12s ease;
+  margin-bottom: 2px;
+  user-select: none;
+}
+
+.conv-list__item:hover {
+  background: var(--dash-hover);
+  transform: translateX(2px);
+}
+
+.conv-list__item--active {
+  background: var(--dash-accent-muted);
+}
+
+.conv-list__item--active:hover {
+  background: var(--dash-accent-muted);
+  transform: none;
+}
+
+.conv-list__item-content {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.conv-list__item-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 8px;
+  min-width: 0;
+}
+
+.conv-list__item-title {
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--dash-text-primary);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  min-width: 0;
+}
+
+.conv-list__item-actions {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  flex-shrink: 0;
+}
+
+.conv-list__menu-trigger {
+  display: none;
+  align-items: center;
+  justify-content: center;
+  width: 22px;
+  height: 22px;
+  padding: 0;
+  border: none;
+  border-radius: 4px;
+  background: transparent;
+  color: var(--dash-text-muted);
+  font-size: 16px;
+  line-height: 1;
+  cursor: pointer;
+  transition: background 0.1s, color 0.1s;
+}
+
+.conv-list__item:hover .conv-list__menu-trigger,
+.conv-list__menu-trigger:focus-visible {
+  display: inline-flex;
+}
+
+.conv-list__menu-trigger:hover {
+  background: var(--dash-hover);
+  color: var(--dash-text-primary);
+}
+
+.conv-list__item-date {
+  font-size: 11px;
+  color: var(--dash-text-muted);
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+
+/* ── Channel badge ────────────────────────────────────────────── */
+
+.conv-list__channel-badge {
+  display: inline-flex;
+  align-items: center;
+  padding: 1px 5px;
+  border-radius: 4px;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.3px;
+  flex-shrink: 0;
+}
+
+.conv-list__channel-badge--whatsapp {
+  background: #25d366;
+  color: #fff;
+}
+
+.conv-list__channel-label {
+  font-size: 11px;
+  color: var(--dash-text-muted);
+  font-style: italic;
+}
+
+.conv-list__match-snippet {
+  display: block;
+  font-size: 11px;
+  color: var(--dash-text-muted);
+  line-height: 1.35;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+/* B3: Badge de mensajes no leídos WhatsApp */
+.conv-list__unread-badge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 18px;
+  height: 18px;
+  padding: 0 5px;
+  margin-left: 6px;
+  border-radius: 9px;
+  background: #ef4444;
+  color: #fff;
+  font-size: 11px;
+  font-weight: 700;
+  line-height: 1;
+  flex-shrink: 0;
+}
+
+/* ── Rename input ─────────────────────────────────────────────── */
+
+.conv-list__rename-input {
+  width: 100%;
+  padding: 4px 6px;
+  border: 1px solid var(--dash-accent);
+  border-radius: 4px;
+  font-size: 13px;
+  background: var(--dash-bg);
+  color: var(--dash-text-primary);
+  outline: none;
+}
+
+/* ── Context menu ─────────────────────────────────────────────── */
+
+.conv-list__menu {
+  position: absolute;
+  top: 100%;
+  right: 8px;
+  z-index: 50;
+  background: var(--dash-surface);
+  border: 1px solid var(--dash-border);
+  border-radius: 8px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  min-width: 140px;
+  padding: 4px;
+  margin-top: -4px;
+}
+
+.conv-list__menu-btn {
+  display: block;
+  width: 100%;
+  padding: 7px 12px;
+  border: none;
+  border-radius: 6px;
+  background: transparent;
+  font-size: 13px;
+  color: var(--dash-text-primary);
+  cursor: pointer;
+  text-align: left;
+  transition: background 0.1s;
+}
+
+.conv-list__menu-btn:hover {
+  background: var(--dash-hover);
+}
+
+.conv-list__menu-btn--danger {
+  color: var(--dash-danger);
+}
+
+.conv-list__menu-btn--danger:hover {
+  background: var(--dash-danger-muted);
+}
+
+/* ── Confirm dialog ───────────────────────────────────────────── */
+
+.conv-list__confirm {
+  margin-top: 6px;
+  padding: 8px 10px;
+  background: var(--dash-bg);
+  border: 1px solid var(--dash-border);
+  border-radius: 8px;
+}
+
+.conv-list__confirm-text {
+  display: block;
+  font-size: 12px;
+  color: var(--dash-text-secondary);
+  margin-bottom: 8px;
+}
+
+.conv-list__confirm-actions {
+  display: flex;
+  gap: 8px;
+}
+
+.conv-list__confirm-btn {
+  padding: 4px 12px;
+  border: 1px solid var(--dash-border);
+  border-radius: 6px;
+  background: var(--dash-surface);
+  font-size: 12px;
+  color: var(--dash-text-primary);
+  cursor: pointer;
+  transition: background 0.1s;
+}
+
+.conv-list__confirm-btn:hover {
+  background: var(--dash-hover);
+}
+
+.conv-list__confirm-btn--yes {
+  background: var(--dash-danger);
+  color: #fff;
+  border-color: var(--dash-danger);
+}
+
+.conv-list__confirm-btn--yes:hover {
+  background: var(--dash-danger-hover, #c0392b);
+}
+
+/* ── CH06: Highlight en búsqueda ────────────────────────────── */
+
+.conv-list__highlight {
+  background: var(--usage-yellow, #f1c40f);
+  color: #000;
+  border-radius: 2px;
+  padding: 0 1px;
+}
+
+/* ── CH04b: Toggle archivadas ───────────────────────────────── */
+
+.conv-list__actions-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 0 12px 8px;
+}
+
+.conv-list__toggle-archived-btn {
+  background: none;
+  border: 1px solid var(--dash-border);
+  border-radius: 6px;
+  padding: 4px 10px;
+  font-size: 11px;
+  color: var(--dash-text-secondary);
+  cursor: pointer;
+  transition: background 0.15s, color 0.15s;
+}
+
+.conv-list__toggle-archived-btn:hover {
+  background: var(--dash-hover);
+  color: var(--dash-text-primary);
+}
+
+.conv-list__search-hint {
+  font-size: 10px;
+  color: var(--dash-text-tertiary, #888);
+  padding: 2px 0 0 2px;
+  margin-bottom: 2px;
+}
+
+/* ── CH04b: Badge archivada ─────────────────────────────────── */
+
+.conv-list__channel-badge--archived {
+  background: var(--dash-text-tertiary, #888);
+  color: #fff;
+  font-size: 9px;
+  padding: 1px 5px;
+  border-radius: 3px;
+  margin-right: 6px;
+  vertical-align: text-top;
+}
+
+.conv-list__item--archived {
+  opacity: 0.7;
+}

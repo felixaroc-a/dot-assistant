@@ -1,0 +1,191 @@
+# AlertManager rules — DOT Monitoring
+# Carga en Prometheus con:
+#   rule_files:
+#     - "/etc/prometheus/rules/dot-alerts.yml"
+
+groups:
+  - name: dot_api_alerts
+    interval: 30s
+    rules:
+      # ─── HighErrorRate ─────────────────────────────────
+      - alert: HighErrorRate
+        expr: |
+          sum(rate(http_requests_total{status=~"5.."}[5m]))
+          /
+          sum(rate(http_requests_total[5m]))
+          > 0.05
+        for: 5m
+        labels:
+          severity: critical
+          team: dot-sre
+          component: api
+        annotations:
+          summary: "Tasa de error del API > 5% durante 5 minutos"
+          description: |
+            La tasa de error del API DOT es {{ $value | humanizePercentage }}.
+            Verifica logs en BetterStack y dashboards de Grafana.
+          runbook_url: "https://grafana.nordik-ia.com/d/dot-overview"
+
+      # ─── HighLatency ───────────────────────────────────
+      - alert: HighLatency
+        expr: |
+          histogram_quantile(0.95,
+            sum(rate(http_request_duration_seconds_bucket[5m])) by (le)
+          ) > 3
+        for: 5m
+        labels:
+          severity: warning
+          team: dot-sre
+          component: api
+        annotations:
+          summary: "Latencia p95 > 3s durante 5 minutos"
+          description: |
+            La latencia p95 del API DOT es {{ $value }}s.
+            Revisa dependencias: DeepSeek, Redis, DB.
+          runbook_url: "https://grafana.nordik-ia.com/d/dot-overview"
+
+      # ─── HighLatencyCritical ───────────────────────────
+      - alert: HighLatencyCritical
+        expr: |
+          histogram_quantile(0.99,
+            sum(rate(http_request_duration_seconds_bucket[5m])) by (le)
+          ) > 10
+        for: 3m
+        labels:
+          severity: critical
+          team: dot-sre
+          component: api
+        annotations:
+          summary: "Latencia p99 > 10s — posible outage"
+          description: |
+            CRÍTICO: La latencia p99 del API DOT es {{ $value }}s.
+            Posible degradación grave. Escalar inmediatamente.
+          runbook_url: "https://grafana.nordik-ia.com/d/dot-overview"
+
+  - name: dot_ai_alerts
+    interval: 30s
+    rules:
+      # ─── DeepSeekDown ──────────────────────────────────
+      - alert: DeepSeekDown
+        expr: dot_circuit_breaker_state{breaker_name=~".*deepseek.*"} == 1
+        for: 2m
+        labels:
+          severity: critical
+          team: dot-sre
+          component: ai
+          provider: deepseek
+        annotations:
+          summary: "Circuit breaker DeepSeek abierto > 2 minutos"
+          description: |
+            El circuit breaker de DeepSeek ({{ $labels.breaker_name }}) está ABIERTO.
+            El chat IA no está disponible para los usuarios.
+            Verifica estado de api.deepseek.com y logs del backend.
+          runbook_url: "https://grafana.nordik-ia.com/d/dot-system"
+
+      # ─── HighAICost ────────────────────────────────────
+      - alert: HighAICost
+        expr: |
+          rate(dot_ai_cost_usd_total[1h]) * 86400
+          > 6.0
+        for: 15m
+        labels:
+          severity: warning
+          team: dot-sre
+          component: ai
+        annotations:
+          summary: "Costo IA diario proyectado > $6.00 (80% del límite $7.50)"
+          description: |
+            El costo IA diario estimado es ${{ $value }}.
+            Límite mensual por usuario: $7.50.
+            Si la tendencia continúa, los usuarios alcanzarán su límite.
+          runbook_url: "https://grafana.nordik-ia.com/d/dot-ai-costs"
+
+      # ─── AICostCritical ────────────────────────────────
+      - alert: AICostCritical
+        expr: |
+          rate(dot_ai_cost_usd_total[1h]) * 86400
+          > 7.5
+        for: 5m
+        labels:
+          severity: critical
+          team: dot-sre
+          component: ai
+        annotations:
+          summary: "Costo IA diario > $7.50 — superando límite mensual"
+          description: |
+            CRÍTICO: El costo IA diario estimado es ${{ $value }}, superando el límite mensual de $7.50.
+            Los usuarios están siendo bloqueados del servicio IA.
+            Revisa patrones de uso anómalos.
+          runbook_url: "https://grafana.nordik-ia.com/d/dot-ai-costs"
+
+  - name: dot_system_alerts
+    interval: 30s
+    rules:
+      # ─── LowDiskSpace ──────────────────────────────────
+      - alert: LowDiskSpace
+        expr: |
+          (node_filesystem_avail_bytes{mountpoint="/"} / node_filesystem_size_bytes{mountpoint="/"}) < 0.10
+        for: 5m
+        labels:
+          severity: warning
+          team: dot-sre
+          component: infra
+        annotations:
+          summary: "Espacio en disco < 10% en {{ $labels.instance }}"
+          description: |
+            El nodo {{ $labels.instance }} tiene menos del 10% de espacio en disco.
+            Espacio disponible: {{ $value | humanizePercentage }}.
+            Limpia logs, temp files, o escala el storage.
+          runbook_url: "https://grafana.nordik-ia.com/d/dot-system"
+
+      # ─── HighDBConnections ─────────────────────────────
+      - alert: HighDBConnections
+        expr: dot_db_connections_active > 20
+        for: 5m
+        labels:
+          severity: warning
+          team: dot-sre
+          component: database
+        annotations:
+          summary: "Conexiones DB activas > 20"
+          description: |
+            Hay {{ $value }} conexiones activas al pool de base de datos.
+            Posible leak de conexiones o pico de tráfico.
+          runbook_url: "https://grafana.nordik-ia.com/d/dot-system"
+
+      # ─── NoActiveUsers ─────────────────────────────────
+      - alert: NoActiveUsers
+        expr: dot_active_users == 0
+        for: 10m
+        labels:
+          severity: info
+          team: dot-sre
+          component: api
+        annotations:
+          summary: "Sin usuarios activos por 10+ minutos"
+          description: |
+            No hay usuarios activos en DOT.
+            Posible outage silencioso. Verifica que el API esté respondiendo.
+          runbook_url: "https://grafana.nordik-ia.com/d/dot-system"
+
+  - name: dot_whatsapp_alerts
+    interval: 30s
+    rules:
+      # ─── WhatsAppDown ──────────────────────────────────
+      - alert: WhatsAppDown
+        expr: |
+          rate(dot_whatsapp_messages_total{direction="inbound"}[10m]) == 0
+          and
+          rate(dot_whatsapp_messages_total[60m]) > 0
+        for: 10m
+        labels:
+          severity: warning
+          team: dot-sre
+          component: whatsapp
+        annotations:
+          summary: "Sin mensajes WhatsApp inbound en 10 minutos"
+          description: |
+            No se han recibido mensajes WhatsApp en los últimos 10 minutos,
+            a pesar de haber tráfico en la última hora.
+            Verifica el bridge Baileys y la conexión WhatsApp Web.
+          runbook_url: "https://grafana.nordik-ia.com/d/dot-whatsapp"

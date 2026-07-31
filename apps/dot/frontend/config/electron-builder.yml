@@ -1,0 +1,84 @@
+# Empaquetado: npm install electron-builder --save-dev && npm run desktop:dist
+appId: com.dotia.dotdesktop
+productName: DOT Desktop
+asar: true
+asarUnpack:
+  - "**/node_modules/@whiskeysockets/baileys/**"
+  - "**/node_modules/pino/**"
+  - "**/node_modules/@hapi/boom/**"
+  - "electron/scripts/**"
+  - "electron/whatsapp/baileys/**"
+directories:
+  output: release
+electronDist: node_modules/electron/dist
+files:
+  - dist/**/*
+  - electron/**/*
+  - scripts/provision-pendrive-delivery.cjs
+  - package.json
+  - node_modules/**/*
+# ─── Windows (target primario, sin cambios) ─────────────────
+win:
+  icon: electron/icon.ico
+  artifactName: DOT-Desktop-${version}-${arch}.${ext}
+  target:
+    - target: nsis
+      arch:
+        - x64
+    - target: portable
+      arch:
+        - x64
+# ─── macOS (target secundario) ──────────────────────────────
+mac:
+  icon: electron/icon.icns
+  artifactName: DOT-Desktop-${version}-${arch}.${ext}
+  category: public.app-category.productivity
+  hardenedRuntime: true
+  gatekeeperAssess: false
+  entitlements: electron/entitlements.mac.plist
+  entitlementsInherit: electron/entitlements.mac.plist
+  target:
+    - target: dmg
+      arch:
+        - x64
+        - arm64
+    - target: zip
+      arch:
+        - x64
+        - arm64
+# ─── Linux (target secundario) ──────────────────────────────
+linux:
+  icon: electron/icon.png
+  artifactName: DOT-Desktop-${version}-${arch}.${ext}
+  category: Utility
+  mimeTypes:
+    - x-scheme-handler/dot
+  target:
+    - target: AppImage
+      arch:
+        - x64
+    - target: deb
+      arch:
+        - x64
+publish:
+  # D03: Configuración de publicación para auto-updater.
+  # En producción, electron-updater usa DOT_UPDATER_URL del .env.
+  # provider: generic
+  # url: https://storage.googleapis.com/nordik-releases
+  # channel: latest
+  #
+  # Alternativa: GitHub Releases
+  # provider: github
+  # owner: nordik-ia
+  # repo: nordik-releases
+  # releaseType: release
+nsis:
+  oneClick: false
+  allowToChangeInstallationDirectory: true
+  createDesktopShortcut: true
+  createStartMenuShortcut: true
+  shortcutName: DOT IA
+  perMachine: false
+  installerIcon: electron/icon.ico
+  uninstallerIcon: electron/icon.ico
+  installerHeaderIcon: electron/icon.ico

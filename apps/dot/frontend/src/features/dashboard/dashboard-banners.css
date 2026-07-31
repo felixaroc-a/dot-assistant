@@ -1,0 +1,174 @@
+.main-dashboard__plan-banner,
+.main-dashboard__expiry-banner {
+  margin: 0.75rem clamp(1rem, 2.5vw, 1.5rem) 0;
+  padding: 0.65rem 0.85rem;
+  border-radius: var(--dash-radius);
+  font-size: 0.8125rem;
+  line-height: 1.35;
+}
+
+.main-dashboard__plan-banner {
+  border: 1px solid color-mix(in srgb, var(--dash-accent) 30%, var(--dash-border));
+  background: color-mix(in srgb, var(--dash-accent) 8%, var(--dash-surface));
+  color: var(--dash-text-primary);
+}
+
+.main-dashboard__expiry-banner {
+  border: 1px solid color-mix(in srgb, var(--dash-warning) 40%, var(--dash-border));
+  background: color-mix(in srgb, var(--dash-warning) 12%, var(--dash-surface));
+  color: var(--dash-text-primary);
+}
+
+.main-dashboard__plan-banner strong,
+.main-dashboard__expiry-banner strong {
+  font-weight: 700;
+}
+
+.main-dashboard__sync-warning,
+.main-dashboard__channel-banner {
+  margin: 0.75rem clamp(1rem, 2.5vw, 1.5rem) 0;
+  padding: 0.65rem 0.85rem;
+  border-radius: var(--dash-radius);
+  font-size: 0.8125rem;
+  line-height: 1.35;
+  color: var(--dash-text-primary);
+}
+
+.main-dashboard__sync-warning {
+  border: 1px solid color-mix(in srgb, var(--dash-warning) 40%, var(--dash-border));
+  background: color-mix(in srgb, var(--dash-warning) 12%, var(--dash-surface));
+}
+
+.main-dashboard__channel-banner {
+  border: 1px solid color-mix(in srgb, var(--dash-accent) 30%, var(--dash-border));
+  background: color-mix(in srgb, var(--dash-accent) 8%, var(--dash-surface));
+}
+
+.main-dashboard__channel-banner-link {
+  margin-left: 0.35rem;
+  border: none;
+  background: none;
+  padding: 0;
+  color: var(--dash-accent);
+  font: inherit;
+  font-weight: 600;
+  text-decoration: underline;
+  cursor: pointer;
+}
+
+.main-dashboard__channel-banner-link:hover {
+  color: var(--dash-accent-hover);
+}
+
+.main-dashboard__notification {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 0.75rem;
+  margin: 0.75rem clamp(1rem, 2.5vw, 1.5rem) 0;
+  padding: 0.75rem 0.9rem;
+  border-radius: var(--dash-radius);
+  background: var(--dash-surface-elevated);
+  border: 1px solid var(--dash-border);
+  box-shadow: var(--dash-shadow-sm);
+}
+
+.main-dashboard__notification-body {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+  font-size: 0.8125rem;
+  color: var(--dash-text-primary);
+}
+
+.main-dashboard__notification-preview {
+  margin: 0;
+  color: var(--dash-text-secondary);
+  font-size: 0.75rem;
+  line-height: 1.35;
+}
+
+.main-dashboard__notification-actions {
+  display: flex;
+  align-items: center;
+  gap: 0.35rem;
+  flex-shrink: 0;
+}
+
+.main-dashboard__notification-btn {
+  border: none;
+  border-radius: 8px;
+  padding: 0.4rem 0.7rem;
+  background: var(--dash-accent);
+  color: var(--dash-bg);
+  font-size: 0.75rem;
+  font-weight: 600;
+  font-family: inherit;
+  cursor: pointer;
+}
+
+.main-dashboard__notification-close {
+  border: none;
+  background: transparent;
+  color: var(--dash-text-secondary);
+  font-size: 1.1rem;
+  cursor: pointer;
+  padding: 0.15rem 0.35rem;
+  border-radius: 6px;
+}
+
+.main-dashboard__notification-close:hover {
+  background: var(--dash-surface);
+  color: var(--dash-text-primary);
+}
+
+.main-dashboard__sync-toast {
+  position: fixed;
+  top: 1rem;
+  right: 1rem;
+  z-index: 100;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.65rem 1rem;
+  border-radius: var(--dash-radius);
+  font-size: 0.85rem;
+  line-height: 1.35;
+  max-width: min(420px, calc(100vw - 2rem));
+  background: var(--dash-surface-elevated);
+  border: 1px solid var(--dash-border);
+  color: var(--dash-text-primary);
+  box-shadow: var(--dash-shadow-md);
+  animation: sync-toast-in 0.28s ease-out;
+}
+
+@keyframes sync-toast-in {
+  from { opacity: 0; transform: translateX(0.75rem); }
+  to { opacity: 1; transform: translateX(0); }
+}
+
+.main-dashboard__sync-toast-icon {
+  flex-shrink: 0;
+  font-size: 1rem;
+}
+
+.main-dashboard__sync-toast-text {
+  flex: 1;
+  min-width: 0;
+}
+
+.main-dashboard__sync-toast-close {
+  flex-shrink: 0;
+  background: none;
+  border: none;
+  color: var(--dash-text-secondary);
+  font-size: 1.1rem;
+  cursor: pointer;
+  padding: 0.1rem 0.25rem;
+  line-height: 1;
+  border-radius: 6px;
+}
+
+.main-dashboard__sync-toast-close:hover {
+  background: var(--dash-surface);
+}

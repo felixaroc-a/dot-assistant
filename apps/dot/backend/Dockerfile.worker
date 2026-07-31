@@ -1,0 +1,41 @@
+# Dockerfile.worker — DOT Worker (automatizaciones)
+#
+# Build:
+#   docker build -t nordik-worker -f apps/dot/backend/Dockerfile.worker .
+#
+# Run:
+#   docker run --env-file apps/dot/backend/.env nordik-worker
+#
+# El worker usa SQLite como cola (tasks.db) y Firestore para persistencia
+# de resultados. No requiere Postgres directamente.
+
+FROM python:3.11-slim-bookworm
+
+ARG DOT_ENV=production
+ENV DOT_ENV=${DOT_ENV}
+
+WORKDIR /app
+
+RUN apt-get update && apt-get install -y --no-install-recommends \
+    libpq-dev \
+    && rm -rf /var/lib/apt/lists/*
+
+# Paquete compartido
+COPY packages/dot-billing/ /app/packages/dot-billing/
+RUN pip install --no-cache-dir -e /app/packages/dot-billing[full]
+
+# Dependencias del backend (worker comparte requirements con API)
+COPY apps/dot/backend/requirements.txt /app/requirements.txt
+RUN pip install --no-cache-dir -r /app/requirements.txt
+
+# Código
+COPY apps/dot/backend/ /app/apps/dot/backend/
+
+WORKDIR /app/apps/dot/backend
+
+# El worker no expone puerto HTTP (solo polling de SQLite + Firestore)
+
+HEALTHCHECK --interval=30s --timeout=5s --start-period=10s --retries=3 \
+    CMD python -c "import sqlite3; sqlite3.connect('worker/tasks.db').execute('SELECT 1')" || exit 1
+
+CMD ["python", "-m", "worker.worker_main", "--interval", "3"]

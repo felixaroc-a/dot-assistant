@@ -1,0 +1,49 @@
+.pendrive-indicator {
+  margin-top: 0.75rem;
+  padding: 0.7rem 0.9rem;
+  border-top: 1px solid var(--dash-border);
+  display: flex;
+  align-items: flex-start;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+}
+
+.pendrive-indicator__dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  flex-shrink: 0;
+  margin-top: 0.25rem;
+  display: block;
+}
+
+.pendrive-indicator__dot--connected {
+  background: #2ecc71;
+  box-shadow: 0 0 6px rgba(46, 204, 113, 0.4);
+}
+
+.pendrive-indicator__dot--disconnected {
+  background: #e74c3c;
+  box-shadow: 0 0 6px rgba(231, 76, 60, 0.4);
+}
+
+.pendrive-indicator__dot--dev {
+  background: #f39c12;
+  box-shadow: 0 0 6px rgba(243, 156, 18, 0.4);
+}
+
+.pendrive-indicator__label {
+  font-size: 0.72rem;
+  font-weight: 500;
+  color: var(--dash-text-primary);
+  line-height: 1.4;
+  flex-shrink: 0;
+}
+
+.pendrive-indicator__hint {
+  width: 100%;
+  margin: 0.2rem 0 0 1.1rem;
+  font-size: 0.65rem;
+  color: var(--dash-text-secondary);
+  line-height: 1.35;
+}

@@ -1,0 +1,13 @@
+name: hello-world
+version: "1.0.0"
+description: "Plugin de ejemplo: saludo simple. Demuestra el SDK de plugins de Nordik-IA."
+author: "Nordik-IA"
+category: "Ejemplos"
+tags:
+  - ejemplo
+  - tutorial
+  - hello
+tools:
+  - hello_world
+dependencies: []
+min_dot_version: "1.0.0"

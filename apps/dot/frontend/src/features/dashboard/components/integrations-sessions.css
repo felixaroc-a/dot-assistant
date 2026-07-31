@@ -1,0 +1,187 @@
+.integrations-sessions {
+  display: flex;
+  flex-direction: column;
+  gap: 0.85rem;
+  overflow-y: auto;
+}
+
+.integrations-sessions__intro {
+  margin: 0;
+  font-size: 0.78rem;
+  line-height: 1.45;
+  color: var(--dash-text-secondary);
+}
+
+.integrations-sessions__banner {
+  margin: 0;
+  padding: 0.55rem 0.7rem;
+  border-radius: 8px;
+  font-size: 0.72rem;
+  line-height: 1.4;
+  border: 1px solid var(--dash-border);
+}
+
+.integrations-sessions__banner--ok {
+  background: color-mix(in srgb, var(--dash-success) 12%, transparent);
+  border-color: color-mix(in srgb, var(--dash-success) 35%, var(--dash-border));
+  color: var(--dash-text-primary);
+}
+
+.integrations-sessions__banner--error {
+  background: color-mix(in srgb, var(--dash-error) 12%, transparent);
+  border-color: color-mix(in srgb, var(--dash-error) 35%, var(--dash-border));
+  color: var(--dash-text-primary);
+}
+
+.integrations-sessions__card {
+  padding: 0.85rem 0.9rem;
+  border-radius: var(--dash-radius, 10px);
+  border: 1px solid var(--dash-border);
+  background: var(--dash-surface-elevated, var(--dash-surface));
+  display: flex;
+  flex-direction: column;
+  gap: 0.7rem;
+}
+
+.integrations-sessions__card--ok {
+  border-color: color-mix(in srgb, var(--dash-success) 30%, var(--dash-border));
+}
+
+.integrations-sessions__card-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem;
+}
+
+.integrations-sessions__name {
+  margin: 0;
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: var(--dash-text-primary);
+}
+
+.integrations-sessions__meta {
+  margin: 0.2rem 0 0;
+  font-size: 0.7rem;
+  color: var(--dash-text-secondary);
+}
+
+.integrations-sessions__actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.45rem;
+}
+
+.integrations-sessions__btn {
+  border: 1px solid var(--dash-border);
+  border-radius: 8px;
+  padding: 0.45rem 0.75rem;
+  background: transparent;
+  color: var(--dash-text-primary);
+  font-size: 0.72rem;
+  font-weight: 600;
+  font-family: inherit;
+  cursor: pointer;
+  transition: background 0.15s ease, border-color 0.15s ease;
+}
+
+.integrations-sessions__btn:hover:not(:disabled) {
+  background: color-mix(in srgb, var(--dash-text-primary) 6%, transparent);
+}
+
+.integrations-sessions__btn:disabled {
+  opacity: 0.55;
+  cursor: not-allowed;
+}
+
+.integrations-sessions__btn--primary {
+  background: var(--dash-accent);
+  border-color: transparent;
+  color: var(--dash-bg);
+}
+
+.integrations-sessions__btn--primary:hover:not(:disabled) {
+  background: var(--dash-accent-hover);
+}
+
+.integrations-sessions__btn--danger {
+  border-color: color-mix(in srgb, var(--dash-error) 45%, var(--dash-border));
+  color: var(--dash-error);
+}
+
+.integrations-sessions__btn--danger:hover:not(:disabled) {
+  background: color-mix(in srgb, var(--dash-error) 10%, transparent);
+}
+
+.integrations-sessions__qr-wrap {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.55rem;
+  padding: 0.75rem 0.5rem 0.35rem;
+  border-radius: 8px;
+  background: color-mix(in srgb, var(--dash-bg) 55%, transparent);
+  border: 1px dashed var(--dash-border);
+}
+
+.integrations-sessions__qr {
+  width: min(220px, 100%);
+  height: auto;
+  border-radius: 8px;
+  background: #fff;
+  padding: 0.5rem;
+}
+
+.integrations-sessions__qr-wait,
+.integrations-sessions__hint {
+  margin: 0;
+  font-size: 0.68rem;
+  line-height: 1.35;
+  color: var(--dash-text-secondary);
+  text-align: center;
+}
+
+/* CTAs compactos en StatusPreviewPanel */
+.status-preview__integration-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.35rem;
+  margin-top: 0.55rem;
+}
+
+.status-preview__integration-btn {
+  border: 1px solid var(--dash-border);
+  border-radius: 7px;
+  padding: 0.32rem 0.55rem;
+  background: transparent;
+  color: var(--dash-text-primary);
+  font-size: 0.65rem;
+  font-weight: 600;
+  font-family: inherit;
+  cursor: pointer;
+}
+
+.status-preview__integration-btn:hover {
+  background: color-mix(in srgb, var(--dash-text-primary) 6%, transparent);
+}
+
+.status-preview__integration-btn--primary {
+  background: var(--dash-accent);
+  border-color: transparent;
+  color: var(--dash-bg);
+}
+
+.status-preview__integration-btn--primary:hover {
+  background: var(--dash-accent-hover);
+}
+
+.status-preview__integration-btn--danger {
+  border-color: color-mix(in srgb, var(--dash-error) 40%, var(--dash-border));
+  color: var(--dash-error);
+}
+
+.status-preview__manage-sessions {
+  margin-top: 0.65rem;
+  width: 100%;
+}

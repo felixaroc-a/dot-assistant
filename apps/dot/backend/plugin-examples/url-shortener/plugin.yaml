@@ -1,0 +1,14 @@
+name: url-shortener
+version: "1.0.0"
+description: "Acorta URLs usando servicios gratuitos como TinyURL. Ideal para compartir enlaces en WhatsApp."
+author: "Nordik-IA"
+category: "Utilidades"
+tags:
+  - url
+  - shortener
+  - utilidades
+  - links
+tools:
+  - shorten_url
+dependencies: []
+min_dot_version: "1.0.0"

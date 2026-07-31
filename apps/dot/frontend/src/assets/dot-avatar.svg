@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" width="64" height="64" role="img" aria-label="">
+  <defs>
+    <linearGradient id="dotGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#b8c5ff"/>
+      <stop offset="55%" stop-color="#7c8cff"/>
+      <stop offset="100%" stop-color="#4ad4c8"/>
+    </linearGradient>
+  </defs>
+  <circle cx="32" cy="32" r="30" fill="#1a1d28" stroke="url(#dotGrad)" stroke-width="2"/>
+  <circle cx="32" cy="26" r="10" fill="url(#dotGrad)" opacity="0.95"/>
+  <path d="M16 46c4-8 28-8 32 0" fill="none" stroke="url(#dotGrad)" stroke-width="3" stroke-linecap="round"/>
+</svg>

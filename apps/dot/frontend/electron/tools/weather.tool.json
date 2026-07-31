@@ -1,0 +1,29 @@
+{
+  "name": "web_get_weather",
+  "description": "Obtiene el clima actual por ciudad usando OpenWeatherMap API. Temperatura, humedad, descripción en español.",
+  "category": "data",
+  "capability": "B",
+  "parameters": {
+    "city": {
+      "type": "string",
+      "required": true,
+      "description": "Nombre de la ciudad (ej: 'Caracas', 'Bogotá', 'Madrid')"
+    },
+    "units": {
+      "type": "string",
+      "required": false,
+      "enum": ["metric", "imperial"],
+      "default": "metric",
+      "description": "Unidad de temperatura: metric (°C) o imperial (°F)"
+    }
+  },
+  "handler": "weather.openweathermap",
+  "rateLimit": {
+    "maxPerMinute": 60,
+    "maxPerHour": 1000
+  },
+  "timeout": 10000,
+  "requiresAuth": true,
+  "authProvider": "openweathermap_api_key",
+  "tags": ["weather", "climate", "api"]
+}

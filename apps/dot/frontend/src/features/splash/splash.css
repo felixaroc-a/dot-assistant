@@ -1,0 +1,155 @@
+/* Splash de arranque: siempre oscuro, independiente del tema del usuario */
+.splash {
+  --splash-bg: #000000;
+  --splash-sphere-color: #ffffff;
+  --splash-text-color: #ffffff;
+  --splash-glow: rgba(255, 255, 255, 0.45);
+  --splash-letter-size: clamp(4.5rem, 14vw, 8rem);
+  --splash-letter-gap: 0.09em;
+  --splash-cap-size: 0.9em;
+  position: relative;
+  isolation: isolate;
+  min-height: 100vh;
+  min-height: 100dvh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  background: var(--splash-bg);
+}
+
+.splash__grain {
+  position: absolute;
+  inset: -30%;
+  z-index: 0;
+  pointer-events: none;
+  opacity: 0.028;
+  background-image: radial-gradient(var(--splash-sphere-color) 0.65px, transparent 0.7px);
+  background-size: 3px 3px;
+  mix-blend-mode: overlay;
+}
+
+.splash__vignette {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  background: radial-gradient(
+    ellipse 72% 58% at 50% 50%,
+    transparent 0%,
+    rgba(0, 0, 0, 0.55) 100%
+  );
+}
+
+.splash__stage {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  min-height: 100vh;
+  min-height: 100dvh;
+}
+
+.splash__brand {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.1em;
+}
+
+.splash__wordmark {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--splash-letter-gap);
+  margin: 0;
+  padding: 0;
+  font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", "Helvetica Neue", Helvetica, Arial, sans-serif;
+  font-size: var(--splash-letter-size);
+  font-weight: 200;
+  line-height: 1;
+  letter-spacing: 0.02em;
+  color: var(--splash-text-color);
+  text-transform: uppercase;
+}
+
+.splash__letter {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  width: 0.62em;
+  height: 1em;
+  color: var(--splash-text-color);
+  text-shadow: 0 2px 28px rgba(255, 255, 255, 0.12);
+  will-change: transform, opacity, filter;
+}
+
+.splash__letter--d,
+.splash__letter--t {
+  will-change: transform, opacity, filter;
+}
+
+.splash__letter-o-wrap {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: var(--splash-cap-size);
+  height: 1em;
+  flex-shrink: 0;
+  will-change: transform;
+  transform: translateZ(0);
+  backface-visibility: hidden;
+}
+
+.splash__sphere {
+  display: block;
+  width: var(--splash-cap-size);
+  height: var(--splash-cap-size);
+  border-radius: 50%;
+  background: var(--splash-sphere-color);
+  box-sizing: border-box;
+  flex-shrink: 0;
+  will-change: transform, box-shadow;
+  transform: translateZ(0);
+  backface-visibility: hidden;
+}
+
+.splash__sphere--static {
+  box-shadow: 0 0 22px rgba(255, 255, 255, 0.16);
+}
+
+.splash__subline {
+  margin: 0;
+  padding: 0;
+  font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", "Helvetica Neue", Helvetica, Arial, sans-serif;
+  font-size: var(--splash-letter-size);
+  font-weight: 200;
+  line-height: 1;
+  color: var(--splash-text-color);
+  text-transform: uppercase;
+  text-shadow: 0 2px 28px rgba(255, 255, 255, 0.12);
+}
+
+.splash__ia {
+  font-size: calc(var(--splash-letter-size) * 0.5);
+  letter-spacing: -0.03em;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .splash__sphere {
+    box-shadow: none !important;
+  }
+
+  .splash__sphere--static {
+    box-shadow: none;
+  }
+
+  .splash__letter {
+    filter: none !important;
+  }
+}

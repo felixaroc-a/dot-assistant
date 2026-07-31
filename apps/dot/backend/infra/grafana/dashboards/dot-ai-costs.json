@@ -1,0 +1,176 @@
+{
+  "dashboard": {
+    "uid": "dot-ai-costs",
+    "title": "DOT — Costos IA",
+    "description": "Tokens consumidos, costo por proveedor, costo por operación, tendencia diaria",
+    "tags": ["dot", "ai", "costs", "finops"],
+    "timezone": "browser",
+    "schemaVersion": 39,
+    "version": 1,
+    "refresh": "30s",
+    "panels": [
+      {
+        "id": 1,
+        "gridPos": { "h": 8, "w": 12, "x": 0, "y": 0 },
+        "title": "Tokens consumidos por operación (rate 5m)",
+        "type": "timeseries",
+        "datasource": { "type": "prometheus", "uid": "${DS_PROMETHEUS}" },
+        "targets": [
+          {
+            "expr": "rate(dot_ai_tokens_consumed[5m])",
+            "legendFormat": "{{operation}}",
+            "refId": "A"
+          }
+        ],
+        "fieldConfig": {
+          "defaults": {
+            "unit": "tps",
+            "custom": { "lineInterpolation": "smooth", "fillOpacity": 15, "stacking": { "mode": "normal" } }
+          }
+        }
+      },
+      {
+        "id": 2,
+        "gridPos": { "h": 8, "w": 12, "x": 12, "y": 0 },
+        "title": "Costo IA acumulado por operación (USD)",
+        "type": "timeseries",
+        "datasource": { "type": "prometheus", "uid": "${DS_PROMETHEUS}" },
+        "targets": [
+          {
+            "expr": "dot_ai_cost_usd_total",
+            "legendFormat": "{{operation}}",
+            "refId": "A"
+          }
+        ],
+        "fieldConfig": {
+          "defaults": {
+            "unit": "USD",
+            "custom": { "lineInterpolation": "smooth", "fillOpacity": 15 }
+          }
+        }
+      },
+      {
+        "id": 3,
+        "gridPos": { "h": 8, "w": 6, "x": 0, "y": 8 },
+        "title": "Total tokens chat",
+        "type": "stat",
+        "datasource": { "type": "prometheus", "uid": "${DS_PROMETHEUS}" },
+        "targets": [
+          {
+            "expr": "dot_ai_tokens_consumed{operation=\"chat\"}",
+            "refId": "A"
+          }
+        ],
+        "fieldConfig": {
+          "defaults": { "unit": "short" }
+        }
+      },
+      {
+        "id": 4,
+        "gridPos": { "h": 8, "w": 6, "x": 6, "y": 8 },
+        "title": "Total tokens reasoning",
+        "type": "stat",
+        "datasource": { "type": "prometheus", "uid": "${DS_PROMETHEUS}" },
+        "targets": [
+          {
+            "expr": "dot_ai_tokens_consumed{operation=\"reasoning\"}",
+            "refId": "A"
+          }
+        ],
+        "fieldConfig": {
+          "defaults": { "unit": "short" }
+        }
+      },
+      {
+        "id": 5,
+        "gridPos": { "h": 8, "w": 6, "x": 12, "y": 8 },
+        "title": "Costo total chat (USD)",
+        "type": "stat",
+        "datasource": { "type": "prometheus", "uid": "${DS_PROMETHEUS}" },
+        "targets": [
+          {
+            "expr": "dot_ai_cost_usd_total{operation=\"chat\"}",
+            "refId": "A"
+          }
+        ],
+        "fieldConfig": {
+          "defaults": { "unit": "USD", "decimals": 4 }
+        }
+      },
+      {
+        "id": 6,
+        "gridPos": { "h": 8, "w": 6, "x": 18, "y": 8 },
+        "title": "Costo total imagenes (USD)",
+        "type": "stat",
+        "datasource": { "type": "prometheus", "uid": "${DS_PROMETHEUS}" },
+        "targets": [
+          {
+            "expr": "dot_ai_cost_usd_total{operation=\"image_gen\"}",
+            "refId": "A"
+          }
+        ],
+        "fieldConfig": {
+          "defaults": { "unit": "USD", "decimals": 4 }
+        }
+      },
+      {
+        "id": 7,
+        "gridPos": { "h": 8, "w": 12, "x": 0, "y": 16 },
+        "title": "Mensajes de chat por proveedor/modelo",
+        "type": "timeseries",
+        "datasource": { "type": "prometheus", "uid": "${DS_PROMETHEUS}" },
+        "targets": [
+          {
+            "expr": "rate(dot_chat_messages_total[5m])",
+            "legendFormat": "{{provider}}/{{model}}",
+            "refId": "A"
+          }
+        ],
+        "fieldConfig": {
+          "defaults": {
+            "unit": "msgps",
+            "custom": { "lineInterpolation": "smooth", "fillOpacity": 15 }
+          }
+        }
+      },
+      {
+        "id": 8,
+        "gridPos": { "h": 8, "w": 12, "x": 12, "y": 16 },
+        "title": "Costo diario estimado (USD) — rate * 86400",
+        "type": "gauge",
+        "datasource": { "type": "prometheus", "uid": "${DS_PROMETHEUS}" },
+        "targets": [
+          {
+            "expr": "rate(dot_ai_cost_usd_total[1h]) * 86400",
+            "legendFormat": "{{operation}}",
+            "refId": "A"
+          }
+        ],
+        "fieldConfig": {
+          "defaults": {
+            "unit": "USD",
+            "decimals": 3,
+            "thresholds": {
+              "mode": "absolute",
+              "steps": [
+                { "color": "green", "value": null },
+                { "color": "yellow", "value": 3.0 },
+                { "color": "red", "value": 6.0 }
+              ]
+            }
+          }
+        }
+      }
+    ],
+    "templating": {
+      "list": [
+        {
+          "name": "DS_PROMETHEUS",
+          "type": "datasource",
+          "query": "prometheus",
+          "current": { "text": "Prometheus", "value": "Prometheus" }
+        }
+      ]
+    }
+  }
+}

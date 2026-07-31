@@ -1,0 +1,10 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    // Todo acceso de escritura/lectura vía Firebase Admin SDK (backend).
+    // El cliente web usa solo Firebase Auth + API HTTP propia.
+    match /{document=**} {
+      allow read, write: if false;
+    }
+  }
+}

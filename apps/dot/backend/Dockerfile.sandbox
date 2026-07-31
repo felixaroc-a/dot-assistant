@@ -1,0 +1,41 @@
+# DOT Sandbox — contenedor mínimo para ejecución aislada de Python/JS
+# python:3.11-slim + node:20-slim combinados en Alpine para tamaño mínimo (~120MB)
+FROM python:3.11-alpine AS python-env
+
+FROM node:20-alpine AS node-env
+
+FROM alpine:3.20
+
+# Copiar Python desde python:alpine
+COPY --from=python-env /usr/local/ /usr/local/
+
+# Copiar Node desde node:alpine
+COPY --from=node-env /usr/local/ /usr/local/
+COPY --from=node-env /opt/ /opt/
+
+# Dependencias runtime mínimas
+RUN apk add --no-cache \
+    libstdc++ \
+    libffi \
+    libbz2 \
+    xz-libs \
+    zlib \
+    ncurses-libs \
+    readline \
+    sqlite-libs \
+    ca-certificates \
+    bash
+
+# Usuario sin privilegios (ejecutará código dentro del container)
+RUN adduser -D -s /bin/sh sandbox
+
+# Directorio de trabajo en tmpfs (se monta en runtime)
+WORKDIR /sandbox
+
+# Script de entrada: recibe el código por stdin, lo ejecuta, devuelve stdout/stderr
+COPY --chown=sandbox:sandbox scripts/sandbox_entry.py /usr/local/bin/sandbox_entry.py
+RUN chmod +x /usr/local/bin/sandbox_entry.py
+
+USER sandbox
+
+ENTRYPOINT ["python", "/usr/local/bin/sandbox_entry.py"]

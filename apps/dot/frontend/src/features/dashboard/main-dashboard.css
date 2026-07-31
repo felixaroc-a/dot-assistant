@@ -1,0 +1,151 @@
+@import './dashboard-tokens.css';
+@import './workspace-header.css';
+@import './automation-sidebar.css';
+@import './status-preview.css';
+@import './dot-chat.css';
+@import './dashboard-drawer.css';
+@import './dashboard-banners.css';
+@import './doc-creator.css';
+@import './components/conversation-list.css';
+@import './components/automations/pipeline-visual-editor.css';
+@import './components/store-panel.css';
+@import './components/integrations-sessions.css';
+
+.main-dashboard {
+  position: relative;
+  height: 100vh;
+  display: grid;
+  grid-template-columns: minmax(220px, 260px) minmax(0, 1fr) minmax(240px, 300px);
+  grid-template-rows: auto 1fr;
+  grid-template-areas:
+    'sidebar header header'
+    'sidebar main preview';
+  background: var(--dash-bg);
+  color: var(--dash-text-primary);
+  transition: background var(--dash-transition), color var(--dash-transition);
+  overflow: hidden;
+  max-width: 100vw;
+}
+
+/* B01: left panel wrapper (ConversationList + AutomationSidebar stacked) */
+.main-dashboard__left-panel {
+  grid-area: sidebar;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  min-height: 0;
+  overflow: hidden;
+  border-right: 1px solid var(--dash-border);
+}
+
+.main-dashboard__left-panel > .conv-list {
+  flex: 1 1 55%;
+  min-height: 140px;
+  max-height: none;
+  border-right: none;
+  border-bottom: 1px solid var(--dash-border);
+}
+
+.main-dashboard__left-panel > .main-dashboard__sidebar {
+  flex: 1 1 45%;
+  min-height: 160px;
+  max-height: none;
+  overflow-y: auto;
+  border-right: none;
+  /* Evitar que grid-area del sidebar pelee con el left-panel */
+  grid-area: unset;
+}
+
+@media (max-width: 1100px) {
+  .main-dashboard {
+    grid-template-columns: minmax(200px, 240px) minmax(0, 1fr);
+    grid-template-rows: auto 1fr auto;
+    grid-template-areas:
+      'sidebar header'
+      'sidebar main'
+      'preview preview';
+  }
+}
+
+@media (max-width: 900px) {
+  .main-dashboard {
+    grid-template-columns: 1fr;
+    grid-template-rows: auto auto 1fr auto;
+    grid-template-areas:
+      'header'
+      'sidebar'
+      'main'
+      'preview';
+  }
+}
+
+.main-dashboard__main {
+  grid-area: main;
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+  min-width: 0;
+  max-height: 100%;
+  overflow: hidden;
+  background: var(--dash-bg);
+}
+
+/* Gap #3 — Banner de fallos de automatizaciones */
+.automation-failure-banner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 10px 16px;
+  background: #fef3c7;
+  border: 1px solid #f59e0b;
+  border-radius: 8px;
+  margin: 8px 16px;
+  font-size: 0.9rem;
+  flex-shrink: 0;
+}
+
+.automation-failure-banner button {
+  background: #f59e0b;
+  color: white;
+  border: none;
+  padding: 4px 12px;
+  border-radius: 4px;
+  cursor: pointer;
+  font-weight: 500;
+}
+
+.automation-failure-banner button:hover {
+  background: #d97706;
+}
+
+/* ─── Banner offline ────────────────────────────────── */
+
+.main-dashboard__offline-banner {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 9999;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  padding: 0.5rem 1rem;
+  background: #f59e0b;
+  color: #1a1a1a;
+  font-size: 0.8rem;
+  font-weight: 500;
+  text-align: center;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+  animation: offline-slide-down 0.3s ease;
+}
+
+.main-dashboard__offline-banner-icon {
+  font-size: 1rem;
+  flex-shrink: 0;
+}
+
+@keyframes offline-slide-down {
+  from { transform: translateY(-100%); }
+  to { transform: translateY(0); }
+}

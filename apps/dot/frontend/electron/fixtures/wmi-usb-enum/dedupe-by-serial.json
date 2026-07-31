@@ -1,0 +1,20 @@
+[
+  {
+    "Serial": "ABCD1234EFGH",
+    "Drive": "E:",
+    "Model": "USB Disk",
+    "InterfaceType": "USB",
+    "PNPDeviceID": "USB\\VID_0951&PID_1666\\ABCD1234EFGH",
+    "Source": "usb",
+    "DiskIndex": 0
+  },
+  {
+    "Serial": "ABCD1234EFGH",
+    "Drive": "E:",
+    "Model": "USB Disk",
+    "InterfaceType": "USB",
+    "PNPDeviceID": "USB\\VID_0951&PID_1666\\ABCD1234EFGH",
+    "Source": "removable",
+    "DiskIndex": 0
+  }
+]

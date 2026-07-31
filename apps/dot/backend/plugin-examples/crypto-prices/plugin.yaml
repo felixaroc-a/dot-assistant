@@ -1,0 +1,14 @@
+name: crypto-prices
+version: "1.0.0"
+description: "Consulta precios de criptomonedas en tiempo real desde CoinGecko API gratuita."
+author: "Nordik-IA"
+category: "Finanzas"
+tags:
+  - crypto
+  - bitcoin
+  - finanzas
+  - precios
+tools:
+  - crypto_price
+dependencies: []
+min_dot_version: "1.0.0"

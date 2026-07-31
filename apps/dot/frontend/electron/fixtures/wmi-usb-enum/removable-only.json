@@ -1,0 +1,11 @@
+[
+  {
+    "Serial": "0000000001",
+    "Drive": "F:",
+    "Model": "SanDisk Cruzer",
+    "InterfaceType": "SCSI",
+    "PNPDeviceID": "USBSTOR\\DISK&VEN_SANDISK&PROD_CRUZER&REV_1.00\\0123456789AB&0",
+    "Source": "removable",
+    "DiskIndex": 1
+  }
+]

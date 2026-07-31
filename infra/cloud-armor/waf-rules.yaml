@@ -1,0 +1,252 @@
+# ==============================================================================
+# CF05 — Cloud Armor WAF Rules · Nordik-IA (DOT)
+# ==============================================================================
+#
+# Propósito: Política de seguridad WAF para proteger la API de DOT contra
+#            ataques OWASP Top 10, abuso de endpoints y tráfico no autorizado.
+#
+# Referencias:
+#   - BIBLIA-SEGURIDAD-ESCALA.md §2 (Mandamiento VIII — Protección DDoS activa)
+#   - BIBLIA-SEGURIDAD-ESCALA.md §2 (Mandamiento VII — Menor privilegio)
+#   - docs/THREAT_MODEL.md (superficie de ataque)
+#
+# Stack: GCP Cloud Armor (capa 7)
+# Fase inicial: Venezuela (VE) + Colombia (CO)
+#
+# Despliegue: gcloud compute security-policies rules import <priority> \
+#               --security-policy=nordik-waf \
+#               --source=<archivo-yaml>
+# ==============================================================================
+
+name: nordik-waf
+description: >
+  WAF policy for Nordik-IA (DOT) API. Protects against OWASP Top 10 attacks,
+  enforces rate limiting, geo-restriction (VE + CO), IP allowlist for admin,
+  and adaptive protection for anomaly detection.
+
+# ---------------------------------------------------------------------------
+# Regla 1 — Country restriction: solo Venezuela y Colombia
+# Priority: 10 (más alta = se evalúa primero)
+# ---------------------------------------------------------------------------
+- description: "Allow only Venezuela (VE) and Colombia (CO)"
+  priority: 10
+  match:
+    versionedExpr: SRC_IPS_V1
+    config:
+      srcIpRanges:
+        - "*"
+  action: deny(403)
+  preview: false
+  condition:
+    expression: >
+      ![origin.region_code].matches(["VE","CO"])
+
+# ---------------------------------------------------------------------------
+# Regla 2 — IP allowlist para admin panel (puerto 8001)
+# Priority: 20
+# ---------------------------------------------------------------------------
+- description: "IP allowlist for admin panel (port 8001) — deny non-whitelisted IPs"
+  priority: 20
+  match:
+    expr:
+      expression: >
+        request.path.matches("/admin/") ||
+        request.path.matches("/admin") ||
+        host.matches("admin.nordikia.com")
+  action: deny(403)
+  preview: false
+  condition:
+    expression: >
+      !inIpRange(origin.ip, [
+        "190.0.0.0/8",      # Reemplazar con IPs reales del equipo Nordik
+        "201.0.0.0/8",      # Reemplazar con IPs reales del equipo Nordik
+        "186.0.0.0/8"       # Reemplazar con IPs reales del equipo Nordik
+      ])
+
+# ---------------------------------------------------------------------------
+# Regla 3 — SQL Injection protection (OWASP preconfigured rules)
+# Priority: 100
+# ---------------------------------------------------------------------------
+- description: "Block SQL injection attempts — OWASP sqli-v33-stable"
+  priority: 100
+  match:
+    expr:
+      expression: >
+        evaluatePreconfiguredExpr('sqli-v33-stable')
+  action: deny(403)
+  preview: false
+
+# ---------------------------------------------------------------------------
+# Regla 4 — Cross-Site Scripting (XSS) protection
+# Priority: 110
+# ---------------------------------------------------------------------------
+- description: "Block XSS attacks — OWASP xss-v33-stable"
+  priority: 110
+  match:
+    expr:
+      expression: >
+        evaluatePreconfiguredExpr('xss-v33-stable')
+  action: deny(403)
+  preview: false
+
+# ---------------------------------------------------------------------------
+# Regla 5 — Local File Inclusion / Remote File Inclusion (LFI/RFI)
+# Priority: 120
+# ---------------------------------------------------------------------------
+- description: "Block LFI/RFI attacks — OWASP lfi-v33-stable"
+  priority: 120
+  match:
+    expr:
+      expression: >
+        evaluatePreconfiguredExpr('lfi-v33-stable')
+  action: deny(403)
+  preview: false
+
+# ---------------------------------------------------------------------------
+# Regla 6 — Remote Code Execution (RCE) protection
+# Priority: 130
+# ---------------------------------------------------------------------------
+- description: "Block Remote Code Execution attempts — OWASP rce-v33-stable"
+  priority: 130
+  match:
+    expr:
+      expression: >
+        evaluatePreconfiguredExpr('rce-v33-stable')
+  action: deny(403)
+  preview: false
+
+# ---------------------------------------------------------------------------
+# Regla 7 — Protocol attack protection (HTTP protocol anomalies)
+# Priority: 140
+# ---------------------------------------------------------------------------
+- description: "Block protocol-level attacks (HTTP smuggling, oversized headers, invalid methods)"
+  priority: 140
+  match:
+    expr:
+      expression: >
+        evaluatePreconfiguredExpr('protocolattack-v33-stable')
+  action: deny(403)
+  preview: false
+
+# ---------------------------------------------------------------------------
+# Regla 8 — Scanner detection (known vulnerability scanners)
+# Priority: 150
+# ---------------------------------------------------------------------------
+- description: "Block known vulnerability scanners and automated attack tools"
+  priority: 150
+  match:
+    expr:
+      expression: >
+        evaluatePreconfiguredExpr('scannerdetection-v33-stable')
+  action: deny(403)
+  preview: false
+
+# ---------------------------------------------------------------------------
+# Regla 9 — Rate limiting for authentication endpoints
+# Priority: 200
+# Rate: 100 requests per 60 seconds per IP
+# Endpoints: /v1/auth/login, /v1/auth/register, /v1/auth/refresh
+# ---------------------------------------------------------------------------
+- description: "Rate limit auth endpoints: 100 req/60s per IP"
+  priority: 200
+  match:
+    expr:
+      expression: >
+        request.path.matches("/v1/auth/") ||
+        request.path.matches("/v1/auth/login") ||
+        request.path.matches("/v1/auth/register") ||
+        request.path.matches("/v1/auth/refresh") ||
+        request.path.matches("/v1/auth/validate-pendrive")
+  action: throttle
+  rateLimitOptions:
+    conformAction: allow
+    exceedAction: deny(429)
+    enforceOnKey: IP
+    rateLimitThreshold:
+      count: 100
+      intervalSec: 60
+  preview: false
+
+# ---------------------------------------------------------------------------
+# Regla 10 — Rate limiting for general API endpoints
+# Priority: 210
+# Rate: 300 requests per 60 seconds per IP
+# Endpoints: /v1/* (todos los endpoints no cubiertos por reglas específicas)
+# ---------------------------------------------------------------------------
+- description: "Rate limit general API: 300 req/60s per IP"
+  priority: 210
+  match:
+    expr:
+      expression: >
+        request.path.matches("/v1/")
+  action: throttle
+  rateLimitOptions:
+    conformAction: allow
+    exceedAction: deny(429)
+    enforceOnKey: IP
+    rateLimitThreshold:
+      count: 300
+      intervalSec: 60
+  preview: false
+
+# ---------------------------------------------------------------------------
+# Regla 11 — Rate limiting for IA generation endpoints (costosas)
+# Priority: 220
+# Rate: 20 requests per 60 seconds per IP
+# Endpoints: /v1/chat/stream, /v1/vision/*, /v1/image/generate
+# ---------------------------------------------------------------------------
+- description: "Rate limit IA generation endpoints: 20 req/60s per IP"
+  priority: 220
+  match:
+    expr:
+      expression: >
+        request.path.matches("/v1/chat/stream") ||
+        request.path.matches("/v1/vision/") ||
+        request.path.matches("/v1/image/generate")
+  action: throttle
+  rateLimitOptions:
+    conformAction: allow
+    exceedAction: deny(429)
+    enforceOnKey: IP
+    rateLimitThreshold:
+      count: 20
+      intervalSec: 60
+  preview: false
+
+# ---------------------------------------------------------------------------
+# Regla 12 — Allow all other traffic (default rule)
+# Priority: 2147483647 (máximo int32 — Cloud Armor default)
+# ---------------------------------------------------------------------------
+- description: "Allow all remaining traffic"
+  priority: 2147483647
+  match:
+    versionedExpr: SRC_IPS_V1
+    config:
+      srcIpRanges:
+        - "*"
+  action: allow
+  preview: false
+
+# ==============================================================================
+# Configuración de Adaptive Protection
+# ==============================================================================
+#
+# La protección adaptativa se habilita a nivel de política de seguridad, no como
+# regla individual. Se configura vía gcloud o consola.
+#
+# Comando de habilitación:
+#
+#   gcloud compute security-policies update nordik-waf \
+#       --enable-layer7-ddos-defense \
+#       --layer7-ddos-defense-rule-priority=50 \
+#       --layer7-ddos-defense-action=deny(403)
+#
+# Esto agrega automáticamente una regla en prioridad 50 que usa ML de Google
+# para detectar tráfico anómalo (Layer 7 DDoS, credential stuffing, scraping).
+#
+# Para monitoreo inicial, usar action=throttle en vez de deny:
+#
+#   gcloud compute security-policies update nordik-waf \
+#       --enable-layer7-ddos-defense \
+#       --layer7-ddos-defense-action=throttle
+# ==============================================================================

@@ -1,0 +1,66 @@
+# --- Python ---
+__pycache__/
+*.py[cod]
+*$py.class
+.venv/
+venv/
+ENV/
+env/
+*.egg-info/
+.eggs/
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+*.cover
+.hypothesis/
+
+# --- Node / frontend ---
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+dist/
+build/
+release/
+out/
+.turbo/
+*.tsbuildinfo
+*.asar
+*.7z
+*.blockmap
+
+# --- Entorno y secretos ---
+.env
+.env.*
+!.env.example
+!.env*.sample
+!.env*.example
+*.pem
+secrets/
+client_secret*.json
+**/firebase-service-account.json
+!**/firebase-service-account.json.example
+**/electron/build-secrets.json
+
+# --- Bases de datos locales ---
+*.db
+*.sqlite
+*.sqlite3
+data/
+
+# --- Logs ---
+*.log
+logs/
+
+# --- IDE / sistema ---
+.idea/
+.vscode/
+*.swp
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# --- CI / tooling ---
+coverage/
+.nyc_output/
